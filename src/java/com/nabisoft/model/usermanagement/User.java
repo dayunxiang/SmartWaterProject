@@ -35,6 +35,33 @@ public class User implements Serializable {
       
     @Column(nullable=false, length=128)
     private String lastName;
+    
+    @Column(nullable=false, length=128)
+    private String place;
+    
+    @Column(nullable=false, length=128)
+    private String birth;
+    
+    @Column(nullable=false, length=128)
+    private String way;
+    
+    @Column(nullable=false, length=128)
+    private String codFiscale;
+    
+    @Column(nullable=false, length=128)
+    private String cellular;
+    
+    @Column(nullable=false, length=128)
+    private String company;
+    
+    @Column(nullable=false, length=128)
+    private String job;
+    
+    @Column(nullable=false, length=128)
+    private String secretQ;
+    
+    @Column(nullable=false, length=128)
+    private String secretR;
       
     /**
      * A sha512 is 512 bits long -- as its name indicates. If you are using an hexadecimal representation, 
@@ -68,7 +95,16 @@ public class User implements Serializable {
          
         this.email        = user.getEmail();
         this.firstName    = user.getFName();
-        this.lastName     = user.getLName();        
+        this.lastName     = user.getLName();  
+        this.place = user.getPlace();
+        this.birth = user.getBirth();
+        this.way = user.getWay();
+        this.company = user.getCompany();
+        this.codFiscale = user.getCodFiscale();
+        this.cellular = user.getCellular();
+        this.job = user.getJob();
+        this.secretQ = user.getSecretQ();
+        this.secretR = user.getSecretR();
         this.password     = DigestUtils.sha512Hex(user.getPassword1() );
         this.registeredOn = new Date();
     }
@@ -115,7 +151,79 @@ public class User implements Serializable {
     public void setRegisteredOn(Date registeredOn) {
         this.registeredOn = registeredOn;
     }
+    
+    public String getPlace() {
+        return place;
+    }
  
+    public void setPlace(String place) {
+        this.place = place;
+    }
+    
+    public String getBirth() {
+        return birth;
+    }
+ 
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
+    
+    public String getWay() {
+        return way;
+    }
+ 
+    public void setWay(String way) {
+        this.way = way;
+    }
+    
+    public String getCodFiscale() {
+        return codFiscale;
+    }
+ 
+    public void setCodFiscale(String codFiscale) {
+        this.codFiscale = codFiscale;
+    }
+    
+    public String getCellular() {
+        return cellular;
+    }
+ 
+    public void setCellular(String cellular) {
+        this.cellular = cellular;
+    }
+    
+    public String getCompany() {
+        return company;
+    }
+ 
+    public void setCompany(String company) {
+        this.company = company;
+    }
+    
+    public String getJob() {
+        return job;
+    }
+ 
+    public void setJob(String job) {
+        this.job = job;
+    }
+    
+    public String getSecretQ() {
+        return secretQ;
+    }
+ 
+    public void setSecretQ(String secretQ) {
+        this.secretQ = secretQ;
+    }
+    
+    public String getSecretR() {
+        return secretR;
+    }
+ 
+    public void setSecretR(String secretR) {
+        this.secretR = secretR;
+    }
+    
     public List<Group> getGroups() {
         return groups;
     }

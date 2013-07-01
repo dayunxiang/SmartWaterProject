@@ -84,6 +84,7 @@ public class UserManagementService {
         JsonResponse json = new JsonResponse();
  
         try {
+            req.getServletContext().log("Effettuo il logout");
             req.logout();
             json.setStatus("SUCCESS");
             req.getSession().invalidate();

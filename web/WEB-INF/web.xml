@@ -6,7 +6,7 @@
          id="WebApp_ID" version="3.0">
   <display-name>Authentication</display-name>
   <welcome-file-list>
-    <welcome-file>welcome.jsp</welcome-file>
+    <welcome-file>auth.jsp</welcome-file>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
