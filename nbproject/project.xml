@@ -95,5 +95,8 @@
                 <root id="test.src.dir"/>
             </test-roots>
         </data>
+        <libraries xmlns="http://www.netbeans.org/ns/ant-project-libraries/1">
+            <definitions>/Applications/NetBeans/glassfish-3.1.2/glassfish/modules/nblibraries.properties</definitions>
+        </libraries>
     </configuration>
 </project>
