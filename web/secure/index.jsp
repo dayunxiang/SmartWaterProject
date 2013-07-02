@@ -12,7 +12,22 @@
         <script src="<%=request.getContextPath() %>/js/json2.js" type="text/javascript"></script>
          
         <%@ include file="/WEB-INF/includes/head/jquery.jsp" %>
-         
+        <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=true" type="text/javascript">
+        </script>
+
+        <script type="text/javascript">
+        //<![CDATA[
+            var map;
+            function initialize() {
+            var mapOptions = {
+                zoom: 8,
+                center: new google.maps.LatLng(-34.397, 150.644),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+            }
+        //]]>
+        </script>
         <script type="text/javascript">
         $(function(){
             "use strict";
@@ -112,5 +127,7 @@
     }
           
     %>
+    <div id="map-canvas">
+    </div>
   </body>
 </html>
