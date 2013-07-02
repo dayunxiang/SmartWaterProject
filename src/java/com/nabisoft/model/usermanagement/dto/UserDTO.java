@@ -16,6 +16,7 @@ public class UserDTO {
     private String secretR;
     private String password1;
     private String password2;
+    private String utilityKey;
      
     public String getFName() {
         return fName;
@@ -55,6 +56,14 @@ public class UserDTO {
      
     public void setPassword2(String password) {
         this.password2 = password;
+    }
+    
+    public String getUtilityKey() {
+        return utilityKey;
+    }
+     
+    public void setUtilityKey(String utilityKey) {
+        this.utilityKey = utilityKey;
     }
     
     public String getPlace() {

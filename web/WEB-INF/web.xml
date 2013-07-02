@@ -6,7 +6,7 @@
          id="WebApp_ID" version="3.0">
   <display-name>Authentication</display-name>
   <welcome-file-list>
-    <welcome-file>auth.jsp</welcome-file>
+    <welcome-file>homepage.jsp</welcome-file>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
@@ -41,8 +41,8 @@
     <auth-method>FORM</auth-method>
     <realm-name>userMgmtJdbcRealm</realm-name>
     <form-login-config>
-      <form-login-page>/WEB-INF/login.jsp</form-login-page>
-      <form-error-page>/WEB-INF/login.jsp?auth-error=1</form-error-page>
+      <form-login-page>/login/login.jsp</form-login-page>
+      <form-error-page>/login/login.jsp?auth-error=1</form-error-page>
     </form-login-config>
   </login-config>
   

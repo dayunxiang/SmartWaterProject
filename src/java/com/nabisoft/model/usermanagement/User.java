@@ -70,6 +70,9 @@ public class User implements Serializable {
      */
     @Column(nullable=false, length=128) //sha-512 + hex
     private String password;
+    
+    @Column(nullable=false, length=128)
+    private String utilityKey;
       
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     @Column(nullable=false)
@@ -106,6 +109,7 @@ public class User implements Serializable {
         this.secretQ = user.getSecretQ();
         this.secretR = user.getSecretR();
         this.password     = DigestUtils.sha512Hex(user.getPassword1() );
+        this.utilityKey = user.getUtilityKey();
         this.registeredOn = new Date();
     }
  

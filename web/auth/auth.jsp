@@ -9,7 +9,7 @@
   
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="./css/auth.css" />
+    <link rel="stylesheet" type="text/css" href="../css/formStyle.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Welcome Page</title>
      
@@ -35,41 +35,54 @@
             var errorMsg = "";
             var isBlank = false;
             //check nome
-            if(this.fname.value == "") {
+            document.getElementById("fname_div").setAttribute("style", "color: black");
+            if(this.fname.value == "" || this.fname.value == null) {
                 document.getElementById("fname_div").setAttribute("style", "color: red");
                 isBlank = true;
             }
             
             //check cognome
-            if(this.lname.value == "") {
+            document.getElementById("lname_div").setAttribute("style", "color: black");
+            if(this.lname.value == "" || this.lname.value == null) {
                 document.getElementById("lname_div").setAttribute("style", "color: red");
                 isBlank = true;
             }
             
             //check password
-            if(this.password1.value == "") {
+            document.getElementById("password1_div").setAttribute("style", "color: black");
+            if(this.password1.value == "" || this.password1.value == null) {
                 document.getElementById("password1_div").setAttribute("style", "color: red");
                 isBlank = true;
             }
-            if(this.password2.value == "") {
+            document.getElementById("password2_div").setAttribute("style", "color: black");
+            if(this.password2.value == "" || this.password2.value == null) {
                 document.getElementById("password2_div").setAttribute("style", "color: red");
                 isBlank = true;
             }
             
-            if(this.password2.value!="" ||  this.password1.value != this.password2.value ){
+            if(this.password2.value!="" &&  this.password1.value != this.password2.value ){
                     errorMsg += "-Le password inserite devono essere uguali" + "\n";
                     this.password2.value ="";
                     document.getElementById("password2_div").setAttribute("style", "color: red");
                 }
             
+            //check utility key
+            document.getElementById("utilityKey_div").setAttribute("style", "color: black");
+            if(this.utilityKey.value == "" || this.utilityKey.value == null) {
+                document.getElementById("utilityKey_div").setAttribute("style", "color: red");
+                isBlank = true;
+            }
+            
             //check place
-            if(this.place.value == "") {
+            document.getElementById("place_div").setAttribute("style", "color: black");
+            if(this.place.value == "" || this.place.value == null) {
                 document.getElementById("place_div").setAttribute("style", "color: red");
                 isBlank = true;
             }
             
             //check birth date
-            if (this.birth.value == "") {
+            document.getElementById("birth_div").setAttribute("style", "color: black");
+            if (this.birth.value == "" || this.birth.value == null) {
                  document.getElementById("birth_div").setAttribute("style", "color: red");
                  isBlank = true;
              }                     
@@ -92,13 +105,15 @@
             } 
             
             //check via
-            if(this.way.value == "") {
+            document.getElementById("way_div").setAttribute("style", "color: black");
+            if(this.way.value == "" || this.way.value == null) {
                 document.getElementById("way_div").setAttribute("style", "color: red");
                 isBlank = true;
             }
             
             //check Codice fiscale
-            if(this.codFiscale.value == "") {
+            document.getElementById("codFiscale_div").setAttribute("style", "color: black");
+            if(this.codFiscale.value == "" || this.codFiscale.vaue == null) {
                 document.getElementById("codFiscale_div").setAttribute("style", "color: red");
                 isBlank = true;
             }
@@ -112,44 +127,49 @@
             }
             
             //check cellulare
-            if(this.cellular.value == "") {
+            document.getElementById("cellular_div").setAttribute("style", "color: black");
+            if(this.cellular.value == "" || this.cellular.value == null) {
                 document.getElementById("cellular_div").setAttribute("style", "color: red");
                 isBlank = true;
             }
             
             //check azienda
-            if(this.company.value == "") {
+            document.getElementById("company_div").setAttribute("style", "color: black");
+            if(this.company.value == "" || this.company.value == null) {
                 document.getElementById("company_div").setAttribute("style", "color: red");
                 isBlank = true;
             }
             
             //check ruolo
-            if(this.job.value == "") {
+            document.getElementById("job_div").setAttribute("style", "color: black");
+            if(this.job.value == "" || this.job.value == null) {
                 document.getElementById("job_div").setAttribute("style", "color: red");
                 isBlank = true;
             }
             
             //check domanda segreta
-            if(this.secretQ.value == "") {
+            document.getElementById("secretQ_div").setAttribute("style", "color: black");
+            if(this.secretQ.value == "" || this.secretQ.value == null) {
                 document.getElementById("secretQ_div").setAttribute("style", "color: red");
                 isBlank = true;
             }
             
             //check risposta segreta
-            if(this.secretR.value == "") {
+            document.getElementById("secretR_div").setAttribute("style", "color: black");
+            if(this.secretR.value == "" || this.secretR.value == null) {
                 document.getElementById("secretR_div").setAttribute("style", "color: red");
                 isBlank = true;
             }
             
             //check email
-            if(this.email.value == ""){
+            document.getElementById("email_div").setAttribute("style", "color: black");
+            if(this.email.value == "" || this.email.value == null){
                 document.getElementById("email_div").setAttribute("style", "color: red");
                 isBlank = true;
             }
             //if(this.email.value != "" && !emailFormat(this.email.value)){
             //    errorMsg += "Email inserita in un formato errato\n";
             //}
-            
             
             
             if(errorMsg == "" && !isBlank) {
@@ -207,7 +227,8 @@
                     company: this.company.value,
                     job: this.job.value,
                     secretQ: this.secretQ.value,
-                    secretR: this.secretR.value
+                    secretR: this.secretR.value,
+                    utilityKey: this.utilityKey.value
                 }; 
                 
                 var destinationUrl = this.action;
@@ -251,44 +272,6 @@
                 //event.preventDefault();
                 return false;
             });
-             
-            $(document.forms['loginForm']).submit(function(event){
-                 
-                var data = {
-                    email: this.email.value,
-                    password: this.password.value
-                }; 
-                var destinationUrl = this.action;
-                     
-                $.ajax({
-                    url: destinationUrl,
-                    type: "POST",
-                    data: data,
-                    cache: false,
-                    dataType: "json",
-                         
-                    success: function (data, textStatus, jqXHR){
-                        //alert("success");
-                        if (data.status == "SUCCESS" ){
-                            //redirect to secured page
-                            window.location.replace("https://"+window.location.host+"<%=request.getContextPath() %>/secure/index.jsp");
-                        }else{
-                            alert("failed");
-                        }
-                    },
-                         
-                    error: function (jqXHR, textStatus, errorThrown){
-                        alert("error - HTTP STATUS: "+jqXHR.status);
-                    },
-                         
-                    complete: function(jqXHR, textStatus){
-                        //alert("complete");
-                    }                    
-                });
-                 
-                //event.preventDefault();
-                return false;
-            });
         });
     </script>
      
@@ -296,7 +279,7 @@
   <body>
     
     <h1>Welcome to our secured Web Application</h1>
-    <a href="<%=request.getContextPath() %>/secure/index.jsp" >go to secured page</a>
+    <a href="<%=request.getContextPath() %>/homepage.jsp" >go to homepage</a>
     <br/><br/><br/>
       
     <div class="register">
@@ -324,6 +307,10 @@
           <div id="password2_div">
             <label for="password2">Conferma Password</label> 
             <input type="password" id="password2" name="password2"/>
+          </div>
+          <div id="utilityKey_div">
+            <label for="utilityKey">Inserisci la chiave dell'Utility</label> 
+            <input type="text" id="utilityKey" name="utilityKey"/>
           </div>
           <div id="place_div">
             <label for="place">Luogo di nascita</label> 
@@ -365,31 +352,7 @@
           </div>
           
           <div class="buttonRow">
-            <input type="submit" value="Register and Login" />
-          </div>
-            
-        </fieldset>
-      </form> 
-    </div>
-       
-    <br/><br/><br/>
-     
-    <div class="login">
-      <form id="loginForm" name="loginForm" action="<%=request.getContextPath() %>/services/auth/login" method="post">
-        <fieldset>
-          <legend>Login</legend>
-              
-          <div>
-            <label for="email">Email</label> 
-            <input type="text" id="email" name="email"/>
-          </div>
-          <div>
-            <label for="password">Password</label> 
-            <input type="password" id="password" name="password"/>
-          </div>
-              
-          <div class="buttonRow">
-            <input type="submit" value="Login" />
+            <input type="submit" value="Register" />
           </div>
             
         </fieldset>

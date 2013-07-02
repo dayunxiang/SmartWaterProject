@@ -30,7 +30,7 @@
                         //alert("success");
                         if (data.status == "SUCCESS" ){
                             //redirect to welcome page
-                            window.location.replace("https://"+window.location.host+"<%=request.getContextPath() %>/welcome.jsp");
+                            window.location.replace("https://"+window.location.host+"<%=request.getContextPath() %>/login/login.jsp");
                         }else{
                             alert("failed");
                         }

@@ -2,6 +2,7 @@
 .register{
   font-family: Arial,sans-serif;
   font-size: 13px;
+  width: 500px;
 }
   
 .login fieldset,
