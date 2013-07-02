@@ -31,7 +31,7 @@
         
         function check(){        
             var dateFormat = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
-            var emailFormat = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            var emailFormat = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             var errorMsg = "";
             var isBlank = false;
             //check nome
@@ -61,7 +61,7 @@
             }
             
             if(this.password2.value!="" &&  this.password1.value != this.password2.value ){
-                    errorMsg += "-Le password inserite devono essere uguali" + "\n";
+                    errorMsg += "- Le password inserite devono essere uguali<br>";
                     this.password2.value ="";
                     document.getElementById("password2_div").setAttribute("style", "color: red");
                 }
@@ -89,17 +89,17 @@
              if(this.birth.value != '') {
               if(regs = this.birth.value.match(dateFormat)) {
                 if(regs[1] < 1 || regs[1] > 31) {
-                    errorMsg += "-Valore non corretto per il giorno: " + regs[1] + "\n";
+                    errorMsg += "- Valore non corretto per il giorno: " + regs[1] + "<br>";
                     document.getElementById("birth_div").setAttribute("style", "color: red");
                 } else if(regs[2] < 1 || regs[2] > 12) {
-                    errorMsg += "-Valore non corretto per il mese: " + regs[2] + "\n";
+                    errorMsg += "- Valore non corretto per il mese: " + regs[2] + "<br>";
                     document.getElementById("birth_div").setAttribute("style", "color: red");
                  } else if(regs[3] < minYear || regs[3] > maxYear) {
-                    errorMsg += "-Valore non corretto per l'anno: " + regs[3] + " - Deve essere compreso tra " + minYear + " e " + maxYear + "\n";
+                    errorMsg += "- Valore non corretto per l'anno: " + regs[3] + " - Deve essere compreso tra " + minYear + " e " + maxYear + "<br>";
                     document.getElementById("birth_div").setAttribute("style", "color: red");
                 }
               } else {
-                errorMsg += "-Formato Data di nascita non corretto\n";                    
+                errorMsg += "- Formato Data di nascita non corretto<br>";                    
                 document.getElementById("birth_div").setAttribute("style", "color: red");
               }
             } 
@@ -167,9 +167,10 @@
                 document.getElementById("email_div").setAttribute("style", "color: red");
                 isBlank = true;
             }
-            //if(this.email.value != "" && !emailFormat(this.email.value)){
-            //    errorMsg += "Email inserita in un formato errato\n";
-            //}
+            if(this.email.value != "" && !emailFormat.test(this.email.value)){
+                    errorMsg += "- Email inserita in un formato errato<br>";
+                    document.getElementById("email_div").setAttribute("style", "color: red");
+            }
             
             
             if(errorMsg == "" && !isBlank) {
@@ -177,7 +178,7 @@
             }
             else {
                 if(isBlank) {
-                    errorMsg += "\n" + "- Inserire i campi mancanti";
+                    errorMsg += "- Inserire i campi mancanti";
                 }
                 document.getElementById("auth_error").innerHTML = errorMsg;
             }
@@ -279,7 +280,7 @@
   <body>
     
     <h1>Welcome to our secured Web Application</h1>
-    <a href="<%=request.getContextPath() %>/homepage.jsp" >go to homepage</a>
+    <a href="<%=request.getContextPath() %>/" >go to homepage</a>
     <br/><br/><br/>
       
     <div class="register">
