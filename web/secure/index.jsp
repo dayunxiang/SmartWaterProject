@@ -5,29 +5,42 @@
   
 <html>
   <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8; initial-scale=1.0; user-scalable=no">
+        <style>
+            html, body, #map-canvas {
+            margin: 5px;
+            padding: 0;
+            height: 100%;
+            }
+        </style>
         <title>Secured JSP Page</title>
          
         <!-- see https://github.com/douglascrockford/JSON-js -->
         <script src="<%=request.getContextPath() %>/js/json2.js" type="text/javascript"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() %>/file/geoxml3.js"></script>
+
          
         <%@ include file="/WEB-INF/includes/head/jquery.jsp" %>
-        <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=true" type="text/javascript">
-        </script>
-
-        <script type="text/javascript">
-        //<![CDATA[
-            var map;
-            function initialize() {
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
+    <script>
+        var map;
+        function initialize() {
+            var myLatLng = new google.maps.LatLng(49.496675, -102.65625);
             var mapOptions = {
-                zoom: 8,
-                center: new google.maps.LatLng(-34.397, 150.644),
+                zoom: 4,
+                center: myLatLng,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-            map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
-            }
-        //]]>
-        </script>
+
+            var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+            
+            var myParser = new geoXML3.parser({map: map});
+            myParser.parse("<%=request.getContextPath() %>/file/MappaIdrica.kml");
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>    
         <script type="text/javascript">
         $(function(){
             "use strict";
@@ -63,39 +76,7 @@
                 return false;
             });
         });
-         
-        $(function(){
-           $("#getTimeStampButton").click(function(){
-               $.ajax({
-                   url: "<%=request.getContextPath() %>/services/secure/timestamp/now",
-                   type: "GET",
-                   cache: false,
-                   dataType: "json",
-                        
-                   success: function (data, textStatus, jqXHR){
-                       //alert("success");
-                       if (data.status == "SUCCESS" ){
-                           $("#timeStampContent").html("Timestamp: "+data.data);
-                       }else{
-                           alert("failed");
-                       }
-                   },
-                        
-                   error: function (jqXHR, textStatus, errorThrown){
-                       //alert("error - HTTP STATUS: "+jqXHR.status);
-                       if (textStatus == "parsererror"){
-                           alert("You session has timed out");
-                           //forward to welcomde page
-                           window.location.replace("https://"+window.location.host+"<%=request.getContextPath() %>/welcome.jsp");
-                       }
-                   },
-                        
-                   complete: function(jqXHR, textStatus){
-                       //alert("complete");
-                   }                    
-               });
-           }); 
-        });
+                  
         </script>
          
   </head>
@@ -103,31 +84,8 @@
     <h1>You are logged in.</h1>
     <a id="logoutLink" href="<%=request.getContextPath() %>/services/auth/logout" >logout</a>
     <br/><br/>
-    <button id="getTimeStampButton">Get Server Time</button>
      
-    <br/><br/>
-    <div id="timeStampContent"></div>
-    <%
-      
-    Principal p = request.getUserPrincipal();
-    out.write("<br/><br/>");
-    if (p == null){
-        //if you get here the something is really wrong, because
-        //you can only see that page if you have been authenticated 
-        //and therefore there is a principal available
-        out.write("<div>Principal = NULL</div>");
-    }else{
-        out.write("<div>Principal.getName()                 = "+p.getName()+"</div>");
-        out.write("<div>request.getRemoteUser()             = "+request.getRemoteUser()+"</div>");
-        out.write("<div>request.getAuthType()               = "+request.getAuthType()+"</div>");
-        out.write("<div>request.isUserInRole(ADMINISTRATOR) = "+request.isUserInRole("ADMINISTRATOR") +"</div>");
-        out.write("<div>request.isUserInRole(USER)          = "+request.isUserInRole("USER") +"</div>");
-        out.write("<div>request.isUserInRole(DEFAULT)       = "+request.isUserInRole("DEFAULT") +"</div>");
-        out.write("<div>request.isUserInRole(CUSTOMER)      = "+request.isUserInRole("CUSTOMER") +"</div>");
-    }
-          
-    %>
-    <div id="map-canvas">
-    </div>
+    <div id="path_kml"></div>
+    <div id="map-canvas"></div>
   </body>
 </html>
