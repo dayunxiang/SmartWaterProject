@@ -8,16 +8,18 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8; initial-scale=1.0; user-scalable=no">
         <style>
             html, body, #map-canvas {
-            margin: 5px;
+            position: relative;
+            margin-bottom: 10%;
             padding: 0;
-            height: 100%;
+            height: 80%;
+            width: 80%;
             }
         </style>
         <title>Secured JSP Page</title>
          
         <!-- see https://github.com/douglascrockford/JSON-js -->
         <script src="<%=request.getContextPath() %>/js/json2.js" type="text/javascript"></script>
-        <script type="text/javascript" src="<%=request.getContextPath() %>/file/geoxml3.js"></script>
+        <script src="<%=request.getContextPath() %>/js/geoxml3.js" type="text/javascript"></script>
 
          
         <%@ include file="/WEB-INF/includes/head/jquery.jsp" %>
@@ -29,7 +31,7 @@
             var mapOptions = {
                 zoom: 4,
                 center: myLatLng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                mapTypeId: google.maps.MapTypeId.HYBRID
             };
 
             var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
@@ -37,7 +39,7 @@
             var myParser = new geoXML3.parser({map: map});
             myParser.parse("<%=request.getContextPath() %>/file/MappaIdrica.kml");
         }
-
+        
         google.maps.event.addDomListener(window, 'load', initialize);
 
     </script>    
@@ -86,6 +88,6 @@
     <br/><br/>
      
     <div id="path_kml"></div>
-    <div id="map-canvas"></div>
+    <div id="map-canvas" style="height: 100%"></div>
   </body>
 </html>
