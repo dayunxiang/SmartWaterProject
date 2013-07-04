@@ -8,6 +8,9 @@
         <color>73FF0000</color>
         <width>6</width>
       </LineStyle>
+      <BalloonStyle>
+        <displayMode>hide</displayMode>
+      </BalloonStyle>
     </Style>
     <Style id="noiseStyle1">
       <IconStyle> <Icon> <href>http://labs.google.com/ridefinder/images/mm_20_blue.png</href> </Icon></IconStyle>
