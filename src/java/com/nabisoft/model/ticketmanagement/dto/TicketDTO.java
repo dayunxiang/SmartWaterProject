@@ -1,8 +1,8 @@
 package com.nabisoft.model.ticketmanagement.dto;
 
 public class TicketDTO {
-    private String company;
     private String id;
+    private String company;
     private String stato;
     private String info;
     

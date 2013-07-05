@@ -1,6 +1,5 @@
 package com.nabisoft.service.ticketmanagement;
 
- 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -22,96 +21,95 @@ import com.nabisoft.model.ticketmanagement.dto.TicketDTO;
 import com.nabisoft.model.usermanagement.User;
 import com.nabisoft.model.usermanagement.UserBean;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 @Path("/ticket")
 @Produces(MediaType.TEXT_PLAIN)
 @Stateless
-public class TicketManagementService {        
-    private int id = 0;
+public class TicketManagementService {
 
- @EJB
+    @EJB
     private TicketBean ticketBean;
- @EJB
+    @EJB
     private UserBean userBean;
- 
- 
- @GET
+
+    @GET
     @Path("ping")
     public String ping() {
         return "alive";
     }
- 
- 
- @POST
+
+    @GET
     @Path("newticket")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response newTicket(TicketDTO newTicket, @Context HttpServletRequest req) {
- 
-        req.getServletContext().log("Creato ticket");
-     
+    @TransactionAttribute(TransactionAttributeType.NEVER)
+    public Response newticket(@Context HttpServletRequest req) {
+        Date date = new Date();
+        
+        TicketDTO newTicket = new TicketDTO();
+
         JsonResponse json = new JsonResponse();
         json.setData(newTicket); //just return the date we received
-        
+
         Principal principal = req.getUserPrincipal();
         //only login if not already logged in...
-        if(principal == null){
-                json.setStatus("FAILED");
-                json.setErrorMsg("Authentication failed");
-                return Response.ok().entity(json).build();
-            }
- 
+        if (principal == null) {
+            json.setStatus("FAILED");
+            json.setErrorMsg("Authentication failed");
+            return Response.ok().entity(json).build();
+        }
+
         //set the Company name
         User user = userBean.find(principal.getName());
         newTicket.setCompany(user.getCompany());
-        
+
         //set the id
-        newTicket.setId("" + this.id);
+        newTicket.setId("" + date.getTime());
         //increment the id for the next ticket
-        this.id++;
         
+        newTicket.setInfo("attivo");
+        newTicket.setStato("attivo");
+
         req.getServletContext().log("ticket creato" + newTicket);
-        
+
         json.setData(newTicket); //just return the date we received
- 
+
         Ticket ticket = new Ticket(newTicket);
- 
-        
+
+
         //this could cause a runtime exception, i.e. in case the user already exists
         //such exceptions will be caught by our ExceptionMapper, i.e. javax.transaction.RollbackException
         ticketBean.save(ticket); // this would use the clients transaction which is committed after save() has finished
         json.setStatus("SUCCESS");
 
         req.getServletContext().log("successfully added new ticket: '" + newTicket.getCompany() + "':'" + newTicket.getId() + "'");
-         
+
         return Response.ok().entity(json).build();
     }
- 
- @GET
+
+    @GET
     @Path("list")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response list(@Context HttpServletRequest req) {
- 
+
         JsonResponse json = new JsonResponse();
-        
+
         Principal principal = req.getUserPrincipal();
-        if(principal == null){
+        if (principal == null) {
             json.setStatus("FAILED");
             json.setErrorMsg("User not logged");
             return Response.ok().entity(json).build();
         }
- 
+
         User user = userBean.find(principal.getName());
-        
+
         List<Ticket> list = ticketBean.findAll(user.getCompany());
-        
+
         json.setData(list);
-        
-        json.setStatus("SUCCESS");        
-            
+
+        json.setStatus("SUCCESS");
+
         return Response.ok().entity(json).build();
     }
-    
 }
