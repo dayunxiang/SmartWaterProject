@@ -102,7 +102,7 @@ public class UserManagementService {
     @Consumes(MediaType.APPLICATION_JSON)
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public Response register(UserDTO newUser, @Context HttpServletRequest req) {
- 
+        
         JsonResponse json = new JsonResponse();
         json.setData(newUser); //just return the date we received
  

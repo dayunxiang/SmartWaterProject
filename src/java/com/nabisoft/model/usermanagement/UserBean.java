@@ -13,7 +13,7 @@ public class UserBean {
     private EntityManager em;
      
     public List<User> findAll() {
-        TypedQuery<User> query = em.createQuery("SELECT usr FROM User ORDER BY usr.registeredOn ASC", User.class);
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u ORDER BY u.registeredOn ASC", User.class);
         return query.getResultList();
     }
   
@@ -41,6 +41,7 @@ public class UserBean {
     public User find(String email) {
         return em.find(User.class, email);
     }
+      
      
     public void detach(User user) {
         em.detach(user);
