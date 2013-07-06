@@ -1,11 +1,20 @@
-package com.nabisoft.service.ticketmanagement;
+package com.nabisoft.service.MeasureManagementService;
 
+import com.nabisoft.json.JsonResponse;
+import com.nabisoft.model.measuremanagement.Measure;
+import com.nabisoft.model.measuremanagement.MeasureBean;
+import com.nabisoft.model.measuremanagement.dto.MeasureDTO;
+import com.nabisoft.model.usermanagement.User;
+import com.nabisoft.model.usermanagement.UserBean;
+import java.security.Principal;
+import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -14,24 +23,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.nabisoft.json.JsonResponse;
-import com.nabisoft.model.ticketmanagement.Ticket;
-import com.nabisoft.model.ticketmanagement.TicketBean;
-import com.nabisoft.model.ticketmanagement.dto.TicketDTO;
-import com.nabisoft.model.usermanagement.User;
-import com.nabisoft.model.usermanagement.UserBean;
-import java.security.Principal;
-import java.util.Date;
-import java.util.List;
-import javax.ws.rs.FormParam;
-
-@Path("/ticket")
+@Path("/measure")
 @Produces(MediaType.TEXT_PLAIN)
 @Stateless
-public class TicketManagementService {
+public class MeasureManagementService {
 
     @EJB
-    private TicketBean ticketBean;
+    private MeasureBean measureBean;
     @EJB
     private UserBean userBean;
 
@@ -41,18 +39,20 @@ public class TicketManagementService {
         return "alive";
     }
 
+    
+    //Only for test --- new measure is added by other thread
     @POST
-    @Path("newticket")
+    @Path("newmeasure")
     @Produces(MediaType.APPLICATION_JSON)
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public Response newticket(@FormParam("noiselogger") String noiselogger,
                               @Context HttpServletRequest req) {
         Date date = new Date();
         
-        TicketDTO newTicket = new TicketDTO();
+        MeasureDTO newMeasure = new MeasureDTO();
 
         JsonResponse json = new JsonResponse();
-        json.setData(newTicket); //just return the date we received
+        json.setData(newMeasure); //just return the date we received
 
         Principal principal = req.getUserPrincipal();
         //only login if not already logged in...
@@ -64,31 +64,31 @@ public class TicketManagementService {
 
         //set the Company name
         User user = userBean.find(principal.getName());
-        newTicket.setCompany(user.getCompany());
+        newMeasure.setCompany(user.getCompany());
 
         //set the id
-        newTicket.setId("" + date.getTime());
+        newMeasure.setId("" + date.getTime());
         
         //set the noise logger id
-        newTicket.setNoiselogger(noiselogger);
+        newMeasure.setNoiselogger(noiselogger);
         
-        //retrive state and info from kml
-        newTicket.setInfo("attivo");
-        newTicket.setStato("attivo");
+        newMeasure.setTimestamp("2013-07-10");
+        newMeasure.setValue("20%");
+        newMeasure.setBattery("80%");
 
-        req.getServletContext().log("ticket creato" + newTicket);
+        req.getServletContext().log("rilevazione creata" + newMeasure);
 
-        json.setData(newTicket); //just return the date we received
+        json.setData(newMeasure); //just return the date we received
 
-        Ticket ticket = new Ticket(newTicket);
+        Measure measure = new Measure(newMeasure);
 
 
         //this could cause a runtime exception, i.e. in case the user already exists
         //such exceptions will be caught by our ExceptionMapper, i.e. javax.transaction.RollbackException
-        ticketBean.save(ticket); // this would use the clients transaction which is committed after save() has finished
+        measureBean.save(measure); // this would use the clients transaction which is committed after save() has finished
         json.setStatus("SUCCESS");
 
-        req.getServletContext().log("successfully added new ticket: '" + newTicket.getCompany() + "':'" + newTicket.getId() + "'");
+        req.getServletContext().log("successfully added new measure: '" + newMeasure.getCompany() + "':'" + newMeasure.getId() + "'");
 
         return Response.ok().entity(json).build();
     }
@@ -109,7 +109,7 @@ public class TicketManagementService {
 
         User user = userBean.find(principal.getName());
 
-        List<Ticket> list = ticketBean.findAll(user.getCompany());
+        List<Measure> list = measureBean.findAll(user.getCompany());
 
         json.setData(list);
 

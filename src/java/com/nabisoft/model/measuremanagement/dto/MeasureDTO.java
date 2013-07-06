@@ -1,11 +1,12 @@
-package com.nabisoft.model.ticketmanagement.dto;
+package com.nabisoft.model.measuremanagement.dto;
 
-public class TicketDTO {
+public class MeasureDTO {
     private String id;
     private String company;
     private String noiselogger;
-    private String stato;
-    private String info;
+    private String timestamp;
+    private String value;
+    private String battery;
     
     public String getCompany() {
         return company;
@@ -31,26 +32,33 @@ public class TicketDTO {
         this.noiselogger = noiselogger;
     }
  
-    public String getStato() {
-        return stato;
+    public String getTimestamp() {
+        return timestamp;
     }
  
-    public void setStato(String stato) {
-        this.stato = stato;
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
  
-    public String getInfo() {
-        return info;
+    public String getValue() {
+        return value;
     }
   
-    public void setInfo(String info) {
-        this.info = info;
+    public void setValue(String value) {
+        this.value = value;
+    }
+    
+    public String getBattery() {
+        return battery;
+    }
+  
+    public void setBattery(String battery) {
+        this.battery = battery;
     }
     
     @Override
     public String toString() {
         return "Ticket [company=" + company + ", id=" + id + "noise logger=" + noiselogger
-                + ", stato=" + stato + ", info=" + info + "]";
+                + ", timestamp=" + timestamp + ", value=" + value + ", battery" + battery + "]";
     }
-    
 }

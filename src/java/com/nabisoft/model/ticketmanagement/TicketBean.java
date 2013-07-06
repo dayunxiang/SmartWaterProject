@@ -14,7 +14,6 @@ public class TicketBean {
 
     public List<Ticket> findAll(String company) {
         TypedQuery<Ticket> query = em.createQuery("SELECT t FROM Ticket t WHERE t.company=:company  ORDER BY t.id ASC", Ticket.class);
-        //TypedQuery<Ticket> query = em.createQuery("SELECT t.id FROM Ticket t", Ticket.class);
         query.setParameter("company", company);
         return query.getResultList();
     }

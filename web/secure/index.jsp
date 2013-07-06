@@ -79,10 +79,13 @@
             $(function() {
                 "use strict";
                 $('#setNewTicket').click(function() {
-
+                    var data = {
+                        noiselogger: "1234567890"
+                    };
                     $.ajax({
                         url: "<%=request.getContextPath()%>/services/ticket/newticket",
-                        type: "GET",
+                        type: "POST",
+                        data: data,
                         cache: false,
                         dataType: "json",
                         success: function(data, textStatus, jqXHR) {
@@ -90,7 +93,6 @@
                             if (data.status == "SUCCESS") {
                                 //redirect to secured page
                                 $("#info").html("Ticket added");
-                                window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/secure/index.jsp");
                             } else {
                             }
                         },
@@ -123,6 +125,8 @@
         <div id="map-canvas" style="height: 100%"></div>
         <button id="setNewTicket">Set new ticket </button>
         <button id="getTicketsList" onclick='window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/ticket/ticket.jsp");'>Get list ticket</button>
+        <button id="measure" onclick='window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/measure/measure.jsp");'>Measure page</button>
+
         <div id="info"></div>
        
 

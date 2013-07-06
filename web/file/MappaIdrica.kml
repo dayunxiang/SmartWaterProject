@@ -21,9 +21,7 @@
             <BalloonStyle>
                 <bgColor>008a602b</bgColor>
                 <text><![CDATA[ $[name] <HR> $[description] 
-                    <div id="ex"></div>
-        <button id="setNewTicket" onclick"document.getElementById('ex').innerHTML('Eccolo')">Set new ticket </button>                  
-        <a href="http://www.google.com">Storico</a>
+                            <a href="http://www.google.com">Storico</a>
         ]]> </text>
             </BalloonStyle>
         </Style>
@@ -338,7 +336,11 @@
       <p>Timestamp last value: <b>2013-15-06 17:58</b><br>
       Value level: <b>20%</b><br>
       Status: <font color="green" <b>OK</b>
-      </p>      ]]></description>
+        <button id="setNewTicket" onclick="document.getElementById('ex').innerHTML('<div> funziona</div>');">Set new ticket </button>                  
+
+      </p> 
+                <div id="ex"></div>
+     ]]></description>
             <styleUrl>#noiseStyle1</styleUrl>
             <Point>
                 <coordinates>12.753721,38.173355,0.000000</coordinates>

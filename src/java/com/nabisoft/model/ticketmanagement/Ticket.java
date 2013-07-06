@@ -21,7 +21,10 @@ public class Ticket implements Serializable {
   
     @Column(nullable=false, length=128)
     private String company;
-      
+    
+    @Column(nullable=false, length=128)
+    private String noiselogger;
+    
     @Column(nullable=false, length=128)
     private String stato;
     
@@ -36,6 +39,7 @@ public class Ticket implements Serializable {
     public Ticket(TicketDTO ticket){
           this.id = ticket.getId();
           this.company = ticket.getCompany();
+          this.noiselogger = ticket.getNoiselogger();
           this.info = ticket.getInfo();
           this.stato = ticket.getStato();
     }
@@ -54,6 +58,14 @@ public class Ticket implements Serializable {
  
     public void setId(String id) {
         this.id = id;
+    }
+    
+    public String getNoiselogger() {
+        return noiselogger;
+    }
+ 
+    public void setNoiselogger(String noiselogger) {
+        this.noiselogger = noiselogger;
     }
  
     public String getStato() {
@@ -75,7 +87,7 @@ public class Ticket implements Serializable {
     
     @Override
     public String toString() {
-        return "Ticket [company=" + company + ", id=" + id
+        return "Ticket [company=" + company + ", id=" + id + "noise logger=" + noiselogger
                 + ", stato=" + stato + ", info=" + info + "]";
     }
 }

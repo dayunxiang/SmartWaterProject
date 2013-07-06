@@ -21,11 +21,18 @@
                 "use strict";
 
                 $(document.forms['loginForm']).submit(function(event) {
+                    
+//                    var data = {
+//                        email: this.email.value,
+//                        password: this.password.value
+//                    };
 
+                    //only for test --- to remove and delete comment above
                     var data = {
-                        email: this.email.value,
-                        password: this.password.value
+                        email: "pelldav@gmail.com",
+                        password: "davide"                   
                     };
+
                     var destinationUrl = this.action;
 
                     $.ajax({

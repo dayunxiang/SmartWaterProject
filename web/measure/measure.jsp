@@ -44,9 +44,9 @@
                 });
             });
             $(function() {
-                $("#getTicketsList").click(function() {
+                $("#getMeasureList").click(function() {
                     $.ajax({
-                        url: "<%=request.getContextPath()%>/services/ticket/list",
+                        url: "<%=request.getContextPath()%>/services/measure/list",
                         type: "GET",
                         cache: false,
                         dataType: "json",
@@ -58,9 +58,11 @@
                                         + '</td><td>'
                                         + 'Noise Logger'
                                         + '</td><td>'
-                                        + 'Stato'
+                                        + 'Timestamp'
                                         + '</td><td>'
-                                        + 'Info'
+                                        + 'Value'
+                                        + '</td><td>'
+                                        + 'Battery'
                                         + '</td></tr>';
 
                                 for (var key = 0, size = data.data.length; key < size; key++) {
@@ -69,12 +71,14 @@
                                             + '</td><td>'
                                             + data.data[key].noiselogger
                                             + '</td><td>'
-                                            + data.data[key].stato
+                                            + data.data[key].timestamp
                                             + '</td><td>'
-                                            + data.data[key].info
+                                            + data.data[key].value
+                                            + '</td><td>'
+                                            + data.data[key].battery
                                             + '</td></tr>';
                                 }
-                                $('#ticketsList').html(table);
+                                $('#measureList').html(table);
                             } else {
                                 alert("failed");
                             }
@@ -93,15 +97,56 @@
                     });
                 });
             });
+            $(function() {
+                "use strict";
+                $('#setNewMeasure').click(function() {
+                    var data = {
+                        noiselogger: "1234567890"
+                    };
+                    $.ajax({
+                        url: "<%=request.getContextPath()%>/services/measure/newmeasure",
+                        type: "POST",
+                        data: data,
+                        cache: false,
+                        dataType: "json",
+                        success: function(data, textStatus, jqXHR) {
+                            //alert("success");
+                            if (data.status == "SUCCESS") {
+                                //redirect to secured page
+                                $("#info").html("Measure added");
+                            } else {
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            //alert("error - HTTP STATUS: "+jqXHR.status);
+                            if (textStatus == "parsererror") {
+                                alert("You session has timed out");
+                                //forward to welcomde page
+                                window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/homepage.jsp");
+                            }
+                        },
+                        complete: function(jqXHR, textStatus) {
+                            //alert("complete");
+                        }
+
+                    });
+
+                    return false;
+                });
+            });
+
         </script>
 
     </head>
     <body>
         <h1>You are logged in.</h1>
         <a id="logoutLink" href="<%=request.getContextPath()%>/services/auth/logout" >logout</a>
-        <button id="getTicketsList">Get Ticket List</button>
+        <button id="getMeasureList">Get Measure List</button>
+        <button id="setNewMeasure">Set New Measure</button>
+
         <br/><br/>
-        <div id="ticketsList"></div>
+        <div id="measureList"></div>
+        <div id="info"></div>
 
     </body>
 
