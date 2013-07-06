@@ -21,7 +21,8 @@
             <BalloonStyle>
                 <bgColor>008a602b</bgColor>
                 <text><![CDATA[ $[name] <HR> $[description] 
-                            <a href="http://www.google.com">Storico</a>
+            <button id="setNewTicket" onclick="window.location.replace('https://' + window.location.host + '/AuthenticationDemo/ticket/newTicket.jsp');">Set new ticket </button>                  
+            <button id="getMeasure" onclick="window.location.replace('https://' + window.location.host + '/AuthenticationDemo/measure/measure.jsp');">Storico </button>                  
         ]]> </text>
             </BalloonStyle>
         </Style>
@@ -34,7 +35,6 @@
             <BalloonStyle>
                 <bgColor>008a602b</bgColor>
                 <text><![CDATA[ $[name] <HR> $[description]  
-        <a href="http://www.google.com">Storico</a>
         ]]> </text>
             </BalloonStyle>
         </Style>
@@ -47,7 +47,6 @@
             <BalloonStyle>
                 <bgColor>008a602b</bgColor>
                 <text><![CDATA[ $[name] <HR> $[description]  
-        <a href="http://www.google.com">Storico</a>
         ]]> </text>
             </BalloonStyle>
         </Style>
@@ -60,7 +59,6 @@
             <BalloonStyle>
                 <bgColor>008a602b</bgColor>
                 <text><![CDATA[ $[name] <HR> $[description]  
-        <a href="http://www.google.com">Storico</a>
         ]]> </text>
             </BalloonStyle>
         </Style>
@@ -332,14 +330,12 @@
         <Placemark>
             <name>Noise Logger Example</name>
             <description><![CDATA[
-      <h1>ZoneScan #ID</h1>
-      <p>Timestamp last value: <b>2013-15-06 17:58</b><br>
-      Value level: <b>20%</b><br>
-      Status: <font color="green" <b>OK</b>
-        <button id="setNewTicket" onclick="document.getElementById('ex').innerHTML('<div> funziona</div>');">Set new ticket </button>                  
+            <h1>ZoneScan #ID</h1>
+            <p>Timestamp last value: <b>2013-15-06 17:58</b><br>
+                Value level: <b>20%</b><br>
+                Status: <font color="green" <b>OK</b>
+            </p> 
 
-      </p> 
-                <div id="ex"></div>
      ]]></description>
             <styleUrl>#noiseStyle1</styleUrl>
             <Point>

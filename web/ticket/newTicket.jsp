@@ -6,15 +6,6 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8; initial-scale=1.0; user-scalable=no">
-        <style>
-            html, body, #map-canvas {
-                position: relative;
-                margin-bottom: 10%;
-                padding: 0;
-                height: 80%;
-                width: 80%;
-            }
-        </style>
         <title>Secured JSP Page</title>
 
         <!-- see https://github.com/douglascrockford/JSON-js -->
@@ -23,27 +14,6 @@
 
 
         <%@ include file="/WEB-INF/includes/head/jquery.jsp" %>
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
-        <script>
-            var map;
-            function initialize() {
-                var myLatLng = new google.maps.LatLng(49.496675, -102.65625);
-                var mapOptions = {
-                    zoom: 1,
-                    center: myLatLng,
-                    mapTypeId: google.maps.MapTypeId.HYBRID,
-                    streetViewControl: false
-                };
-
-                var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-
-                var myParser = new geoXML3.parser({map: map});
-                myParser.parse("<%=request.getContextPath()%>/file/MappaIdrica.kml");
-            }
-
-            google.maps.event.addDomListener(window, 'load', initialize);
-
-        </script>    
         <script type="text/javascript">
             $(function() {
                 "use strict";
@@ -78,7 +48,7 @@
             });
             $(function() {
                 "use strict";
-                $('#setNewTicket').click(function() {
+                $(document).ready( function(){
                     var data = {
                         noiselogger: "1234567890"
                     };
@@ -113,20 +83,16 @@
                     return false;
                 });
             });
-
         </script>
 
     </head>
-    <body>
+    <body id="body">
         <h1>You are logged in.</h1>
         <a id="logoutLink" href="<%=request.getContextPath()%>/services/auth/logout" >logout</a>
+        <a id="back" href="<%=request.getContextPath()%>/secure/index.jsp" >Go back</a>
+
         <br/><br/>
 
-        <div id="map-canvas" style="height: 100%"></div>
-        <button id="setNewTicket">Set new ticket </button>
-        <button id="getTicketsList" onclick='window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/ticket/ticket.jsp");'>Get list ticket</button>
-        <button id="measure" onclick='window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/measure/measure.jsp");'>Measure page</button>
-        <button id="test" onclick='window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/ticket/newTicket.jsp");'>Test</button>
         <div id="info"></div>
        
 

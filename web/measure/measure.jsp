@@ -44,10 +44,15 @@
                 });
             });
             $(function() {
-                $("#getMeasureList").click(function() {
+                "use strict";
+                $(document).ready( function(){
+                    var data = {
+                        noiselogger: "1234567890"
+                    };
                     $.ajax({
                         url: "<%=request.getContextPath()%>/services/measure/list",
-                        type: "GET",
+                        type: "POST",
+                        data: data,
                         cache: false,
                         dataType: "json",
                         success: function(data, textStatus, jqXHR) {
@@ -141,7 +146,7 @@
     <body>
         <h1>You are logged in.</h1>
         <a id="logoutLink" href="<%=request.getContextPath()%>/services/auth/logout" >logout</a>
-        <button id="getMeasureList">Get Measure List</button>
+        <a id="back" href="<%=request.getContextPath()%>/secure/index.jsp" >Go back</a>
         <button id="setNewMeasure">Set New Measure</button>
 
         <br/><br/>

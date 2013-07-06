@@ -12,9 +12,10 @@ public class MeasureBean {
     @PersistenceContext
     private EntityManager em;
 
-    public List<Measure> findAll(String company) {
-        TypedQuery<Measure> query = em.createQuery("SELECT m FROM Measure m WHERE m.company=:company  ORDER BY m.id ASC", Measure.class);
+    public List<Measure> findAll(String company, String noiselogger) {
+        TypedQuery<Measure> query = em.createQuery("SELECT m FROM Measure m WHERE m.company=:company AND m.noiselogger=:noiselogger ORDER BY m.id ASC", Measure.class);
         query.setParameter("company", company);
+        query.setParameter("noiselogger", noiselogger);
         return query.getResultList();
     }
 

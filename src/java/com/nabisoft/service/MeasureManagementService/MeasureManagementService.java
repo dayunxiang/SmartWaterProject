@@ -93,10 +93,11 @@ public class MeasureManagementService {
         return Response.ok().entity(json).build();
     }
 
-    @GET
+    @POST
     @Path("list")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response list(@Context HttpServletRequest req) {
+    public Response list(@FormParam("noiselogger") String noiselogger,
+            @Context HttpServletRequest req) {
 
         JsonResponse json = new JsonResponse();
 
@@ -109,7 +110,7 @@ public class MeasureManagementService {
 
         User user = userBean.find(principal.getName());
 
-        List<Measure> list = measureBean.findAll(user.getCompany());
+        List<Measure> list = measureBean.findAll(user.getCompany(), noiselogger);
 
         json.setData(list);
 
