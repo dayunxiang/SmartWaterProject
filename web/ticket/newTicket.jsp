@@ -15,6 +15,16 @@
 
         <%@ include file="/WEB-INF/includes/head/jquery.jsp" %>
         <script type="text/javascript">
+            function getUrlValue(VarSearch){
+                    var SearchString = window.location.search.substring(1);
+                    var VariableArray = SearchString.split('&');
+                    for(var i = 0; i < VariableArray.length; i++){
+                        var KeyValuePair = VariableArray[i].split('=');
+                        if(KeyValuePair[0] == VarSearch){
+                            return KeyValuePair[1];
+                        }
+                    }
+                }
             $(function() {
                 "use strict";
                 $('#logoutLink').click(function() {
@@ -50,7 +60,7 @@
                 "use strict";
                 $(document).ready( function(){
                     var data = {
-                        noiselogger: "1234567890"
+                        noiselogger: getUrlValue("nl")
                     };
                     $.ajax({
                         url: "<%=request.getContextPath()%>/services/ticket/newticket",
