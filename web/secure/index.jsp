@@ -248,7 +248,6 @@
         </div><!-- end header -->	
 
         <h1>You are logged in.</h1>
-        <a id="logoutLink" href="<%=request.getContextPath()%>/services/auth/logout" >logout</a>
         <br/><br/>
 
         <div id="map-canvas" style="height: 100%"></div>

@@ -1,5 +1,5 @@
 #!/bin/sh
-app_name="AuthenticationDemo" 
+app_name="SmartLeakDetection" 
 build_path="/Users/pelldav/University/Tesi/SmartWaterProject/"
 dist_path="/Users/pelldav/University/Tesi/SmartWaterProject/dist/"
 

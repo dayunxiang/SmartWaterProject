@@ -233,7 +233,6 @@
 </head>
 <body>
     <h1>Login Page</h1>
-    <a href="<%=request.getContextPath()%>/homepage.jsp" >go to homepage</a>
     <div class="login">
         <c:if test="false">
             <div class="authError">

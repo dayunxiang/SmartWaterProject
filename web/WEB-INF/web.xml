@@ -1,52 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://java.sun.com/xml/ns/javaee"
-         xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-         id="WebApp_ID" version="3.0">
-  <display-name>Authentication</display-name>
-  <welcome-file-list>
-    <welcome-file>homepage.jsp</welcome-file>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-  </welcome-file-list>
-  
-  <!-- Jersey REST -->
-  <servlet>
-    <servlet-name>ServletAdaptor</servlet-name>
-    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-     
-    <!-- this would allow us to get rid of @XmlRootElement -->
-    <!-- but since we use jersey-json we don't need this -->
-    <!-- 
+<web-app id="WebApp_ID" version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <display-name>Authentication</display-name>
+    <welcome-file-list>
+        <welcome-file>homepage.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.htm</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <!-- Jersey REST -->
+    <servlet>
+        <servlet-name>ServletAdaptor</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <!-- this would allow us to get rid of @XmlRootElement -->
+        <!-- but since we use jersey-json we don't need this -->
+        <!-- 
     <init-param>      
       <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
       <param-value>true</param-value>
     </init-param>
      -->
-     
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ServletAdaptor</servlet-name>
-    <url-pattern>/services/*</url-pattern>
-  </servlet-mapping>
-  
-  <listener>
-    <listener-class>com.nabisoft.web.listener.EventListener</listener-class>
-  </listener>
-  
-  <login-config>
-    <auth-method>FORM</auth-method>
-    <realm-name>userMgmtJdbcRealm</realm-name>
-    <form-login-config>
-      <form-login-page>/login/login.jsp</form-login-page>
-      <form-error-page>/login/login.jsp?auth-error=1</form-error-page>
-    </form-login-config>
-  </login-config>
-  
-  <!-- 
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletAdaptor</servlet-name>
+        <url-pattern>/services/*</url-pattern>
+    </servlet-mapping>
+    <listener>
+        <listener-class>com.smart_leak_detection.web.listener.EventListener</listener-class>
+    </listener>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>userMgmtJdbcRealm</realm-name>
+        <form-login-config>
+            <form-login-page>/login/login.jsp</form-login-page>
+            <form-error-page>/login/login.jsp?auth-error=1</form-error-page>
+        </form-login-config>
+    </login-config>
+    <!-- 
   you could also define a page that is displayed if
   glassfish determins that an authenticated user is not
   authorized to access a resource
@@ -55,51 +45,43 @@
     <location>/not-authorized.html</location>
   </error-page>
   -->
-   
-  <security-constraint>
-  
-    <!-- everything below /secure/* and /services/secure/* requires authentication -->
-    <web-resource-collection>
-      <web-resource-name>Secured Content</web-resource-name>
-      <url-pattern>/secure/*</url-pattern>
-      <url-pattern>/services/secure/*</url-pattern>
-    </web-resource-collection>
-      
-    <!-- only users with at least one of these roles are allowed to access the secured content -->
-    <auth-constraint>
-      <role-name>ADMINISTRATOR</role-name>
-      <role-name>USER</role-name>
-    </auth-constraint>
-  
-    <!-- we always want https! -->
-    <user-data-constraint>
-      <description>highest supported transport security level</description>
-      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-    </user-data-constraint>
-  
-  </security-constraint>
-  
-  <!-- declare the roles relevant for our webapp -->
-  <security-role>
-    <role-name>ADMINISTRATOR</role-name>
-  </security-role>
-  <security-role>
-    <role-name>USER</role-name>
-  </security-role>
-  <security-role>
-    <role-name>DEFAULT</role-name>
-  </security-role>
-   
-  <session-config>
-    <!-- on productive systems you might have another value for the timeout -->
-    <session-timeout>5</session-timeout>
-    <!-- 
+    <security-constraint>
+        <!-- everything below /secure/* and /services/secure/* requires authentication -->
+        <web-resource-collection>
+            <web-resource-name>Secured Content</web-resource-name>
+            <url-pattern>/secure/*</url-pattern>
+            <url-pattern>/services/secure/*</url-pattern>
+        </web-resource-collection>
+        <!-- only users with at least one of these roles are allowed to access the secured content -->
+        <auth-constraint>
+            <role-name>ADMINISTRATOR</role-name>
+            <role-name>USER</role-name>
+        </auth-constraint>
+        <!-- we always want https! -->
+        <user-data-constraint>
+            <description>highest supported transport security level</description>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <!-- declare the roles relevant for our webapp -->
+    <security-role>
+        <role-name>ADMINISTRATOR</role-name>
+    </security-role>
+    <security-role>
+        <role-name>USER</role-name>
+    </security-role>
+    <security-role>
+        <role-name>DEFAULT</role-name>
+    </security-role>
+    <session-config>
+        <!-- on productive systems you might have another value for the timeout -->
+        <session-timeout>5</session-timeout>
+        <!-- 
        we don't want to use the default name JSESSIONID because this 
        tells everyone (especially hackers) that our application is based on java 
     -->
-    <cookie-config>
-      <name>SESSIONID</name>
-    </cookie-config>
-  </session-config>
-  
+        <cookie-config>
+            <name>SESSIONID</name>
+        </cookie-config>
+    </session-config>
 </web-app>
