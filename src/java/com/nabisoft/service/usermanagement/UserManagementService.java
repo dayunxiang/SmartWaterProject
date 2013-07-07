@@ -154,8 +154,7 @@ public class UserManagementService {
 
         InternetAddress[] toAddress = new InternetAddress[to.length];
 
-        // To get the array of addresses
-        for (int i = 0; i < to.length; i++) {
+        for (int i = 0; i < to.length; i++) {        // To get the array of addresses
             toAddress[i] = new InternetAddress(to[i]);
         }
         System.out.println(Message.RecipientType.TO);
