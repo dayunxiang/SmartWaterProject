@@ -83,22 +83,23 @@
                 });
             });
         </script>
-                    
+
         <script type="text/javascript">
-            function getUrlValue(VarSearch){
-                    var SearchString = window.location.search.substring(1);
-                    var VariableArray = SearchString.split('&');
-                    for(var i = 0; i < VariableArray.length; i++){
-                        var KeyValuePair = VariableArray[i].split('=');
-                        if(KeyValuePair[0] == VarSearch){
-                            return KeyValuePair[1];
-                        }
+            function getUrlValue(VarSearch) {
+                var SearchString = window.location.search.substring(1);
+                var VariableArray = SearchString.split('&');
+                for (var i = 0; i < VariableArray.length; i++) {
+                    var KeyValuePair = VariableArray[i].split('=');
+                    if (KeyValuePair[0] == VarSearch) {
+                        return KeyValuePair[1];
                     }
                 }
+            }
             $(function() {
                 "use strict";
                 $('#sign').click(function() {
                     if ("<%=request.getUserPrincipal()%>" == "") {
+                        window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/auth/auth.jsp");
                         return false;
                     }
                     var destinationUrl = this.href;
@@ -130,7 +131,7 @@
             });
             $(function() {
                 "use strict";
-                $(document).ready( function(){
+                $(document).ready(function() {
                     var data = {
                         noiselogger: getUrlValue("nl")
                     };
@@ -161,7 +162,7 @@
                         }
 
                     });
-                    
+
                     return false;
                 });
             });
@@ -183,7 +184,7 @@
                             <a target="_self" href="<%=request.getContextPath()%>/homepage.jsp">Home</a>
                         </li>
                         <li class="" style="float:right; margin-right:3em;"><!-- for links with no dropdown -->
-                            <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sing-up</a>
+                            <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sign-up</a>
                         </li>
                         <!--                    <li style="border-right:0;">
                                                 <dl class="staticMenu">
@@ -220,12 +221,12 @@
                     </ul>             	
                 </div>
             </div>
-        <h1>You are logged in.</h1>
+            <h1>You are logged in.</h1>
 
-        <br/><br/>
+            <br/><br/>
 
-        <div id="info"></div>
-       
+            <div id="info"></div>
+
 
     </body>
 </html>

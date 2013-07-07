@@ -120,6 +120,7 @@
                 "use strict";
                 $('#sign').click(function() {
                     if ("<%=request.getUserPrincipal()%>" == "") {
+                        window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/auth/auth.jsp");
                         return false;
                     }
                     var destinationUrl = this.href;
@@ -206,7 +207,7 @@
                             <a target="_self" href="<%=request.getContextPath()%>/homepage.jsp">Home</a>
                         </li>
                         <li class="" style="float:right; margin-right:3em;"><!-- for links with no dropdown -->
-                            <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sing-up</a>
+                            <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sign-up</a>
                         </li>
                         <!--                    <li style="border-right:0;">
                                                 <dl class="staticMenu">

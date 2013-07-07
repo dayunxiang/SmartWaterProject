@@ -98,6 +98,7 @@
 
                 $('#sign').click(function() {
                     if (<%=request.getUserPrincipal()%> == null) {
+                        window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/auth/auth.jsp");
                         return false;
                     }
                     var destinationUrl = this.href;
@@ -219,7 +220,7 @@
 
                 //check Codice fiscale
                 document.getElementById("codFiscale_div").setAttribute("style", "color: black");
-                if (this.codFiscale.value == "" || this.codFiscale.vaue == null) {
+                if (this.codFiscale.value == "" || this.codFiscale.value == null) {
                     document.getElementById("codFiscale_div").setAttribute("style", "color: red");
                     isBlank = true;
                 }
@@ -318,6 +319,7 @@
                 "use strict";
 
                 $(document.forms['registerForm']).submit(function(event) {
+                    document.getElementById("auth_error").innerHTML = "";
                     check();
                     if (okCheck == true) {
                         var data = {
@@ -394,7 +396,7 @@
                         </li>
                         <!-- Using class="current" for the link of the current page -->
                         <li class="current" style="float:right; margin-right:3em;"><!-- for links with no dropdown -->
-                            <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sing-up</a>
+                            <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sign-up</a>
                         </li>
                         <!--                    <li style="border-right:0;">
                                                 <dl class="staticMenu">
