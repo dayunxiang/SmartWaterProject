@@ -7,7 +7,7 @@
     <!-- see step 2 below -->
     <jta-data-source>jdbc/auth</jta-data-source>
     <properties>
-      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
       <!-- logging -->
       <!-- log JPA Statements -->
       <property name="eclipselink.logging.level" value="FINE"/>

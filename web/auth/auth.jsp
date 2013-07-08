@@ -392,7 +392,7 @@
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/login/login.jsp">+You</a>
                         </li>
                         <li class="" style="float:left;">
-                            <a target="_self" href="<%=request.getContextPath()%>/homepage.jsp">Home</a>
+                        <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
                         </li>
                         <!-- Using class="current" for the link of the current page -->
                         <li class="current" style="float:right; margin-right:3em;"><!-- for links with no dropdown -->

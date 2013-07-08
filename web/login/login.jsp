@@ -186,7 +186,7 @@
                         <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/login/login.jsp">+You</a>
                     </li>
                     <li class="" style="float:left;">
-                        <a target="_self" href="<%=request.getContextPath()%>/homepage.jsp">Home</a>
+                        <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
                     </li>
                     <li class="" style="float:right; margin-right:3em;"><!-- for links with no dropdown -->
                         <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sign-up</a>

@@ -204,7 +204,7 @@
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/login/login.jsp">+You</a>
                         </li>
                         <li class="" style="float:left;">
-                            <a target="_self" href="<%=request.getContextPath()%>/homepage.jsp">Home</a>
+                        <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
                         </li>
                         <li class="" style="float:right; margin-right:3em;"><!-- for links with no dropdown -->
                             <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sign-up</a>
@@ -251,10 +251,6 @@
         <br/><br/>
 
         <div id="map-canvas" style="height: 100%"></div>
-        <button id="setNewTicket">Set new ticket </button>
-        <button id="getTicketsList" onclick='window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/ticket/ticket.jsp");'>Get list ticket</button>
-        <button id="measure" onclick='window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/measure/measure.jsp");'>Measure page</button>
-        <button id="test" onclick='window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/ticket/newTicket.jsp");'>Test</button>
         <div id="info"></div>
 
 
