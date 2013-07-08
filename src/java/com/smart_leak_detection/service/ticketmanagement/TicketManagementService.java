@@ -20,12 +20,15 @@ import com.smart_leak_detection.model.ticketmanagement.dto.TicketDTO;
 import com.smart_leak_detection.model.usermanagement.User;
 import com.smart_leak_detection.model.usermanagement.UserBean;
 import de.micromata.opengis.kml.v_2_2_0.Coordinate;
+import de.micromata.opengis.kml.v_2_2_0.Document;
+import de.micromata.opengis.kml.v_2_2_0.Feature;
 import de.micromata.opengis.kml.v_2_2_0.Kml;
 import de.micromata.opengis.kml.v_2_2_0.Placemark;
 import de.micromata.opengis.kml.v_2_2_0.Point;
 import java.io.File;
 import java.security.Principal;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import javax.mail.Message;
@@ -75,18 +78,22 @@ public class TicketManagementService {
         }
 
         //Retrive info for the noise logger selected
-        String path = "/Users/pelldav/University/Tesi/SmartWaterProject/web/file/MappaIdrica.kml";
-//        final Kml kml = Kml.unmarshal(new File(path));
-//        final Placemark placemark = (Placemark) kml.getFeature();
-//        Point point = (Point) placemark.getGeometry();
-//        List<Coordinate> coordinates = point.getCoordinates();
-//        for (Coordinate coordinate : coordinates) {
-//            req.getServletContext().log("Coordinate" + coordinate.getLatitude());
-//            req.getServletContext().log("Coordinate" + coordinate.getLongitude());
-//            req.getServletContext().log("Coordinate" + coordinate.getAltitude());
-//            break;
-//        }
-
+        String path = "/Users/pelldav/University/Tesi/SmartWaterProject/web/file/Noise_loggers.kml";
+        Kml kml = Kml.unmarshal(new File(path));
+        Document document = (Document) kml.getFeature(); //Get the document features
+        Iterator<Feature> iterator = document.getFeature().iterator(); //Create an iterator for the placemark
+        Feature feature = null;
+        while (iterator.hasNext()) {
+            feature = iterator.next();
+            if (feature.getName().compareTo(noiselogger) == 0) {
+                break;
+            }
+        }
+        req.getServletContext().log("ECCOLOOOOOO: " + feature.getDescription());
+        String[] description = feature.getDescription().split("<br>");
+        String battery = description[1].split("<b>")[1].split("%")[0];
+        String status = description[2].split("<b>")[1].split("</b>")[0];
+        
         //set the Company name
         User user = userBean.find(principal.getName());
         newTicket.setCompany(user.getCompany());
@@ -98,7 +105,13 @@ public class TicketManagementService {
         newTicket.setNoiselogger(noiselogger);
 
         //retrive state and info from kml
-        newTicket.setInfo("attivo");
+        if(status.compareTo("OK") != 0 ){ // Error on network sensor
+                    newTicket.setInfo("Richiesta verifica rete noise loggers");
+        } else { // Low battery
+                    newTicket.setInfo("Richiesta sostituzione batteria - Livello: " + battery + "%");
+        }
+                
+        //set stato - initial state is always "attivo"
         newTicket.setStato("attivo");
 
         req.getServletContext().log("ticket creato" + newTicket);

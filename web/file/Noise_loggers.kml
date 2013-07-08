@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+    <Document>
+        <name>Mappa Idrica</name>
+        <description><![CDATA[]]></description>
+        <Style id="noiseStyle1">
+            <IconStyle> 
+                <Icon> 
+                    <href>http://labs.google.com/ridefinder/images/mm_20_blue.png</href> 
+                </Icon>
+            </IconStyle>
+            <BalloonStyle>
+                <bgColor>008a602b</bgColor>
+                <text><![CDATA[ $[name] <HR> $[description] 
+            <button id="setNewTicket" onclick="window.location.replace('https://' + window.location.host + '/SmartLeakDetection/ticket/newTicket.jsp?nl=$[name]');">Set new ticket </button>                  
+            <button id="getMeasure" onclick="window.location.replace('https://' + window.location.host + '/SmartLeakDetection/measure/measure.jsp?nl=$[name]');">Storico </button>                  
+        ]]> </text>
+            </BalloonStyle>
+        </Style>
+        <Style id="noiseStyle2">
+            <IconStyle> 
+                <Icon> 
+                    <href>http://labs.google.com/ridefinder/images/mm_20_red.png</href> 
+                </Icon>
+            </IconStyle>
+            <BalloonStyle>
+                <bgColor>008a602b</bgColor>
+                <text><![CDATA[ $[name] <HR> $[description]  
+        ]]> </text>
+            </BalloonStyle>
+        </Style>
+        <Style id="noiseStyle3">
+            <IconStyle> 
+                <Icon> 
+                    <href>http://labs.google.com/ridefinder/images/mm_20_white.png</href> 
+                </Icon>
+            </IconStyle>
+            <BalloonStyle>
+                <bgColor>008a602b</bgColor>
+                <text><![CDATA[ $[name] <HR> $[description]  
+        ]]> </text>
+            </BalloonStyle>
+        </Style>
+        <Style id="noiseStyle4">
+            <IconStyle> 
+                <Icon> 
+                    <href>http://labs.google.com/ridefinder/images/mm_20_purple.png</href> 
+                </Icon>
+            </IconStyle>
+            <BalloonStyle>
+                <bgColor>008a602b</bgColor>
+                <text><![CDATA[ $[name] <HR> $[description]  
+        ]]> </text>
+            </BalloonStyle>
+        </Style>
+        <Placemark>
+            <name>Noise_Logger_Example1</name>
+            <description><![CDATA[
+            Timestamp last value: <b>2013-15-06 17:58</b><br>
+                Value level: <b>20%</b><br>
+                Status: <font color="green" <b>OK</b> 
+
+     ]]></description>
+            <styleUrl>#noiseStyle1</styleUrl>
+            <Point>
+                <coordinates>12.753721,38.173355,0.000000</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark>
+            <name>Noise_Logger_Example2</name>
+            <description><![CDATA[
+      Timestamp last value: <b>2013-15-06 17:58</b><br>
+      Value level: <b>20%</b><br>
+      Status: <font color="green" <b>OK</b>
+      ]]></description>
+            <styleUrl>#noiseStyle2</styleUrl>
+            <Point>
+                <coordinates>12.733448,38.177887,0.000000</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark>
+            <name>Noise_Logger_Example3</name>
+            <description><![CDATA[
+      Timestamp last value: <b>2013-15-06 17:58</b><br>
+      Value level: <b>20%</b><br>
+      Status: <font color="green" <b>OK</b>
+      ]]></description>
+            <styleUrl>#noiseStyle3</styleUrl>
+            <Point>
+                <coordinates>12.731861,38.177818,0.000000</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark>
+            <name>Noise_Logger_Example4</name>
+            <description><![CDATA[
+      Timestamp last value: <b>2013-15-06 17:58</b><br>
+      Value level: <b>20%</b><br>
+      Status: <font color="green" <b>OK</b>
+      ]]></description>
+            <styleUrl>#noiseStyle4</styleUrl>
+            <Point>
+                <coordinates>12.734779,38.177010,0.000000</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark>
+            <name>Noise_Logger_Example5</name>
+            <description><![CDATA[
+      Timestamp last value: <b>2013-15-06 17:58</b><br>
+      Value level: <b>20%</b><br>
+      Status: <font color="green" <b>OK</b>
+      ]]></description>
+            <styleUrl>#noiseStyle1</styleUrl>
+            <Point>
+                <coordinates>12.735288,38.173367,0.000000</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark>
+            <name>Noise_Logger_Example6</name>
+            <description><![CDATA[
+      Timestamp last value: <b>2013-15-06 17:58</b><br>
+      Value level: <b>20%</b><br>
+      Status: <font color="green" <b>OK</b>
+      ]]></description>
+            <styleUrl>#noiseStyle2</styleUrl>
+            <Point>
+                <coordinates>12.738549,38.173702,0.000000</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark>
+            <name>Noise_Logger_Example7</name>
+            <description><![CDATA[
+      Timestamp last value: <b>2013-15-06 17:58</b><br>
+      Value level: <b>20%</b><br>
+      Status: <font color="green" <b>OK</b>
+      ]]></description>
+            <styleUrl>#noiseStyle1</styleUrl>
+            <Point>
+                <coordinates>12.734258,38.172016,0.000000</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark>
+            <name>Noise_Logger_Example8</name>
+            <description><![CDATA[
+      Timestamp last value: <b>2013-15-06 17:58</b><br>
+      Value level: <b>20%</b><br>
+      Status: <font color="green" <b>OK</b>
+      ]]></description>
+            <styleUrl>#noiseStyle3</styleUrl>
+            <Point>
+                <coordinates>12.734950,38.167664,0.000000</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark>
+            <name>Noise_Logger_Example9</name>
+            <description><![CDATA[
+      Timestamp last value: <b>2013-15-06 17:58</b><br>
+      Value level: <b>20%</b><br>
+      Status: <font color="green" <b>OK</b>
+      ]]></description>
+            <styleUrl>#noiseStyle4</styleUrl>
+            <Point>
+                <coordinates>12.733277,38.167057,0.000000</coordinates>
+            </Point>
+        </Placemark>
+    </Document>
+</kml>

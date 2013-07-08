@@ -109,7 +109,8 @@
                 var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
                 var myParser = new geoXML3.parser({map: map});
-                myParser.parse("<%=request.getContextPath()%>/file/MappaIdrica.kml");
+                myParser.parse("<%=request.getContextPath()%>/file/Noise_loggers.kml");
+                myParser.parse("<%=request.getContextPath()%>/file/Pipe.kml");
             }
 
             google.maps.event.addDomListener(window, 'load', initialize);
@@ -204,7 +205,7 @@
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/login/login.jsp">+You</a>
                         </li>
                         <li class="" style="float:left;">
-                        <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
+                            <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
                         </li>
                         <li class="" style="float:right; margin-right:3em;"><!-- for links with no dropdown -->
                             <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sign-up</a>
