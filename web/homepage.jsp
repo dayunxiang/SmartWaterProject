@@ -67,9 +67,10 @@
                 "use strict";
                 $(document).ready(function() {
                     if (<%=request.getUserPrincipal()%> != null) {
-                            $('#sign-in').html("<%=request.getUserPrincipal()%>");
-                            $('#sign').html("Logout");
-                            $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
+                        $('#sign-in').html("<%=request.getUserPrincipal()%>");
+                        $('#sign').html("Logout");
+                        $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
+                        $('#ticket').attr("href", "<%=request.getContextPath()%>/ticket/ticket.jsp");
 
                     }
 
@@ -128,6 +129,9 @@
                     <!-- Using class="current" for the link of the current page -->
                     <li class="current" style="float:left;">
                         <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
+                    </li>
+                    <li class="" style="float:left;">
+                        <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Gestione Ticket</a>
                     </li>
                     <li class="" style="float:right; margin-right:3em;"><!-- for links with no dropdown -->
                         <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sign-up</a>

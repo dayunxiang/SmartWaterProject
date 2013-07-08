@@ -71,6 +71,8 @@
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign').html("Logout");
                         $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
+                        $('#ticket').attr("href", "<%=request.getContextPath()%>/ticket/ticket.jsp");
+                        $('#storico').attr("href", document.URL);
                     }
 
 
@@ -141,8 +143,6 @@
                             //alert("success");
                             if (data.status == "SUCCESS") {
                                 var table = '<tr><td>'
-                                        + 'ID'
-                                        + '</td><td>'
                                         + 'Noise Logger'
                                         + '</td><td>'
                                         + 'Timestamp'
@@ -154,8 +154,6 @@
 
                                 for (var key = 0, size = data.data.length; key < size; key++) {
                                     table += '<tr><td>'
-                                            + data.data[key].id
-                                            + '</td><td>'
                                             + data.data[key].noiselogger
                                             + '</td><td>'
                                             + data.data[key].timestamp
@@ -233,11 +231,17 @@
                 <div>
                     <ul class="mainMenu" >
                         <!-- Using class="current" for the link of the current page -->
-                        <li class="current" style="float:left;"><!-- for links with no dropdown -->
+                        <li class="" style="float:left;"><!-- for links with no dropdown -->
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/login/login.jsp">+You</a>
                         </li>
                         <li class="" style="float:left;">
-                            <a target="_self" href="<%=request.getContextPath()%>/homepage.jsp">Home</a>
+                            <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
+                        </li>
+                        <li class="" style="float:left;">
+                            <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Gestione Ticket</a>
+                        </li>
+                        <li class="current" style="float:left;">
+                            <a id="storico" target="_self">Storico Noise Logger</a>
                         </li>
                         <li class="" style="float:right; margin-right:3em;"><!-- for links with no dropdown -->
                             <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sign-up</a>
