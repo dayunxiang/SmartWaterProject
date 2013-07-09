@@ -1,5 +1,7 @@
 package com.smart_leak_detection.service.sensormanagementservice;
 
+import com.smart_leak_detection.data.protocol.Channel;
+import com.smart_leak_detection.data.protocol.Config;
 import com.smart_leak_detection.json.JsonResponse;
 import com.smart_leak_detection.model.measuremanagement.MeasureBean;
 import com.smart_leak_detection.model.usermanagement.UserBean;
@@ -30,6 +32,8 @@ public class SensorManagementService {
     @EJB
     private UserBean userBean;
     
+    Config config = new Config(8190);
+    Channel channel = new Channel(config);
     
     @GET
     @Path("ping")
@@ -61,7 +65,7 @@ public class SensorManagementService {
         int message = 0;
 
         req.getServletContext().log("Invio il messaggio");
-//        channels.sendData(message);
+        this.channel.sendData(message);
         req.getServletContext().log("Noise Loggers Attivati");
 
         json.setStatus("SUCCESS");
