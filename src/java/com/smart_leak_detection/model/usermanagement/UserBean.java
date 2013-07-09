@@ -1,5 +1,6 @@
 package com.smart_leak_detection.model.usermanagement;
   
+import java.security.Principal;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

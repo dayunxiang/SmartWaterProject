@@ -154,12 +154,12 @@
             });
             $(function() {
                 "use strict";
-                $('#setNewTicket').click(function() {
+                $('#activate').click(function() {
                     var data = {
                         noiselogger: "1234567890"
                     };
                     $.ajax({
-                        url: "<%=request.getContextPath()%>/services/ticket/newticket",
+                        url: "<%=request.getContextPath()%>/services/sensor/activate",
                         type: "POST",
                         data: data,
                         cache: false,
@@ -168,7 +168,7 @@
                             //alert("success");
                             if (data.status == "SUCCESS") {
                                 //redirect to secured page
-                                $("#info").html("Ticket added");
+                                $("#info").html("Maglia Attivata");
                             } else {
                             }
                         },
@@ -257,6 +257,7 @@
 
         <div id="map-canvas" style="height: 100%"></div>
         <div id="info"></div>
+        <button id="activate">Activate</button>
 
 
     </body>

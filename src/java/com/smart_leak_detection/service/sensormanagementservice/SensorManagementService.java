@@ -1,9 +1,13 @@
 package com.smart_leak_detection.service.sensormanagementservice;
 
+import com.smart_leak_detection.data.DataListener;
+import com.smart_leak_detection.data.ReceivingData;
 import com.smart_leak_detection.data.protocol.Channel;
 import com.smart_leak_detection.data.protocol.Config;
 import com.smart_leak_detection.json.JsonResponse;
+import com.smart_leak_detection.model.measuremanagement.Measure;
 import com.smart_leak_detection.model.measuremanagement.MeasureBean;
+import com.smart_leak_detection.model.sensormanagement.SensorBean;
 import com.smart_leak_detection.model.usermanagement.UserBean;
 import java.io.IOException;
 import java.security.Principal;
@@ -31,10 +35,9 @@ public class SensorManagementService {
     private MeasureBean measureBean;
     @EJB
     private UserBean userBean;
-    
-    Config config = new Config(8190);
-    Channel channel = new Channel(config);
-    
+    @EJB
+    private SensorBean sensorBean;
+
     @GET
     @Path("ping")
     public String ping() {
@@ -45,7 +48,7 @@ public class SensorManagementService {
     @Path("activate")
     @Produces(MediaType.APPLICATION_JSON)
     @TransactionAttribute(TransactionAttributeType.NEVER)
-    public Response newticket(@FormParam("noiselogger") String noiselogger,
+    public Response activate(@FormParam("noiselogger") String noiselogger,
             @Context HttpServletRequest req) throws IOException {
 
         JsonResponse json = new JsonResponse();
@@ -63,10 +66,6 @@ public class SensorManagementService {
 
         //Coding message
         int message = 0;
-
-        req.getServletContext().log("Invio il messaggio");
-        this.channel.sendData(message);
-        req.getServletContext().log("Noise Loggers Attivati");
 
         json.setStatus("SUCCESS");
 

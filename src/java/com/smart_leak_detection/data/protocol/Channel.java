@@ -15,7 +15,7 @@ public class Channel {
     public Channel( final Config c ) {
         this.config = c;
         try {
-            this.socket = createChannel( c.PORT, 0);
+            this.socket = createChannel( this.config.PORT, 0);
         }
         catch ( Exception x ) {
             System.out.println( "Exception in Channels constructor: " + x.getMessage() );
