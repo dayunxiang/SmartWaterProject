@@ -1,4 +1,4 @@
-package com.smart_leak_detection.service.MeasureManagementService;
+package com.smart_leak_detection.service.measuremanagementservice;
 
 import com.smart_leak_detection.json.JsonResponse;
 import com.smart_leak_detection.model.measuremanagement.Measure;
