@@ -10,10 +10,15 @@ import com.smart_leak_detection.model.sensormanagement.Sensor;
 import com.smart_leak_detection.model.sensormanagement.SensorBean;
 import com.smart_leak_detection.model.usermanagement.User;
 import com.smart_leak_detection.model.usermanagement.UserBean;
+import de.micromata.opengis.kml.v_2_2_0.Document;
+import de.micromata.opengis.kml.v_2_2_0.Feature;
+import de.micromata.opengis.kml.v_2_2_0.Kml;
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.Principal;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -35,8 +40,11 @@ public class ReceivingData extends Thread {
     private UserBean userBean;
     private Date date = new Date();
     private MeasureBean measureBean;
-    String firstNL, secondNL, thirdNL;
-    String valueF, valueS, valueT;
+    String firstNL = "Primo";
+    String secondNL = "Secondo";
+    String thirdNL = "Terzo";
+    int valueF, valueS, valueT;
+    boolean isStrict = false;
 
     public ReceivingData(Channel channel, Config config, MeasureBean measureBean, UserBean userBean) {
         this.channel = channel;
@@ -61,30 +69,53 @@ public class ReceivingData extends Thread {
 
                 //FIX-ME si deve fare la codifica del pacchetto ed estrarre i dati
                 String type = "Large";
-                String noiselogger = "";
-                String timestamp = "";
-                String value = "";
-                String battery = "";
-                String company = "Prova";
+                String noiselogger = "1111";
+                String timestamp = "11";
+                int value = 20;
+                String battery = "111";
+                String company = "CONSEL - Consorzio Elis";
 
-                if (type.compareTo("Large") == 0) {
-
-
+                if ( !this.isStrict && noiselogger.compareTo(this.firstNL) == 0) {
+                    //Leggo se è attiva solo la maglia larga ed i dati sono del primo NL
                     this.measure.setId("" + date.getTime());
                     this.measure.setNoiselogger(noiselogger);
                     this.measure.setTimestamp(timestamp);
                     this.measure.setBattery(battery);
-                    this.measure.setValue(value);
+                    this.measure.setValue("" + value);
                     this.measure.setCompany(company);
                     //save new measure
                     Measure m = new Measure(this.measure);
                     this.measureBean.save(m);
                     System.out.println("Measure SALVATO!");
 
-                    if (value.compareTo("0") != 0 && this.firstNL.compareTo("") == 0) { //Leak detected, save first value
-                        this.firstNL = noiselogger;
-                        this.valueF = value;
+                    String description = "<![CDATA[Timestamp last value: <b>"
+                            + timestamp
+                            + "</b><br>Value level: <b>"
+                            + value
+                            + "%</b><br>Status: <font color='green' <b>"
+                            + "OK</b><br>Battery: <b>"
+                            + battery
+                            + "</b>]]>";
+                    String path = "/Users/pelldav/University/Tesi/SmartWaterProject/web/file/Noise_loggers.kml";
+                    Kml kml = Kml.unmarshal(new File(path));
+                    Document document = (Document) kml.getFeature(); //Get the document features
+                    Iterator<Feature> iterator = document.getFeature().iterator(); //Create an iterator for the placemark
+                    Feature feature = null;
+                    while (iterator.hasNext()) {
+                        feature = iterator.next();
+                        if (feature.getName().compareTo(noiselogger) == 0) {
+                            break;
+                        }
+                    }
+                    feature.setDescription(description);
 
+                    if (value != 0 && this.firstNL.compareTo("") == 0) { //Leak detected, save first value
+                        this.firstNL = noiselogger;
+                        this.valueF = Integer.valueOf(value);
+
+                        //modify style kml to display leak                        
+                        feature.setStyleUrl("#noiseStyle2");
+                        //FIX-ME vedere di disegnare un cerchio sulla mappa centrato sul noise logger
                         //send email to all company users
                         String host = "smtp.gmail.com";
                         String from = "smart.leak.detection@gmail.com";
@@ -125,16 +156,21 @@ public class ReceivingData extends Thread {
                         transport.close();
 
                     }
-                    //FIX-ME aggiornare kml con nuovi dati del noise logger
-                } else {
+                } 
+                if(isStrict){
                     if (this.firstNL.compareTo(noiselogger) != 0 && this.secondNL.compareTo("") == 0) { //save second value
-                        this.secondNL = noiselogger;
                         this.valueS = value;
                     } else { //save third value
-                        this.thirdNL = noiselogger;
                         this.valueT = value;
 
-                        //FIX-ME trovare punto di perdita e mettere placemark kml
+                        //Elaborate data
+                        if (this.valueS > this.valueT) {
+                            //FIX-ME tratto tra il primo ed il secondo NL
+                        } else {
+                            //FIX-ME tratto tra primo e terzo NL
+                        }
+                        
+                        this.isStrict = false; //reset maglia fitta
                     }
                 }
 
@@ -147,5 +183,9 @@ public class ReceivingData extends Thread {
             Logger.getLogger(ReceivingData.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    
+    public void setStrict(){
+        this.isStrict = true;
     }
 }

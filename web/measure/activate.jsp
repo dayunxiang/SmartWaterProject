@@ -6,21 +6,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8; initial-scale=1.0; user-scalable=no">
-        <style>
-            html, body, #map-canvas {
-                position: relative;
-                margin-bottom: 10%;
-                padding: 0;
-                height: 80%;
-                width: 80%;
-            }
-        </style>
         <title>Secured JSP Page</title>
 
         <!-- see https://github.com/douglascrockford/JSON-js -->
         <script src="<%=request.getContextPath()%>/js/json2.js" type="text/javascript"></script>
         <script src="<%=request.getContextPath()%>/js/geoxml3.js" type="text/javascript"></script>
 
+
+        <%@ include file="/WEB-INF/includes/head/jquery.jsp" %>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
         <link href="<%=request.getContextPath()%>/css/top_menu.css" rel="stylesheet" type="text/css"/>
         <script type="text/javascript">
@@ -92,32 +85,17 @@
             });
         </script>
 
-
-
-        <%@ include file="/WEB-INF/includes/head/jquery.jsp" %>
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
-        <script>
-            var map;
-            function initialize() {
-                var myLatLng = new google.maps.LatLng(49.496675, -102.65625);
-                var mapOptions = {
-                    zoom: 1,
-                    center: myLatLng,
-                    mapTypeId: google.maps.MapTypeId.HYBRID,
-                    streetViewControl: false
-                };
-
-                var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-
-                var myParser = new geoXML3.parser({map: map});
-                myParser.parse("<%=request.getContextPath()%>/file/Noise_loggers.kml");
-                myParser.parse("<%=request.getContextPath()%>/file/Pipe.kml");
-            }
-
-            google.maps.event.addDomListener(window, 'load', initialize);
-
-        </script>    
         <script type="text/javascript">
+            function getUrlValue(VarSearch) {
+                var SearchString = window.location.search.substring(1);
+                var VariableArray = SearchString.split('&');
+                for (var i = 0; i < VariableArray.length; i++) {
+                    var KeyValuePair = VariableArray[i].split('=');
+                    if (KeyValuePair[0] == VarSearch) {
+                        return KeyValuePair[1];
+                    }
+                }
+            }
             $(function() {
                 "use strict";
                 $('#sign').click(function() {
@@ -154,9 +132,9 @@
             });
             $(function() {
                 "use strict";
-                $('#activate').click(function() {
+                $(document).ready(function() {
                     var data = {
-                        noiselogger: "1234567890"
+                        noiselogger: getUrlValue("nl")
                     };
                     $.ajax({
                         url: "<%=request.getContextPath()%>/services/auth/activate",
@@ -168,7 +146,7 @@
                             //alert("success");
                             if (data.status == "SUCCESS") {
                                 //redirect to secured page
-                                $("#info").html("Maglia Attivata");
+                                $("#info").html("Maglia fitta attivata");
                             } else {
                             }
                         },
@@ -189,12 +167,10 @@
                     return false;
                 });
             });
-
         </script>
 
     </head>
-
-    <body>
+    <body id="body">
         <div style="clear:both; margin-top:20px;">&nbsp;</div>
         <div id="header"><!-- begin header -->
 
@@ -202,10 +178,10 @@
                 <div>
                     <ul class="mainMenu" >
                         <!-- Using class="current" for the link of the current page -->
-                        <li class="" style="float:left;"><!-- for links with no dropdown -->
+                        <li class="current" style="float:left;"><!-- for links with no dropdown -->
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/login/login.jsp">+You</a>
                         </li>
-                        <li class="current" style="float:left;">
+                        <li class="" style="float:left;">
                             <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
                         </li>
                         <li class="" style="float:left;">
@@ -249,15 +225,11 @@
                     </ul>             	
                 </div>
             </div>
+            <h1>Attivazione maglia fitta</h1>
+
             <br/><br/>
-        </div><!-- end header -->	
 
-        <h1>You are logged in.</h1>
-        <br/><br/>
-
-        <div id="map-canvas" style="height: 100%"></div>
-        <div id="info"></div>
-        <button id="activate">Activate</button>
+            <div id="info"></div>
 
 
     </body>

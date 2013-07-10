@@ -28,6 +28,8 @@ import com.smart_leak_detection.model.usermanagement.Group;
 import com.smart_leak_detection.model.usermanagement.User;
 import com.smart_leak_detection.model.usermanagement.UserBean;
 import com.smart_leak_detection.model.usermanagement.dto.UserDTO;
+import java.io.IOException;
+import java.security.Principal;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -53,7 +55,7 @@ public class UserManagementService {
     @Path("ping")
     @Produces(MediaType.APPLICATION_JSON)
     public Response ping(@Context HttpServletRequest req) {
-        this.recConfig = new Config(11252);
+        this.recConfig = new Config(11254);
         this.recChannel = new Channel(recConfig);
         this.recThread = new ReceivingData(recChannel, recConfig, measureBean, userBean);
         recThread.start();
@@ -199,6 +201,31 @@ public class UserManagementService {
             json.setErrorMsg("User Account created, but login failed. Please try again later.");
             json.setStatus("FAILED"); //maybe some other status? you can choose...
         }
+
+        return Response.ok().entity(json).build();
+    }
+    
+    @POST
+    @Path("activate")
+    @Produces(MediaType.APPLICATION_JSON)
+    @TransactionAttribute(TransactionAttributeType.NEVER)
+    public Response activate(@FormParam("noiselogger") String noiselogger,
+            @Context HttpServletRequest req) throws IOException {
+
+        JsonResponse json = new JsonResponse();
+
+        Principal principal = req.getUserPrincipal();
+        //only login if not already logged in...
+        if (principal == null) {
+            json.setStatus("FAILED");
+            json.setErrorMsg("Authentication failed");
+            return Response.ok().entity(json).build();
+        }
+
+        //Attivo la lettura da parte del thread dei valori degli altri sensori
+        this.recThread.setStrict();
+
+        json.setStatus("SUCCESS");
 
         return Response.ok().entity(json).build();
     }
