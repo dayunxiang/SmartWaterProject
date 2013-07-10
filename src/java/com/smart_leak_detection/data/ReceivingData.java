@@ -108,6 +108,7 @@ public class ReceivingData extends Thread {
                         }
                     }
                     feature.setDescription(description);
+                    kml.marshal();
 
                     if (value != 0 && this.firstNL.compareTo("") == 0) { //Leak detected, save first value
                         this.firstNL = noiselogger;
