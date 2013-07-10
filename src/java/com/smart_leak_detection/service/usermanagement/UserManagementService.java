@@ -1,5 +1,8 @@
 package com.smart_leak_detection.service.usermanagement;
 
+import com.smart_leak_detection.data.ReceivingData;
+import com.smart_leak_detection.data.protocol.Channel;
+import com.smart_leak_detection.data.protocol.Config;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +23,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.smart_leak_detection.json.JsonResponse;
+import com.smart_leak_detection.model.measuremanagement.MeasureBean;
 import com.smart_leak_detection.model.usermanagement.Group;
 import com.smart_leak_detection.model.usermanagement.User;
 import com.smart_leak_detection.model.usermanagement.UserBean;
@@ -39,11 +43,26 @@ public class UserManagementService {
 
     @EJB
     private UserBean userBean;
+    @EJB
+    private MeasureBean measureBean;
+    Config recConfig;
+    Channel recChannel;
+    ReceivingData recThread;
 
     @GET
     @Path("ping")
-    public String ping() {
-        return "alive";
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response ping(@Context HttpServletRequest req) {
+        this.recConfig = new Config(11252);
+        this.recChannel = new Channel(recConfig);
+        this.recThread = new ReceivingData(recChannel, recConfig, measureBean, userBean);
+        recThread.start();
+
+        JsonResponse json = new JsonResponse();
+        json.setStatus("SUCCESS");
+        return Response.ok().entity(json).build();
+
+
     }
 
     @POST
@@ -170,7 +189,7 @@ public class UserManagementService {
         transport.close();
         req.getServletContext().log("Email sent to: '" + newUser.getEmail());
 
-        
+
         req.getServletContext().log("execute login now: '" + newUser.getEmail() + "':'" + newUser.getPassword1() + "'");
         try {
             req.login(newUser.getEmail(), newUser.getPassword1());

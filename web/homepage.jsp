@@ -73,6 +73,22 @@
                         $('#ticket').attr("href", "<%=request.getContextPath()%>/ticket/ticket.jsp");
 
                     }
+                    var destinationUrl = "<%=request.getContextPath()%>/services/auth/ping";
+
+                    $.ajax({
+                        url: destinationUrl,
+                        type: "GET",
+                        cache: false,
+                        dataType: "json",
+                        success: function(data, textStatus, jqXHR) {
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            $('#info').html("Servizio momentaneamente fuori servizio");
+                        },
+                        complete: function(jqXHR, textStatus) {
+                            //alert("complete");
+                        }
+                    });
 
 
                     return false;
@@ -176,6 +192,8 @@
 
     <body>
         <h1>Smart Leak Detection</h1>
+        <br><br><br>
+        <div id="info"></div>
 
     </body>
 </html>

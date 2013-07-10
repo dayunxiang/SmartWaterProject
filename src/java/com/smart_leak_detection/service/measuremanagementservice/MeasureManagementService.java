@@ -1,5 +1,8 @@
 package com.smart_leak_detection.service.measuremanagementservice;
 
+import com.smart_leak_detection.data.ReceivingData;
+import com.smart_leak_detection.data.protocol.Channel;
+import com.smart_leak_detection.data.protocol.Config;
 import com.smart_leak_detection.json.JsonResponse;
 import com.smart_leak_detection.model.measuremanagement.Measure;
 import com.smart_leak_detection.model.measuremanagement.MeasureBean;
@@ -32,23 +35,22 @@ public class MeasureManagementService {
     private MeasureBean measureBean;
     @EJB
     private UserBean userBean;
-
+    
     @GET
     @Path("ping")
     public String ping() {
         return "alive";
     }
 
-    
     //Only for test --- new measure is added by other thread
     @POST
     @Path("newmeasure")
     @Produces(MediaType.APPLICATION_JSON)
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public Response newticket(@FormParam("noiselogger") String noiselogger,
-                              @Context HttpServletRequest req) {
+            @Context HttpServletRequest req) {
         Date date = new Date();
-        
+
         MeasureDTO newMeasure = new MeasureDTO();
 
         JsonResponse json = new JsonResponse();
@@ -68,10 +70,10 @@ public class MeasureManagementService {
 
         //set the id
         newMeasure.setId("" + date.getTime());
-        
+
         //set the noise logger id
         newMeasure.setNoiselogger(noiselogger);
-        
+
         newMeasure.setTimestamp("2013-07-10");
         newMeasure.setValue("20%");
         newMeasure.setBattery("80%");
@@ -100,7 +102,7 @@ public class MeasureManagementService {
             @Context HttpServletRequest req) {
 
         JsonResponse json = new JsonResponse();
-
+        
         Principal principal = req.getUserPrincipal();
         if (principal == null) {
             json.setStatus("FAILED");
