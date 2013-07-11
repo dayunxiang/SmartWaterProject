@@ -1,0 +1,56 @@
+    <Style id="noiseStyle1">
+    <IconStyle> 
+        <Icon> 
+            <href>http://labs.google.com/ridefinder/images/mm_20_blue.png</href> 
+        </Icon>
+    </IconStyle>
+    <BalloonStyle>
+        <bgColor>008a602b</bgColor>
+        <text><![CDATA[ $[name] <HR> 
+                <div style="width:40px">
+                $[description] 
+            <button id="setNewTicket" onclick="window.location.replace('https://' + window.location.host + '/SmartLeakDetection/ticket/newTicket.jsp?nl=$[name]');">Set new ticket </button>                  
+            <button id="getMeasure" onclick="window.location.replace('https://' + window.location.host + '/SmartLeakDetection/measure/measure.jsp?nl=$[name]');">Storico </button>               
+            </div>   
+        ]]> </text>
+    </BalloonStyle>
+</Style>
+<Style id="noiseStyle2">
+    <IconStyle> 
+        <Icon> 
+            <href>http://labs.google.com/ridefinder/images/mm_20_red.png</href> 
+        </Icon>
+    </IconStyle>
+    <BalloonStyle>
+        <bgColor>008a602b</bgColor>
+        <text><![CDATA[ $[name] <HR> $[description] 
+                      <button id="activate" onclick="window.location.replace('https://' + window.location.host + '/SmartLeakDetection/measure/activate.jsp?nl=$[name]');">Set new ticket </button>                  
+                      <button id="getMeasure" onclick="window.location.replace('https://' + window.location.host + '/SmartLeakDetection/measure/measure.jsp?nl=$[name]');">Storico </button>                  
+ 
+        ]]> </text>
+    </BalloonStyle>
+</Style>
+<Style id="noiseStyle3">
+    <IconStyle> 
+        <Icon> 
+            <href>http://labs.google.com/ridefinder/images/mm_20_white.png</href> 
+        </Icon>
+    </IconStyle>
+    <BalloonStyle>
+        <bgColor>008a602b</bgColor>
+        <text><![CDATA[ $[name] <HR> $[description]  
+        ]]> </text>
+    </BalloonStyle>
+</Style>
+<Style id="noiseStyle4">
+    <IconStyle> 
+        <Icon> 
+            <href>http://labs.google.com/ridefinder/images/mm_20_purple.png</href> 
+        </Icon>
+    </IconStyle>
+    <BalloonStyle>
+        <bgColor>008a602b</bgColor>
+        <text><![CDATA[ $[name] <HR> $[description]  
+        ]]> </text>
+    </BalloonStyle>
+</Style>

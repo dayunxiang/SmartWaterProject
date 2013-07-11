@@ -55,7 +55,7 @@ public class UserManagementService {
     @Path("ping")
     @Produces(MediaType.APPLICATION_JSON)
     public Response ping(@Context HttpServletRequest req) {
-        this.recConfig = new Config(11299);
+        this.recConfig = new Config(11300);
         this.recChannel = new Channel(recConfig);
         this.recThread = new ReceivingData(recChannel, recConfig, measureBean, userBean);
         recThread.start();

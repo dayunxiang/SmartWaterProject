@@ -2,27 +2,20 @@ package com.smart_leak_detection.data;
 
 import com.smart_leak_detection.data.protocol.Channel;
 import com.smart_leak_detection.data.protocol.Config;
-import java.lang.Thread;
 import com.smart_leak_detection.model.measuremanagement.Measure;
 import com.smart_leak_detection.model.measuremanagement.MeasureBean;
 import com.smart_leak_detection.model.measuremanagement.dto.MeasureDTO;
-import com.smart_leak_detection.model.sensormanagement.Sensor;
-import com.smart_leak_detection.model.sensormanagement.SensorBean;
 import com.smart_leak_detection.model.usermanagement.User;
 import com.smart_leak_detection.model.usermanagement.UserBean;
+import de.micromata.opengis.kml.v_2_2_0.Coordinate;
 import de.micromata.opengis.kml.v_2_2_0.Document;
 import de.micromata.opengis.kml.v_2_2_0.Feature;
 import de.micromata.opengis.kml.v_2_2_0.Kml;
-import de.micromata.opengis.kml.v_2_2_0.KmlFactory;
 import de.micromata.opengis.kml.v_2_2_0.Placemark;
+import de.micromata.opengis.kml.v_2_2_0.Point;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.security.Principal;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -35,20 +28,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Context;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.sax.SAXSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
+
 
 public class ReceivingData extends Thread {
 
@@ -114,24 +94,31 @@ public class ReceivingData extends Thread {
                         + battery;
                 String path = "/Users/pelldav/University/Tesi/SmartWaterProject/web/file/Noise_loggers_copia.kml";
 
-                
+
                 Kml kml = Kml.unmarshal(new File(path));
                 Document document = (Document) kml.getFeature(); //Get the document features
 
                 Iterator<Feature> iterator = document.getFeature().iterator(); //Create an iterator for the placemark
                 Feature feature = null;
+                Placemark placemark = null;
+                double latitude = 0;
+                double longitude = 0;
                 while (iterator.hasNext()) {
                     feature = iterator.next();
-                    if (feature.getName().compareTo(noiselogger) == 0) {
-                        feature.setDescription(description);
-                        break;
+                    if (feature instanceof Placemark) {
+                        placemark = (Placemark) feature;
+                        if (placemark.getName().compareTo(noiselogger) == 0) {
+                            placemark.setDescription(description);
+                            Point point = (Point) placemark.getGeometry();
+                            List<Coordinate> coordinates = point.getCoordinates();
+                            for (Coordinate coordinate : coordinates) {
+                                latitude = coordinate.getLatitude();
+                                longitude = coordinate.getLongitude();
+                            }
+                            break;
+                        }
                     }
                 }
-
-                kml.marshal(new File(path + ".app"));
-                
-
-
 
                 if (value != 0 && this.firstNL.compareTo("") == 0) { //Leak detected, save first value
                     this.firstNL = noiselogger;
@@ -140,6 +127,7 @@ public class ReceivingData extends Thread {
                     //modify style kml to display leak                        
                     feature.setStyleUrl("#noiseStyle2");
                     //FIX-ME vedere di disegnare un cerchio sulla mappa centrato sul noise logger
+                    
                     //send email to all company users
                     String host = "smtp.gmail.com";
                     String from = "smart.leak.detection@gmail.com";
@@ -180,6 +168,8 @@ public class ReceivingData extends Thread {
                     transport.close();
 
                 }
+                kml.marshal(new File(path + ".app"));
+
 //                }
 //                if (isStrict) {
 //                    if (this.firstNL.compareTo(noiselogger) != 0 && this.secondNL.compareTo("") == 0) { //save second value
@@ -200,14 +190,12 @@ public class ReceivingData extends Thread {
 
 
             }
-        } 
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Exception: " + e.getMessage());
 
-        }
-        catch (MessagingException ex) {
+        } catch (MessagingException ex) {
             Logger.getLogger(ReceivingData.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
 
     }
 

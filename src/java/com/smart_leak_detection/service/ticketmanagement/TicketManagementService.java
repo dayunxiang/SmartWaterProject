@@ -90,9 +90,9 @@ public class TicketManagementService {
             }
         }
         req.getServletContext().log("ECCOLOOOOOO: " + feature.getDescription());
-        String[] description = feature.getDescription().split("<br>");
-        String battery = description[1].split("<b>")[1].split("%")[0];
-        String status = description[2].split("<b>")[1].split("</b>")[0];
+        String[] description = feature.getDescription().split(" ");
+        String battery = description[9].split("%")[0];
+        String status = description[11];
         
         //set the Company name
         User user = userBean.find(principal.getName());
