@@ -55,7 +55,7 @@ public class UserManagementService {
     @Path("ping")
     @Produces(MediaType.APPLICATION_JSON)
     public Response ping(@Context HttpServletRequest req) {
-        this.recConfig = new Config(11254);
+        this.recConfig = new Config(11299);
         this.recChannel = new Channel(recConfig);
         this.recThread = new ReceivingData(recChannel, recConfig, measureBean, userBean);
         recThread.start();
@@ -143,16 +143,18 @@ public class UserManagementService {
         }
 
         User user = new User(newUser);
-
         List<Group> groups = new ArrayList<Group>();
         groups.add(Group.ADMINISTRATOR);
         groups.add(Group.USER);
         groups.add(Group.DEFAULT);
+
+
         user.setGroups(groups);
+
 
         //this could cause a runtime exception, i.e. in case the user already exists
         //such exceptions will be caught by our ExceptionMapper, i.e. javax.transaction.RollbackException
-        userBean.save(user); // this would use the clients transaction which is committed after save() has finished
+        userBean.save(user);
         req.getServletContext().log("successfully registered new user: '" + newUser.getEmail() + "':'" + newUser.getPassword1() + "'");
 
         //Send email to user
@@ -204,7 +206,7 @@ public class UserManagementService {
 
         return Response.ok().entity(json).build();
     }
-    
+
     @POST
     @Path("activate")
     @Produces(MediaType.APPLICATION_JSON)

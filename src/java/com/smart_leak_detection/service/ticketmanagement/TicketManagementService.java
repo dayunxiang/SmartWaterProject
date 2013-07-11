@@ -123,8 +123,7 @@ public class TicketManagementService {
 
         //this could cause a runtime exception, i.e. in case the user already exists
         //such exceptions will be caught by our ExceptionMapper, i.e. javax.transaction.RollbackException
-        ticketBean.save(ticket); // this would use the clients transaction which is committed after save() has finished
-
+        ticketBean.save(ticket);
         //Send email to user
         String host = "smtp.gmail.com";
         String from = "smart.leak.detection@gmail.com";

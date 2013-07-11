@@ -28,9 +28,6 @@
     <listener>
         <listener-class>com.smart_leak_detection.web.listener.EventListener</listener-class>
     </listener>
-    <listener>
-        <listener-class>com.smart_leak_detection.data.DataListener</listener-class>
-    </listener>
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>userMgmtJdbcRealm</realm-name>
@@ -58,9 +55,8 @@
         <!-- only users with at least one of these roles are allowed to access the secured content -->
         <auth-constraint>
             <role-name>ADMINISTRATOR</role-name>
-            <role-name>USER</role-name>
         </auth-constraint>
-        <!-- we always want https! -->
+<!--         we always want https! -->
         <user-data-constraint>
             <description>highest supported transport security level</description>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
@@ -70,7 +66,7 @@
     <security-role>
         <role-name>ADMINISTRATOR</role-name>
     </security-role>
-    <security-role>
+   <security-role>
         <role-name>USER</role-name>
     </security-role>
     <security-role>

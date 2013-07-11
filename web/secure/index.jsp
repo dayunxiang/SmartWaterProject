@@ -109,8 +109,9 @@
 
                 var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
-                var myParser = new geoXML3.parser({map: map});
-                myParser.parse("<%=request.getContextPath()%>/file/Noise_loggers.kml");
+                var myParser = new geoXML3.parser({map: map, processStyles: true});
+                myParser.parse("<%=request.getContextPath()%>/file/Noise_loggers_copia.kml");
+                //myParser.parse("<%=request.getContextPath()%>/file/Noise_loggers_Style.kml");
                 myParser.parse("<%=request.getContextPath()%>/file/Pipe.kml");
             }
 

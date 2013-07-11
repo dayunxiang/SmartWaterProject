@@ -78,6 +78,7 @@ public class User implements Serializable {
     @Column(nullable=false)
     private Date registeredOn;
           
+     
     @ElementCollection(targetClass = Group.class)
     @CollectionTable(name = "USERS_GROUPS", 
                     joinColumns       = @JoinColumn(name = "email", nullable=false), 
@@ -85,7 +86,7 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name="groupname", length=64, nullable=false)
     private List<Group> groups;
-     
+    
     public User(){
          
     }
@@ -235,11 +236,11 @@ public class User implements Serializable {
     public void setGroups(List<Group> groups) {
         this.groups = groups;
     }
- 
+    
     @Override
     public String toString() {
         return "User [email=" + email + ", firstName=" + firstName
                 + ", lastName=" + lastName + ", password=" + password
-                + ", registeredOn=" + registeredOn + ", groups=" + groups + "]";
+                + ", registeredOn=" + registeredOn + "]";
     }
 }
