@@ -70,7 +70,7 @@
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign').html("Logout");
                         $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
-                        $('#ticket').attr("href", "<%=request.getContextPath()%>/ticket/ticket.jsp");
+                        $('#ticket').attr("href", "<%=request.getContextPath()%>/secure/ticket/ticket.jsp");
 
                     }
                     var destinationUrl = "<%=request.getContextPath()%>/services/auth/ping";

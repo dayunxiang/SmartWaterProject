@@ -71,157 +71,57 @@
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign').html("Logout");
                         $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
-                        $('#ticket').attr("href", "<%=request.getContextPath()%>/ticket/ticket.jsp");
-                        $('#storico').attr("href", document.URL);
+                        $('#ticket').attr("href", "<%=request.getContextPath()%>/secure/ticket/ticket.jsp");
                     }
+                        $.ajax({
+                            url: "<%=request.getContextPath()%>/services/ticket/list",
+                            type: "GET",
+                            cache: false,
+                            dataType: "json",
+                            success: function(data, textStatus, jqXHR) {
+                                //alert("success");
+                                if (data.status == "SUCCESS") {
+                                    var table = '<tr><td>'
+                                            + 'Noise Logger'
+                                            + '</td><td>'
+                                            + 'Stato'
+                                            + '</td><td>'
+                                            + 'Info'
+                                            + '</td></tr>';
 
+                                    for (var key = 0, size = data.data.length; key < size; key++) {
+                                        table += '<tr><td>'
+                                                + data.data[key].noiselogger
+                                                + '</td><td>'
+                                                + data.data[key].stato
+                                                + '</td><td>'
+                                                + data.data[key].info
+                                                + '</td></tr>';
+                                    }
+                                    $('#ticketsList').html(table);
+                                } else {
+                                    alert("failed");
+                                }
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                //alert("error - HTTP STATUS: "+jqXHR.status);
+                                if (textStatus == "parsererror") {
+                                    alert("You session has timed out");
+                                    //forward to welcomde page
+                                    window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/homepage.jsp");
+                                }
+                            },
+                            complete: function(jqXHR, textStatus) {
+                                //alert("complete");
+                            }
+                        });
+                    });
 
                     return false;
                 });
-            });
         </script>
 
         <title>JSP Page</title>
-        <script type="text/javascript">
-            function getUrlValue(VarSearch) {
-                var SearchString = window.location.search.substring(1);
-                var VariableArray = SearchString.split('&');
-                for (var i = 0; i < VariableArray.length; i++) {
-                    var KeyValuePair = VariableArray[i].split('=');
-                    if (KeyValuePair[0] == VarSearch) {
-                        return KeyValuePair[1];
-                    }
-                }
-            }
-            $(function() {
-                "use strict";
-                $('#sign').click(function() {
-                    if ("<%=request.getUserPrincipal()%>" == "") {
-                        window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/auth/auth.jsp");
-                        return false;
-                    }
-                    var destinationUrl = this.href;
-
-                    $.ajax({
-                        url: destinationUrl,
-                        type: "GET",
-                        cache: false,
-                        dataType: "json",
-                        success: function(data, textStatus, jqXHR) {
-                            //alert("success");
-                            if (data.status == "SUCCESS") {
-                                //redirect to welcome page
-                                window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/homepage.jsp");
-                            } else {
-                                alert("failed");
-                            }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            alert("error - HTTP STATUS: " + jqXHR.status);
-                        },
-                        complete: function(jqXHR, textStatus) {
-                            //alert("complete");
-                        }
-                    });
-
-                    return false;
-                });
-            });
-            $(function() {
-                "use strict";
-                $(document).ready(function() {
-                    var data = {
-                        noiselogger: getUrlValue("nl")
-                    };
-                    $.ajax({
-                        url: "<%=request.getContextPath()%>/services/measure/list",
-                        type: "POST",
-                        data: data,
-                        cache: false,
-                        dataType: "json",
-                        success: function(data, textStatus, jqXHR) {
-                            //alert("success");
-                            if (data.status == "SUCCESS") {
-                                var table = '<tr><td>'
-                                        + 'Noise Logger'
-                                        + '</td><td>'
-                                        + 'Timestamp'
-                                        + '</td><td>'
-                                        + 'Value'
-                                        + '</td><td>'
-                                        + 'Battery'
-                                        + '</td></tr>';
-
-                                for (var key = 0, size = data.data.length; key < size; key++) {
-                                    table += '<tr><td>'
-                                            + data.data[key].noiselogger
-                                            + '</td><td>'
-                                            + data.data[key].timestamp
-                                            + '</td><td>'
-                                            + data.data[key].value
-                                            + '</td><td>'
-                                            + data.data[key].battery
-                                            + '</td></tr>';
-                                }
-                                $('#measureList').html(table);
-                            } else {
-                                alert("failed");
-                            }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            //alert("error - HTTP STATUS: "+jqXHR.status);
-                            if (textStatus == "parsererror") {
-                                alert("You session has timed out");
-                                //forward to welcomde page
-                                window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/homepage.jsp");
-                            }
-                        },
-                        complete: function(jqXHR, textStatus) {
-                            //alert("complete");
-                        }
-                    });
-                });
-            });
-            $(function() {
-                "use strict";
-                $('#setNewMeasure').click(function() {
-                    var data = {
-                        noiselogger: getUrlValue("nl")
-                    };
-                    $.ajax({
-                        url: "<%=request.getContextPath()%>/services/measure/newmeasure",
-                        type: "POST",
-                        data: data,
-                        cache: false,
-                        dataType: "json",
-                        success: function(data, textStatus, jqXHR) {
-                            //alert("success");
-                            if (data.status == "SUCCESS") {
-                                //redirect to secured page
-                                $("#info").html("Measure added");
-                            } else {
-                            }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            //alert("error - HTTP STATUS: "+jqXHR.status);
-                            if (textStatus == "parsererror") {
-                                alert("You session has timed out");
-                                //forward to welcomde page
-                                window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/homepage.jsp");
-                            }
-                        },
-                        complete: function(jqXHR, textStatus) {
-                            //alert("complete");
-                        }
-
-                    });
-
-                    return false;
-                });
-            });
-
-        </script>
-
     </head>
     <body>
         <div style="clear:both; margin-top:20px;">&nbsp;</div>
@@ -237,11 +137,8 @@
                         <li class="" style="float:left;">
                             <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
                         </li>
-                        <li class="" style="float:left;">
-                            <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Gestione Ticket</a>
-                        </li>
                         <li class="current" style="float:left;">
-                            <a id="storico" target="_self">Storico Noise Logger</a>
+                            <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Gestione Ticket</a>
                         </li>
                         <li class="" style="float:right; margin-right:3em;"><!-- for links with no dropdown -->
                             <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sign-up</a>
@@ -281,12 +178,9 @@
                     </ul>             	
                 </div>
             </div>
-            <h1>You are logged in.</h1>
-            <button id="setNewMeasure">Set New Measure</button>
-
+            <h1>Ticket List.</h1>
             <br/><br/>
-            <div id="measureList"></div>
-            <div id="info"></div>
+            <div id="ticketsList"></div>
 
     </body>
 
