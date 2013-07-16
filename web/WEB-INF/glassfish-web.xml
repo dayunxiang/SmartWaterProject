@@ -21,4 +21,7 @@
       <description>Keep a copy of the generated servlet class' java code.</description>
     </property>
   </jsp-config>
+  <resource-ref>
+        <jndi-name>java:app/jdbc/sld</jndi-name>
+    </resource-ref>
 </glassfish-web-app>

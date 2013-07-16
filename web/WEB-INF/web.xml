@@ -14,11 +14,11 @@
         <!-- this would allow us to get rid of @XmlRootElement -->
         <!-- but since we use jersey-json we don't need this -->
         <!-- 
-    <init-param>      
-      <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
-      <param-value>true</param-value>
-    </init-param>
-     -->
+       <init-param>      
+         <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+         <param-value>true</param-value>
+       </init-param>
+        -->
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
@@ -30,21 +30,21 @@
     </listener>
     <login-config>
         <auth-method>FORM</auth-method>
-        <realm-name>userMgmtJdbcRealm</realm-name>
+        <realm-name>sldRealm</realm-name>
         <form-login-config>
             <form-login-page>/login/login.jsp</form-login-page>
             <form-error-page>/login/login.jsp?auth-error=1</form-error-page>
         </form-login-config>
     </login-config>
     <!-- 
-  you could also define a page that is displayed if
-  glassfish determins that an authenticated user is not
-  authorized to access a resource
-  <error-page>
-    <error-code>403</error-code>
-    <location>/not-authorized.html</location>
-  </error-page>
-  -->
+    you could also define a page that is displayed if
+    glassfish determins that an authenticated user is not
+    authorized to access a resource
+    <error-page>
+      <error-code>403</error-code>
+      <location>/not-authorized.html</location>
+    </error-page>
+    -->
     <security-constraint>
         <!-- everything below /secure/* and /services/secure/* requires authentication -->
         <web-resource-collection>
@@ -56,7 +56,7 @@
         <auth-constraint>
             <role-name>ADMINISTRATOR</role-name>
         </auth-constraint>
-<!--         we always want https! -->
+        <!--         we always want https! -->
         <user-data-constraint>
             <description>highest supported transport security level</description>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
@@ -66,7 +66,7 @@
     <security-role>
         <role-name>ADMINISTRATOR</role-name>
     </security-role>
-   <security-role>
+    <security-role>
         <role-name>USER</role-name>
     </security-role>
     <security-role>
@@ -76,11 +76,17 @@
         <!-- on productive systems you might have another value for the timeout -->
         <session-timeout>5</session-timeout>
         <!-- 
-       we don't want to use the default name JSESSIONID because this 
-       tells everyone (especially hackers) that our application is based on java 
-    -->
+           we don't want to use the default name JSESSIONID because this 
+           tells everyone (especially hackers) that our application is based on java 
+        -->
         <cookie-config>
             <name>SESSIONID</name>
         </cookie-config>
     </session-config>
+    <resource-ref>
+        <res-ref-name>mySQLpool</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <lookup-name>mySQLpool</lookup-name>
+    </resource-ref>
+       
 </web-app>

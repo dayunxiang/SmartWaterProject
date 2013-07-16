@@ -6,6 +6,29 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style type="text/css">
+            table {
+                width: 100%;
+                border: 1px solid #cef;
+                text-align: left; }
+            th {
+                font-weight: bold;
+                background-color: #acf;
+                border-bottom: 1px solid #cef; }
+            td,th {
+                padding: 4px 5px; }
+            .odd {
+                background-color: #def; }
+            .odd td {
+                border-bottom: 1px solid #cef; }  
+            #logo{
+                height: 30px;
+            }
+            #measureList{
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+        </style>
         <script src="<%=request.getContextPath()%>/js/json2.js" type="text/javascript"></script>
 
         <%@ include file="/WEB-INF/includes/head/jquery.jsp" %>
@@ -142,15 +165,6 @@
                         success: function(data, textStatus, jqXHR) {
                             //alert("success");
                             if (data.status == "SUCCESS") {
-                                var table = '<tr><td>'
-                                        + 'Noise Logger'
-                                        + '</td><td>'
-                                        + 'Timestamp'
-                                        + '</td><td>'
-                                        + 'Value'
-                                        + '</td><td>'
-                                        + 'Battery'
-                                        + '</td></tr>';
 
                                 for (var key = 0, size = data.data.length; key < size; key++) {
                                     table += '<tr><td>'
@@ -163,7 +177,7 @@
                                             + data.data[key].battery
                                             + '</td></tr>';
                                 }
-                                $('#measureList').html(table);
+                                $('#table_content').html(table);
                             } else {
                                 alert("failed");
                             }
@@ -231,6 +245,9 @@
                 <div>
                     <ul class="mainMenu" >
                         <!-- Using class="current" for the link of the current page -->
+                        <li class="" style="float:left;">
+                            <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
+                        </li>
                         <li class="" style="float:left;"><!-- for links with no dropdown -->
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/login/login.jsp">+You</a>
                         </li>
@@ -285,7 +302,15 @@
             <button id="setNewMeasure">Set New Measure</button>
 
             <br/><br/>
-            <div id="measureList"></div>
+            <div id="measureList">
+                <table id="MeasureTable">
+                    <thead>
+                        <tr><th>Noise Logger</th><th>Timestamp</th><th>Value</th><th>Battery</th></tr>
+                    </thead>
+                    <tbody id="table_content">
+
+                    </tbody>
+            </div>
             <div id="info"></div>
 
     </body>

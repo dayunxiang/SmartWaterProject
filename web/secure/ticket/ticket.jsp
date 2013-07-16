@@ -6,6 +6,33 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style type="text/css">
+            /*            table { margin: 1em; border-collapse: collapse; }
+                        td, th { padding: .3em; border: 1px #ccc solid; }
+                        thead { background: #fc9; }
+                        tbody { background: #9cf; }*/
+            table {
+                width: 100%;
+                border: 1px solid #cef;
+                text-align: left; }
+            th {
+                font-weight: bold;
+                background-color: #acf;
+                border-bottom: 1px solid #cef; }
+            td,th {
+                padding: 4px 5px; }
+            .odd {
+                background-color: #def; }
+            .odd td {
+                border-bottom: 1px solid #cef; }  
+            #logo{
+                height: 30px;
+            }
+            #ticketsList{
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+        </style>
         <script src="<%=request.getContextPath()%>/js/json2.js" type="text/javascript"></script>
 
         <%@ include file="/WEB-INF/includes/head/jquery.jsp" %>
@@ -73,52 +100,45 @@
                         $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
                         $('#ticket').attr("href", "<%=request.getContextPath()%>/secure/ticket/ticket.jsp");
                     }
-                        $.ajax({
-                            url: "<%=request.getContextPath()%>/services/ticket/list",
-                            type: "GET",
-                            cache: false,
-                            dataType: "json",
-                            success: function(data, textStatus, jqXHR) {
-                                //alert("success");
-                                if (data.status == "SUCCESS") {
-                                    var table = '<tr><td>'
-                                            + 'Noise Logger'
+                    $.ajax({
+                        url: "<%=request.getContextPath()%>/services/ticket/list",
+                        type: "GET",
+                        cache: false,
+                        dataType: "json",
+                        success: function(data, textStatus, jqXHR) {
+                            //alert("success");
+                            if (data.status == "SUCCESS") {
+
+                                for (var key = 0, size = data.data.length; key < size; key++) {
+                                    table += '<tr><td>'
+                                            + data.data[key].noiselogger
                                             + '</td><td>'
-                                            + 'Stato'
+                                            + data.data[key].stato
                                             + '</td><td>'
-                                            + 'Info'
+                                            + data.data[key].info
                                             + '</td></tr>';
-
-                                    for (var key = 0, size = data.data.length; key < size; key++) {
-                                        table += '<tr><td>'
-                                                + data.data[key].noiselogger
-                                                + '</td><td>'
-                                                + data.data[key].stato
-                                                + '</td><td>'
-                                                + data.data[key].info
-                                                + '</td></tr>';
-                                    }
-                                    $('#ticketsList').html(table);
-                                } else {
-                                    alert("failed");
                                 }
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                //alert("error - HTTP STATUS: "+jqXHR.status);
-                                if (textStatus == "parsererror") {
-                                    alert("You session has timed out");
-                                    //forward to welcomde page
-                                    window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/homepage.jsp");
-                                }
-                            },
-                            complete: function(jqXHR, textStatus) {
-                                //alert("complete");
+                                $('#table_content').html(table);
+                            } else {
+                                alert("failed");
                             }
-                        });
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            //alert("error - HTTP STATUS: "+jqXHR.status);
+                            if (textStatus == "parsererror") {
+                                alert("You session has timed out");
+                                //forward to welcomde page
+                                window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/homepage.jsp");
+                            }
+                        },
+                        complete: function(jqXHR, textStatus) {
+                            //alert("complete");
+                        }
                     });
-
-                    return false;
                 });
+
+                return false;
+            });
         </script>
 
         <title>JSP Page</title>
@@ -131,6 +151,9 @@
                 <div>
                     <ul class="mainMenu" >
                         <!-- Using class="current" for the link of the current page -->
+                        <li class="" style="float:left;">
+                            <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
+                        </li>
                         <li class="" style="float:left;"><!-- for links with no dropdown -->
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/login/login.jsp">+You</a>
                         </li>
@@ -180,7 +203,15 @@
             </div>
             <h1>Ticket List.</h1>
             <br/><br/>
-            <div id="ticketsList"></div>
+            <div id="ticketsList">
+                <table id="TicketTable">
+                    <thead>
+                        <tr><th>Noise Logger</th><th>Stato</th><th>Info</th></tr>
+                    </thead>
+                    <tbody id="table_content">
+
+                    </tbody>
+            </div>
 
     </body>
 

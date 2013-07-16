@@ -6,13 +6,20 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8; initial-scale=1.0; user-scalable=no">
-        <style>
-            html, body, #map-canvas {
-                position: relative;
-                margin-bottom: 10%;
-                padding: 0;
+                
+        <style type="text/css">
+            html, body {
+                height: 100%;
+            }
+            #map-canvas {
+                width: 100%;
                 height: 80%;
-                width: 80%;
+                border: 1px solid black;
+            }
+            .olPopup p { margin:0px; font-size: .9em;}
+            .olPopup h2 { font-size:1.2em; }
+            #logo{
+                height: 30px;
             }
         </style>
         <title>Secured JSP Page</title>
@@ -95,29 +102,81 @@
 
 
         <%@ include file="/WEB-INF/includes/head/jquery.jsp" %>
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
         <script>
-            var map;
             function initialize() {
                 var myLatLng = new google.maps.LatLng(49.496675, -102.65625);
                 var mapOptions = {
                     zoom: 1,
                     center: myLatLng,
                     mapTypeId: google.maps.MapTypeId.HYBRID,
-                    streetViewControl: false
+                    streetViewControl: true
                 };
+                // To delete ballon on pipe
+                var myKmlOptionsPipe = {
+//                    preserveViewport: true,
+                    suppressInfoWindows: true
+                }
 
                 var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+                var kmlLayer_1 = new google.maps.KmlLayer("http://caweb.elislab.elis.org/SmartWater/Noise_loggers_v4.kml");
+                var kmlLayer_2 = new google.maps.KmlLayer("http://caweb.elislab.elis.org/SmartWater/Pipe.kml", myKmlOptionsPipe);
+                //var kmlLayer_3 = new google.maps.KmlLayer("http://caweb.elislab.elis.org/SmartWater/Noise_loggers_Style_v3.kml");
 
-                var myParser = new geoXML3.parser({map: map, processStyles: true});
-                myParser.parse("<%=request.getContextPath()%>/file/Noise_loggers_copia.kml");
-                //myParser.parse("<%=request.getContextPath()%>/file/Noise_loggers_Style.kml");
-                myParser.parse("<%=request.getContextPath()%>/file/Pipe.kml");
+                kmlLayer_1.setMap(map);
+                kmlLayer_2.setMap(map);
+                //kmlLayer_3.setMap(map);
+
+                //                var myParser = new geoXML3.parser({map: map, processStyles: true});
+                //                myParser.parse("<%=request.getContextPath()%>/file/Noise_loggers_copia.kml");
+                //                myParser.parse("<%=request.getContextPath()%>/file/Noise_loggers_Style.kml");
+                //                myParser.parse("<%=request.getContextPath()%>/file/Pipe.kml");
+//                var nlLayer = new google.maps.KmlLayer({
+//                    url: 'http://caweb.elislab.elis.org/SmartWater/Noise_loggers_copia.kml',
+//                    map: map,
+//                    option: myKmlOption
+//                });
+//                var styleLayer = new google.maps.KmlLayer({
+//                    url: 'http://caweb.elislab.elis.org/SmartWater/Noise_loggers_Style.kml',
+//                    map: map,
+//                    option: myKmlOption
+//                });
+//                var pipeLayer = new google.maps.KmlLayer({
+//                    url: 'http://caweb.elislab.elis.org/SmartWater/Pipe.kml',
+//                    map: map,
+//                    option: myKmlOption
+//                });
+
             }
 
             google.maps.event.addDomListener(window, 'load', initialize);
 
         </script>    
+        <!--    <script src="http://openlayers.org/api/OpenLayers.js"></script>
+                <script type="text/javascript">
+                    var map, baseLayer;
+                    function init() {
+                        map = new OpenLayers.Map('map');
+        
+                        baseLayer = new OpenLayers.Layer.WMS("OpenLayers WMS", "http://labs.metacarta.com/wms/vmap0", {layers: "basic"});
+                        map.addLayer(baseLayer);
+        
+                        kml1 = new OpenLayers.Layer.Vector("KML", {
+                            strategies: [new OpenLayers.Strategy.Fixed()],
+                            protocol: new OpenLayers.Protocol.HTTP({
+                                url: "../file/Noise_loggers.kml",
+                                format: new OpenLayers.Format.KML({
+                                    extractStyles: true,
+                                    extractAttributes: true,
+                                    maxDepth: 2
+                                })
+                            })
+                        });
+                        map.addLayer(kml1);
+        
+                        map.zoomToMaxExtent();
+                    }
+                </script>-->
         <script type="text/javascript">
             $(function() {
                 "use strict";
@@ -203,6 +262,9 @@
                 <div>
                     <ul class="mainMenu" >
                         <!-- Using class="current" for the link of the current page -->
+                        <li class="" style="float:left;">
+                            <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
+                        </li>
                         <li class="" style="float:left;"><!-- for links with no dropdown -->
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/login/login.jsp">+You</a>
                         </li>
@@ -253,13 +315,14 @@
             <br/><br/>
         </div><!-- end header -->	
 
-        <h1>You are logged in.</h1>
+        <h1>Smart Leak Detection</h1>
+        <h4>by Smart Team</h4>
         <br/><br/>
 
         <div id="map-canvas" style="height: 100%"></div>
         <div id="info"></div>
         <button id="activate">Activate</button>
-
+        
 
     </body>
 </html>

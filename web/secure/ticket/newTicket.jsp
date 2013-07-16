@@ -6,6 +6,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8; initial-scale=1.0; user-scalable=no">
+        <style type="text/css">
+            #logo{
+                height: 30px;
+            }
+        </style>
         <title>Secured JSP Page</title>
 
         <!-- see https://github.com/douglascrockford/JSON-js -->
@@ -178,6 +183,9 @@
                 <div>
                     <ul class="mainMenu" >
                         <!-- Using class="current" for the link of the current page -->
+                        <li class="" style="float:left;">
+                            <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
+                        </li>
                         <li class="current" style="float:left;"><!-- for links with no dropdown -->
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/login/login.jsp">+You</a>
                         </li>

@@ -127,6 +127,8 @@ public class ReceivingData extends Thread {
                     //modify style kml to display leak                        
                     feature.setStyleUrl("#noiseStyle2");
                     //FIX-ME vedere di disegnare un cerchio sulla mappa centrato sul noise logger
+                    document.createAndAddPlacemark().createAndSetPolygon().createAndSetOuterBoundaryIs().createAndSetLinearRing().addToCoordinates(longitude + 0.001, latitude).addToCoordinates(longitude, latitude + 0.001).addToCoordinates(longitude - 0.001, latitude).addToCoordinates(longitude, latitude - 0.001);
+                    
                     
                     //send email to all company users
                     String host = "smtp.gmail.com";
