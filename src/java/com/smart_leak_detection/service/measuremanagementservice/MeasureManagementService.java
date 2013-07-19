@@ -51,6 +51,8 @@ public class MeasureManagementService {
             @Context HttpServletRequest req) {
         Date date = new Date();
 
+//        FIX-ME correggere il servizio perchè adesso oltre a salvare in measure deve salvare in mapsdata
+        
         MeasureDTO newMeasure = new MeasureDTO();
 
         JsonResponse json = new JsonResponse();
@@ -113,6 +115,7 @@ public class MeasureManagementService {
         User user = userBean.find(principal.getName());
 
         List<Measure> list = measureBean.findAll(user.getCompany(), noiselogger);
+        req.getServletContext().log("list: " + list);
 
         json.setData(list);
 

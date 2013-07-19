@@ -107,6 +107,7 @@
                         dataType: "json",
                         success: function(data, textStatus, jqXHR) {
                             //alert("success");
+                            var table;
                             if (data.status == "SUCCESS") {
 
                                 for (var key = 0, size = data.data.length; key < size; key++) {

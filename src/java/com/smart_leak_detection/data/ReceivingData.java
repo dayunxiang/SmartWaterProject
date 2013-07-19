@@ -2,6 +2,8 @@ package com.smart_leak_detection.data;
 
 import com.smart_leak_detection.data.protocol.Channel;
 import com.smart_leak_detection.data.protocol.Config;
+import com.smart_leak_detection.model.mapsmanagement.MapsData;
+import com.smart_leak_detection.model.mapsmanagement.MapsDataBean;
 import com.smart_leak_detection.model.measuremanagement.Measure;
 import com.smart_leak_detection.model.measuremanagement.MeasureBean;
 import com.smart_leak_detection.model.measuremanagement.dto.MeasureDTO;
@@ -15,7 +17,11 @@ import de.micromata.opengis.kml.v_2_2_0.Placemark;
 import de.micromata.opengis.kml.v_2_2_0.Point;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.net.URL;
 import java.nio.ByteBuffer;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -29,48 +35,51 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-
 public class ReceivingData extends Thread {
 
-    private Channel channel;
-    private Config config;
+//    private Channel channel;
+//    private Config config;
     private MeasureDTO measure = new MeasureDTO();
     private UserBean userBean;
     private Date date = new Date();
     private MeasureBean measureBean;
+    private MapsDataBean mapsDataBean;
+    private MeterData meterData;
+    private MapsData mapsData;
     String firstNL = "Noise_Logger_Example1";
     String secondNL = "Secondo";
     String thirdNL = "Terzo";
     int valueF, valueS, valueT;
     boolean isStrict = false;
 
-    public ReceivingData(Channel channel, Config config, MeasureBean measureBean, UserBean userBean) {
-        this.channel = channel;
-        this.config = config;
+    public ReceivingData(MeasureBean measureBean, UserBean userBean, MapsDataBean mapsDataBean) {
+//        this.channel = channel;
+//        this.config = config;
+        this.meterData = new MeterData();
         this.measureBean = measureBean;
         this.userBean = userBean;
-        System.out.println("Receiver AVVIATO receive port: " + config.PORT);
+        this.mapsDataBean = mapsDataBean;
         System.out.println("Receiver AVVIATO measure bean: " + this.measureBean);
 
     }
 
     @Override
     public void run() {
+        BigInteger data;
         System.out.println("Receiver IN ESECUZIONE");
         try {
-            ByteBuffer buf;
-
             //while (true) {
             System.out.println("Receiver IN ATTESA DI UN PACCHETTO");
             //buf = channel.receiveData();
+            //data = this.meterData.getData();
+            //
             System.out.println("Receiver DATI RICEVUTI");
 
-            //FIX-ME si deve fare la codifica del pacchetto ed estrarre i dati
-            String type = "Large";
+            //FIX-ME si deve separare il bigData per estrarre i file significativi
             String noiselogger = "Noise_Logger_Example1";
             String timestamp = "11";
             int value = 20;
-            String battery = "111";
+            int battery = 30;
             String company = "CONSEL - Consorzio Elis";
 
             if (!this.isStrict && noiselogger.compareTo(this.firstNL) == 0) {
@@ -78,7 +87,7 @@ public class ReceivingData extends Thread {
                 this.measure.setId("" + date.getTime());
                 this.measure.setNoiselogger(noiselogger);
                 this.measure.setTimestamp(timestamp);
-                this.measure.setBattery(battery);
+                this.measure.setBattery("" + battery);
                 this.measure.setValue("" + value);
                 this.measure.setCompany(company);
                 //save new measure
@@ -88,48 +97,57 @@ public class ReceivingData extends Thread {
 
                 String description = "Timestamp last value: "
                         + timestamp
-                        + "\nValue level:"
+                        + "Value level:"
                         + value
-                        + "\nStatus:OK \nBattery:"
+                        + "Status:OK Battery:"
                         + battery;
-                String path = "/Users/pelldav/University/Tesi/SmartWaterProject/web/file/Noise_loggers_copia.kml";
-
-
-                Kml kml = Kml.unmarshal(new File(path));
-                Document document = (Document) kml.getFeature(); //Get the document features
-
-                Iterator<Feature> iterator = document.getFeature().iterator(); //Create an iterator for the placemark
-                Feature feature = null;
-                Placemark placemark = null;
-                double latitude = 0;
-                double longitude = 0;
-                while (iterator.hasNext()) {
-                    feature = iterator.next();
-                    if (feature instanceof Placemark) {
-                        placemark = (Placemark) feature;
-                        if (placemark.getName().compareTo(noiselogger) == 0) {
-                            placemark.setDescription(description);
-                            Point point = (Point) placemark.getGeometry();
-                            List<Coordinate> coordinates = point.getCoordinates();
-                            for (Coordinate coordinate : coordinates) {
-                                latitude = coordinate.getLatitude();
-                                longitude = coordinate.getLongitude();
-                            }
-                            break;
-                        }
-                    }
-                }
-
+//                Class cls = this.getClass();
+//                ProtectionDomain pDomain = cls.getProtectionDomain();
+//                CodeSource cSource = pDomain.getCodeSource();
+//                URL loc = cSource.getLocation();
+//                String path = loc.getPath().split("W")[0] + "file/Noise_loggers_v4.kml";
+////      
+//
+//                Kml kml = Kml.unmarshal(new File(path));
+//                Document document = (Document) kml.getFeature(); //Get the document features
+//
+//                Iterator<Feature> iterator = document.getFeature().iterator(); //Create an iterator for the placemark
+//                Feature feature = null;
+//                Placemark placemark = null;
+//                double latitude = 0;
+//                double longitude = 0;
+//                while (iterator.hasNext()) {
+//                    feature = iterator.next();
+//                    if (feature instanceof Placemark) {
+//                        placemark = (Placemark) feature;
+//                        if (placemark.getName().compareTo(noiselogger) == 0) {
+//                            if (battery < 20) {
+//                                placemark.setStyleUrl("#errorStyle"); //change style for low battery
+//                            }
+//                            placemark.setDescription(description);
+//                            Point point = (Point) placemark.getGeometry();
+//                            List<Coordinate> coordinates = point.getCoordinates();
+//                            for (Coordinate coordinate : coordinates) {
+//                                latitude = coordinate.getLatitude();
+//                                longitude = coordinate.getLongitude();
+//                            }
+//                            break;
+//                        }
+//                    }
+//                }
+                //Retrieve old measure
+                this.mapsData = this.mapsDataBean.find(noiselogger);
+                this.mapsData.setDescription(description);
                 if (value != 0 && this.firstNL.compareTo("") == 0) { //Leak detected, save first value
                     this.firstNL = noiselogger;
                     this.valueF = Integer.valueOf(value);
 
                     //modify style kml to display leak                        
-                    feature.setStyleUrl("#noiseStyle2");
-                    //FIX-ME vedere di disegnare un cerchio sulla mappa centrato sul noise logger
-                    document.createAndAddPlacemark().createAndSetPolygon().createAndSetOuterBoundaryIs().createAndSetLinearRing().addToCoordinates(longitude + 0.001, latitude).addToCoordinates(longitude, latitude + 0.001).addToCoordinates(longitude - 0.001, latitude).addToCoordinates(longitude, latitude - 0.001);
+                    this.mapsData.setStyle("#alarmStyle");
+                    this.mapsDataBean.update(mapsData); //update last measure for the noiselogger
                     
-                    
+
+
                     //send email to all company users
                     String host = "smtp.gmail.com";
                     String from = "smart.leak.detection@gmail.com";
@@ -170,7 +188,7 @@ public class ReceivingData extends Thread {
                     transport.close();
 
                 }
-                kml.marshal(new File(path + ".app"));
+//                kml.marshal(new File(path));
 
 //                }
 //                if (isStrict) {
@@ -192,10 +210,7 @@ public class ReceivingData extends Thread {
 
 
             }
-        } catch (IOException e) {
-            System.out.println("Exception: " + e.getMessage());
-
-        } catch (MessagingException ex) {
+        }  catch (MessagingException ex) {
             Logger.getLogger(ReceivingData.class.getName()).log(Level.SEVERE, null, ex);
         }
 

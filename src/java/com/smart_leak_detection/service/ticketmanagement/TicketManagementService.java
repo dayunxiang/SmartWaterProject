@@ -14,6 +14,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.smart_leak_detection.json.JsonResponse;
+import com.smart_leak_detection.model.mapsmanagement.MapsData;
+import com.smart_leak_detection.model.mapsmanagement.MapsDataBean;
 import com.smart_leak_detection.model.ticketmanagement.Ticket;
 import com.smart_leak_detection.model.ticketmanagement.TicketBean;
 import com.smart_leak_detection.model.ticketmanagement.dto.TicketDTO;
@@ -26,7 +28,13 @@ import de.micromata.opengis.kml.v_2_2_0.Kml;
 import de.micromata.opengis.kml.v_2_2_0.Placemark;
 import de.micromata.opengis.kml.v_2_2_0.Point;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.CodeSource;
 import java.security.Principal;
+import java.security.ProtectionDomain;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -49,6 +57,8 @@ public class TicketManagementService {
     private TicketBean ticketBean;
     @EJB
     private UserBean userBean;
+    @EJB
+    private MapsDataBean mapsDataBean;
 
     @GET
     @Path("ping")
@@ -61,10 +71,11 @@ public class TicketManagementService {
     @Produces(MediaType.APPLICATION_JSON)
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public Response newticket(@FormParam("noiselogger") String noiselogger,
-            @Context HttpServletRequest req) throws AddressException, MessagingException {
+            @Context HttpServletRequest req) throws AddressException, MessagingException, MalformedURLException, URISyntaxException {
         Date date = new Date();
 
         TicketDTO newTicket = new TicketDTO();
+        
 
         JsonResponse json = new JsonResponse();
         json.setData(newTicket); //just return the date we received
@@ -77,23 +88,33 @@ public class TicketManagementService {
             return Response.ok().entity(json).build();
         }
 
-        //Retrive info for the noise logger selected
-        String path = "/Users/pelldav/University/Tesi/SmartWaterProject/web/file/Noise_loggers.kml";
-        Kml kml = Kml.unmarshal(new File(path));
-        Document document = (Document) kml.getFeature(); //Get the document features
-        Iterator<Feature> iterator = document.getFeature().iterator(); //Create an iterator for the placemark
-        Feature feature = null;
-        while (iterator.hasNext()) {
-            feature = iterator.next();
-            if (feature.getName().compareTo(noiselogger) == 0) {
-                break;
-            }
-        }
-        req.getServletContext().log("ECCOLOOOOOO: " + feature.getDescription());
-        String[] description = feature.getDescription().split(" ");
+//        //Retrive info for the noise logger selected
+//        Class cls = this.getClass();
+//        ProtectionDomain pDomain = cls.getProtectionDomain();
+//        CodeSource cSource = pDomain.getCodeSource();
+//        URL loc = cSource.getLocation();
+//        String path = loc.getPath().split("W")[0] + "file/Noise_loggers_v4.kml";
+////        String path = "../../../../../web/file/Noise_loggers_v4.kml";
+////        URI url = new URI(path);
+//        req.getServletContext().log("ECCOLOOOOOO: " + path);
+//
+//        Kml kml = Kml.unmarshal(new File(path));
+//        Document document = (Document) kml.getFeature(); //Get the document features
+//        Iterator<Feature> iterator = document.getFeature().iterator(); //Create an iterator for the placemark
+//        Feature feature = null;
+//        while (iterator.hasNext()) {
+//            feature = iterator.next();
+//            if (feature.getName().compareTo(noiselogger) == 0) {
+//                break;
+//            }
+//        }
+//        req.getServletContext().log("ECCOLOOOOOO: " + feature.getDescription());
+        MapsData mapsData = this.mapsDataBean.find(noiselogger);
+        
+        String[] description = mapsData.getDescription().split(" ");
         String battery = description[9].split("%")[0];
         String status = description[11];
-        
+
         //set the Company name
         User user = userBean.find(principal.getName());
         newTicket.setCompany(user.getCompany());
@@ -105,12 +126,12 @@ public class TicketManagementService {
         newTicket.setNoiselogger(noiselogger);
 
         //retrive state and info from kml
-        if(status.compareTo("OK") != 0 ){ // Error on network sensor
-                    newTicket.setInfo("Richiesta verifica rete noise loggers");
+        if (status.compareTo("OK") != 0) { // Error on network sensor
+            newTicket.setInfo("Richiesta verifica rete noise loggers");
         } else { // Low battery
-                    newTicket.setInfo("Richiesta sostituzione batteria - Livello: " + battery + "%");
+            newTicket.setInfo("Richiesta sostituzione batteria - Livello: " + battery + "%");
         }
-                
+
         //set stato - initial state is always "attivo"
         newTicket.setStato("attivo");
 
@@ -185,6 +206,7 @@ public class TicketManagementService {
 
         List<Ticket> list = ticketBean.findAll(user.getCompany());
 
+        
         json.setData(list);
 
         json.setStatus("SUCCESS");

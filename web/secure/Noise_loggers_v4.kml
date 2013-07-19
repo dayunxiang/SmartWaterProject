@@ -6,11 +6,11 @@
             <name>Noise_Logger_Example1</name>
             
      <description>
-            Timestamp last value: 2013-15-06 17:58 
-                Value level: 20%
+            Timestamp last value: 2013-15-06 17:58 \n
+                Value level: 20%\n
                 Status: OK
      </description>
-            <styleUrl>#largeStyle</styleUrl>
+            <styleUrl>#noiseStyle1</styleUrl>
             <Point>
                 <coordinates>12.753721,38.173355,0.000000</coordinates>
             </Point>
@@ -23,7 +23,7 @@
                 Status: OK 
 
      </description>
-            <styleUrl>#largeStyle</styleUrl>
+            <styleUrl>#noiseStyle1</styleUrl>
             <Point>
                 <coordinates>12.733448,38.177887,0.000000</coordinates>
             </Point>
@@ -36,7 +36,7 @@
                 Status: OK 
 
      </description>
-            <styleUrl>#strictStyle</styleUrl>
+            <styleUrl>#noiseStyle1</styleUrl>
             <Point>
                 <coordinates>12.731861,38.177818,0.000000</coordinates>
             </Point>
@@ -49,7 +49,7 @@
                 Status: OK 
 
      </description>
-            <styleUrl>#strictStyle</styleUrl>
+            <styleUrl>#noiseStyle1</styleUrl>
             <Point>
                 <coordinates>12.734779,38.177010,0.000000</coordinates>
             </Point>
@@ -62,7 +62,7 @@
                 Status: OK 
 
      </description>
-            <styleUrl>#largeStyle</styleUrl>
+            <styleUrl>#noiseStyle1</styleUrl>
             <Point>
                 <coordinates>12.735288,38.173367,0.000000</coordinates>
             </Point>
@@ -75,7 +75,7 @@
                 Status: OK 
 
      </description>
-            <styleUrl>#largeStyle</styleUrl>
+            <styleUrl>#noiseStyle1</styleUrl>
             <Point>
                 <coordinates>12.738549,38.173702,0.000000</coordinates>
             </Point>
@@ -88,7 +88,7 @@
                 Status: OK 
 
      </description>
-            <styleUrl>#strictStyle</styleUrl>
+            <styleUrl>#noiseStyle1</styleUrl>
             <Point>
                 <coordinates>12.734258,38.172016,0.000000</coordinates>
             </Point>
@@ -101,7 +101,7 @@
                 Status: OK 
 
      </description>
-            <styleUrl>#largeStyle</styleUrl>
+            <styleUrl>#noiseStyle1</styleUrl>
             <Point>
                 <coordinates>12.734950,38.167664,0.000000</coordinates>
             </Point>
@@ -114,7 +114,7 @@
                 Status: OK 
 
      </description>
-            <styleUrl>#strictStyle</styleUrl>
+            <styleUrl>#noiseStyle1</styleUrl>
             <Point>
                 <coordinates>12.733277,38.167057,0.000000</coordinates>
             </Point>

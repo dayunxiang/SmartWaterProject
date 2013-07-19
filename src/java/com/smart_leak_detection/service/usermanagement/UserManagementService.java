@@ -23,6 +23,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.smart_leak_detection.json.JsonResponse;
+import com.smart_leak_detection.model.mapsmanagement.MapsDataBean;
 import com.smart_leak_detection.model.measuremanagement.MeasureBean;
 import com.smart_leak_detection.model.usermanagement.Group;
 import com.smart_leak_detection.model.usermanagement.User;
@@ -47,8 +48,8 @@ public class UserManagementService {
     private UserBean userBean;
     @EJB
     private MeasureBean measureBean;
-    Config recConfig;
-    Channel recChannel;
+    @EJB
+    private MapsDataBean mapsDataBean;
     ReceivingData recThread;
 
     @GET
@@ -56,9 +57,7 @@ public class UserManagementService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response ping(@Context HttpServletRequest req) {
         if (recThread == null) {
-            this.recConfig = new Config(52001);
-            this.recChannel = new Channel(recConfig);
-            this.recThread = new ReceivingData(recChannel, recConfig, measureBean, userBean);
+            this.recThread = new ReceivingData(measureBean, userBean, mapsDataBean);
             recThread.start();
         }
 

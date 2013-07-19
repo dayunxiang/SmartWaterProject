@@ -67,9 +67,9 @@ public class SensorManagementService {
         //Coding message
         int message = 0;
         //send message - not implemented
-        Config config = new Config(12345);
-        Channel channel = new Channel(config);
-        channel.sendData(message);
+//        Config config = new Config(12345);
+//        Channel channel = new Channel(config);
+//        channel.sendData(message);
         
         json.setStatus("SUCCESS");
 
