@@ -132,8 +132,22 @@
                                     image = "http://labs.google.com/ridefinder/images/mm_20_purple.png";
                                 else if (data.data[key].style == "#strictStyle")
                                     image = "http://labs.google.com/ridefinder/images/mm_20_white.png";
-                                else if (data.data[key].style == "#alarmStyle")
+                                else if (data.data[key].style == "#alarmStyle") {
                                     image = "http://labs.google.com/ridefinder/images/mm_20_red.png";
+                                    //draw a circle in alarm area
+                                    var centerCoordinate = new google.maps.LatLng(data.data[key].latitude, data.data[key].longitude);
+                                    var alarmOptions = {
+                                        strokeColor: '#FF0000',
+                                        strokeOpacity: 0.8,
+                                        strokeWeight: 2,
+                                        fillColor: '#FF0000',
+                                        fillOpacity: 0.35,
+                                        map: map,
+                                        center: centerCoordinate,
+                                        radius: 150 //radius in meter
+                                    };
+                                    var alarmCircle = new google.maps.Circle(alarmOptions);
+                                }
                                 else if (data.data[key].style == "#errorStyle")
                                     image = "http://labs.google.com/ridefinder/images/mm_20_yellow.png";
 
@@ -142,7 +156,6 @@
                                     map: map,
                                     icon: image
                                 });
-                                $('#info').append(window.location.host);
                                 google.maps.event.addListener(marker, 'click', (function(marker, key) {
                                     return function() {
                                         newticketAction = "window.location.replace('https://" + window.location.host + "/SmartLeakDetection/secure/ticket/newTicket.jsp?nl=" + data.data[key].noiselogger + "');";
