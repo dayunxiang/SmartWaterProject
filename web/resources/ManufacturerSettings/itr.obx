@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GXManufacturer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Identification>ITR</Identification>
+  <Name>Itron</Name>
+  <UseLN>true</UseLN>
+  <ObisCodes>
+    <GXObisCode>
+      <LogicalName>0.0.1.0.0.255</LogicalName>
+      <Description>Concentrator clock</Description>
+      <Interface>Clock</Interface>
+      <ValueItems />
+      <Type>DateTime</Type>
+    </GXObisCode>
+    <GXObisCode>
+      <LogicalName>0.0.96.1.10.255</LogicalName>
+      <Description />
+      <Interface>DemandRegister</Interface>
+      <ValueItems />
+    </GXObisCode>
+    <GXObisCode>
+      <LogicalName>0.0.96.1.10.255</LogicalName>
+      <Description />
+      <Interface>ExtendedRegister</Interface>
+      <ValueItems />
+      <Type>UInt32</Type>
+    </GXObisCode>
+    <GXObisCode>
+      <LogicalName>0.0.25.4.0.255</LogicalName>
+      <Description>GPRS setup</Description>
+      <Interface>GprsSetup</Interface>
+      <ValueItems />
+    </GXObisCode>
+    <GXObisCode>
+      <LogicalName>0.0.25.1.0.255</LogicalName>
+      <Description>IPv4 setup</Description>
+      <Interface>Ip4Setup</Interface>
+      <ValueItems />
+    </GXObisCode>
+    <GXObisCode>
+      <LogicalName>0.0.25.3.0.255</LogicalName>
+      <Description>PPP setup</Description>
+      <Interface>PppSetup</Interface>
+      <ValueItems />
+    </GXObisCode>
+    <GXObisCode>
+      <LogicalName>0.0.25.1.0.255</LogicalName>
+      <Description />
+      <Interface>Register</Interface>
+      <ValueItems />
+    </GXObisCode>
+    <GXObisCode>
+      <LogicalName>0.0.25.0.0.255</LogicalName>
+      <Description>TCP-UDP setup</Description>
+      <Interface>TcpUdpSetup</Interface>
+      <ValueItems />
+    </GXObisCode>
+    <GXObisCode>
+      <LogicalName>0.0.41.0.0.255</LogicalName>
+      <Description>SAP Assignment object</Description>
+      <Interface>SapAssignment</Interface>
+      <ValueItems />
+    </GXObisCode>
+    <GXObisCode>
+      <LogicalName>7.0.1.0.0.255</LogicalName>
+      <Description>Index reading</Description>
+      <Interface>ExtendedRegister</Interface>
+      <ValueItems />
+      <Type>UInt64</Type>
+    </GXObisCode>
+    <GXObisCode>
+      <LogicalName>0.0.96.3.10.255</LogicalName>
+      <Description>Valve control</Description>
+      <Interface>Data</Interface>
+      <ValueItems>
+        <GXKeyValuePair>
+          <Key>2</Key>
+          <Value>
+            <GXObisValueItem>
+              <Value xsi:type="xsd:string">0</Value>
+              <UIValue>Closed</UIValue>
+            </GXObisValueItem>
+            <GXObisValueItem>
+              <Value xsi:type="xsd:string">1</Value>
+              <UIValue>Open</UIValue>
+            </GXObisValueItem>
+            <GXObisValueItem>
+              <Value xsi:type="xsd:string">2</Value>
+              <UIValue>Released</UIValue>
+            </GXObisValueItem>
+          </Value>
+        </GXKeyValuePair>
+      </ValueItems>
+      <Type>Enum</Type>
+    </GXObisCode>
+    <GXObisCode>
+      <LogicalName>0.0.42.0.0.255</LogicalName>
+      <Description>COSEM Logical device name</Description>
+      <Interface>Data</Interface>
+      <ValueItems />
+      <Type>OctetString</Type>
+    </GXObisCode>
+  </ObisCodes>
+  <UseIEC47>true</UseIEC47>
+  <StartProtocol>DLMS</StartProtocol>
+  <Settings>
+    <GXAuthentication>
+      <Type>None</Type>
+      <ClientID xsi:type="xsd:unsignedShort">16</ClientID>
+    </GXAuthentication>
+    <GXAuthentication>
+      <Type>Low</Type>
+      <ClientID xsi:type="xsd:unsignedByte">17</ClientID>
+    </GXAuthentication>
+    <GXAuthentication>
+      <Type>High</Type>
+      <ClientID xsi:type="xsd:unsignedByte">18</ClientID>
+    </GXAuthentication>
+  </Settings>
+  <ServerSettings>
+    <GXServerAddress>
+      <HDLCAddress>0</HDLCAddress>
+      <Formula />
+      <PhysicalAddress xsi:type="xsd:unsignedShort">1</PhysicalAddress>
+      <LogicalAddress>1</LogicalAddress>
+    </GXServerAddress>
+    <GXServerAddress>
+      <HDLCAddress>1</HDLCAddress>
+      <PhysicalAddress xsi:type="xsd:unsignedShort">1</PhysicalAddress>
+    </GXServerAddress>
+    <GXServerAddress>
+      <HDLCAddress>2</HDLCAddress>
+      <PhysicalAddress xsi:type="xsd:unsignedShort">1</PhysicalAddress>
+    </GXServerAddress>
+  </ServerSettings>
+</GXManufacturer>

@@ -40,8 +40,10 @@ public class MeasureBean {
         }
     }
 
-    public Measure find(String company) {
-        return em.find(Measure.class, company);
+    public Measure find(String noiselogger) {
+        TypedQuery<Measure> query = em.createQuery("SELECT m FROM Measure m WHERE m.noiselogger=:noiselogger ORDER BY m.id ASC", Measure.class);
+        query.setParameter("noiselogger", noiselogger);
+        return query.getResultList().get(0);
     }
 
     public void detach(Measure measure) {

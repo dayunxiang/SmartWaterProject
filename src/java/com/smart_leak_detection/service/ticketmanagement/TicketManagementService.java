@@ -111,9 +111,8 @@ public class TicketManagementService {
 //        req.getServletContext().log("ECCOLOOOOOO: " + feature.getDescription());
         MapsData mapsData = this.mapsDataBean.find(noiselogger);
         
-        String[] description = mapsData.getDescription().split(" ");
-        String battery = description[9].split("%")[0];
-        String status = description[11];
+        int battery = mapsData.getBattery();
+        String status = mapsData.getStatus();
 
         //set the Company name
         User user = userBean.find(principal.getName());

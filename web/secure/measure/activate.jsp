@@ -195,6 +195,9 @@
                         <li class="" style="float:left;">
                             <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Gestione Ticket</a>
                         </li>
+                        <li class="current" style="float:left;">
+                            <a id="activate" target="_self">Attivazione maglia fitta</a>
+                        </li>
                         <li class="" style="float:right; margin-right:3em;"><!-- for links with no dropdown -->
                             <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sign-up</a>
                         </li>

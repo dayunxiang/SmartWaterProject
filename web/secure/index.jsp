@@ -11,11 +11,13 @@
             html, body {
                 height: 100%;
             }
-            /*            #map-canvas {
-                            width: 100%;
-                            height: 80%;
-                            border: 1px solid black;
-                        }*/
+            #map-canvas {
+                width: 99%;
+                height: 78%;
+                border: 1px solid black;
+                padding-left: 0.5%;
+                padding-right: 0.5%;
+            }
             .olPopup p { margin:0px; font-size: .9em;}
             .olPopup h2 { font-size:1.2em; }
             #logo{
@@ -111,21 +113,17 @@
                         if (data.status == "SUCCESS") {
                             //redirect to welcome page
                             var content;
-
                             var map = new google.maps.Map(document.getElementById('map-canvas'), {
                                 zoom: 10,
                                 center: new google.maps.LatLng(38.102579, 12.441221),
                                 mapTypeId: google.maps.MapTypeId.ROADMAP
                             });
                             var ctaLayer = new google.maps.KmlLayer({
-                                url: 'http://caweb.elislab.elis.org/SmartWater/Pipe.kml'
+                                url: 'http://caweb.elislab.elis.org/SmartWater/Turin_Pipe.kml'
                             });
                             ctaLayer.setMap(map);
-
                             var infowindow = new google.maps.InfoWindow();
-//FIX-ME disegnare un cerchio quando il noiselogger è in stato di allarme
                             var marker, i;
-
                             for (var key = 0, size = data.data.length; key < size; key++) {
                                 var image;
                                 if (data.data[key].style == "#largeStyle")
@@ -150,6 +148,8 @@
                                 }
                                 else if (data.data[key].style == "#errorStyle")
                                     image = "http://labs.google.com/ridefinder/images/mm_20_yellow.png";
+                                else if (data.data[key].style == "leak")
+                                    image = "http://labs.google.com/ridefinder/images/mm_20_black.png";
 
                                 marker = new google.maps.Marker({
                                     position: new google.maps.LatLng(data.data[key].latitude, data.data[key].longitude),
@@ -158,12 +158,43 @@
                                 });
                                 google.maps.event.addListener(marker, 'click', (function(marker, key) {
                                     return function() {
+                                        var styleButton = '';
+                                        var addButton = '';
+                                        var colorStatus;
+                                        var colorBattery;
+                                        if (data.data[key].status == "OK") {
+                                            colorStatus = '<font color="green">';
+                                            if (data.data[key].battery > 20) {
+                                                styleButton = 'disabled="disabled"';
+                                                colorBattery = '<font color="green">';
+                                            } else {
+                                                colorBattery = '<font color="red">';
+                                            }
+                                        } else {
+                                            colorStatus = '<font color="red">';
+                                            if (data.data[key].battery > 20) {
+                                                colorBattery = '<font color="green">';
+                                            } else {
+                                                colorBattery = '<font color="red">';
+                                            }
+                                        }
+                                        if (data.data[key].style == "#alarmStyle") {
+                                            activateAction = "window.location.replace('https://" + window.location.host + "/SmartLeakDetection/secure/measure/activate.jsp?nl=" + data.data[key].noiselogger + "');";
+                                            addButton = '<button onclick="' + activateAction + '">Attiva maglia fitta</button>';
+                                        }
                                         newticketAction = "window.location.replace('https://" + window.location.host + "/SmartLeakDetection/secure/ticket/newTicket.jsp?nl=" + data.data[key].noiselogger + "');";
                                         storicoAction = "window.location.replace('https://" + window.location.host + "/SmartLeakDetection/secure/measure/measure.jsp?nl=" + data.data[key].noiselogger + "');";
-                                        content = '<div class="geoxml3_infowindow"><h3>' + data.data[key].noiselogger +
-                                                '</h3><br><h3>' + data.data[key].description + '</h3></div>' +
-                                                '<button onclick="' + newticketAction + '">Manutenzione</button>' +
-                                                '<button onclick="' + storicoAction + '">Storico</button>';
+                                        content = '<div class="geoxml3_infowindow"><h3>Noise logger #' + data.data[key].noiselogger +
+                                                '</h3><br><h3> Data: ' + data.data[key].timestamp +
+                                                '<br>Livello soglia superata: ' + data.data[key].value +
+                                                '<br>Batteria: ' + colorBattery + data.data[key].battery + '%</font>' +
+                                                '<br>Stato: ' + colorStatus + data.data[key].status + '</font><br></h3></div>' +
+                                                '<button onclick="' + newticketAction + '" ' + styleButton + '>Manutenzione</button><br>' +
+                                                '<button onclick="' + storicoAction + '">Storico</button><br>' + addButton;
+                                        if (data.data[key].style == "#strictStyle") {
+                                            content = '<div class = "geoxml3_infowindow"> <h3> Noise logger #' + data.data[key].noiselogger +
+                                                    '</h3><br><h3>Sensore non attivo</h3></div>';
+                                        }
                                         infowindow.setContent(content);
                                         infowindow.open(map, marker);
                                     }
@@ -180,11 +211,8 @@
                         //alert("complete");
                     }
                 });
-
             }
-            google.maps.event.addDomListener(window, 'load', initialize);
-
-        </script>
+            google.maps.event.addDomListener(window, 'load', initialize);</script>
 
         <script type="text/javascript">
             var noiselogger;
@@ -220,58 +248,7 @@
                     return false;
                 });
             });
-            $(function() {
-                "use strict";
-                $('#activate').click(function() {
-                    var data = {
-                        noiselogger: "1234567890"
-                    };
-                    $.ajax({
-                        url: "<%=request.getContextPath()%>/services/auth/activate",
-                        type: "POST",
-                        data: data,
-                        cache: false,
-                        dataType: "json",
-                        success: function(data, textStatus, jqXHR) {
-                            //alert("success");
-                            if (data.status == "SUCCESS") {
-                                //redirect to secured page
-                                $("#info").html("Maglia Attivata");
-                            } else {
-                            }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            //alert("error - HTTP STATUS: "+jqXHR.status);
-                            if (textStatus == "parsererror") {
-                                alert("You session has timed out");
-                                //forward to welcomde page
-                                window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/homepage.jsp");
-                            }
-                        },
-                        complete: function(jqXHR, textStatus) {
-                            //alert("complete");
-                        }
 
-                    });
-                    return false;
-                });
-            });
-            $(function() {
-                "use strict";
-                $('#storico').click(function() {
-                    window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/secure/measure/measure.jsp?nl=" + noiselogger);
-
-                    return false;
-                });
-            });
-            $(function() {
-                "use strict";
-                $('#newTicket').click(function() {
-                    window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/secure/ticket/newTicket.jsp?nl=" + noiselogger);
-
-                    return false;
-                });
-            });
         </script>
 
     </head>
@@ -309,12 +286,8 @@
         <h4>by Smart Team</h4>
         <br/><br/>
 
-        <div id="map-canvas" style="height: 100%"></div>
+        <div id="map-canvas"></div>
         <div id="info"></div>
-        <button id="activate">Activate</button>
-        <!--        <button id="storico">Storico</button>
-                <button id="newTicket">Manutenzione</button>-->
-
 
     </body>
 </html>
