@@ -39,16 +39,19 @@ public class ReceivingData extends Thread {
     private MapsDataBean mapsDataBean;
     private MeterData meterData;
     private MapsData mapsData;
+    private String ip;
     String firstNL = "25";
     String secondNL = "24";
     String thirdNL = "41";
     int valueF = 0, valueS = 0, valueT = 0;
     boolean isStrict = false;
+    boolean alarmSet = false;
 
-    public ReceivingData(MeasureBean measureBean, UserBean userBean, MapsDataBean mapsDataBean) {
+    public ReceivingData(String ip, MeasureBean measureBean, UserBean userBean, MapsDataBean mapsDataBean) {
 //        this.channel = channel;
 //        this.config = config;
-        this.meterData = new MeterData();
+        this.ip = ip;
+        this.meterData = new MeterData(this.ip);
         this.measureBean = measureBean;
         this.userBean = userBean;
         this.mapsDataBean = mapsDataBean;
@@ -69,9 +72,19 @@ public class ReceivingData extends Thread {
                 System.out.println("Receiver: Name:" + data.name + " Valve Status: " + data.valveStatus + "Data meter: " + data.meter);
                 String s = data.meter.toString();
                 List<String> parts = new ArrayList<String>();
-                for (int j = 0; j < s.length(); j += 2) {
-                    parts.add(s.substring(j, Math.min(j + 2, s.length())));
+                int size = s.length();
+                if (size == 7) {
+                    parts.add(s.substring(0, 3));
+                    parts.add(s.substring(3, 5));
+                    parts.add(s.substring(5, 7));
+                } else {
+                    parts.add(s.substring(0, 2));
+                    parts.add(s.substring(2, 4));
+                    parts.add(s.substring(4, 6));
                 }
+//                for (int j = 0; j < size; j += 2) {
+//                    parts.add(s.substring(j, Math.min(j + 2, size)));
+//                }
                 int battery = Integer.decode("0x" + parts.get(1)); //Get int value
                 int value = Integer.decode("0x" + parts.get(0)); //Get int value
                 value = value * 1023 / 255;
@@ -81,15 +94,17 @@ public class ReceivingData extends Thread {
                 }
                 System.out.println("Noiselogger: " + noiselogger + " Valore: " + value + " Battery: " + battery);
 
+//                String timestamp = "" + date.getYear() + "-" + date.getDay() + "-" + date.getMonth() + " " + date.getHours() + ":" + date.getMinutes();
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-                String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-
+                Date date = new Date();
+                String timestamp = dateFormat.format(date);
                 this.measure = this.measureBean.find(noiselogger); //Retrive company for the noiselogger
                 String company = this.measure.getCompany();
 
-                if (!this.isStrict && noiselogger.compareTo(this.firstNL) == 0) {
+                if (!this.isStrict && noiselogger.compareTo(this.firstNL) == 0 && !alarmSet) {
 //                if (!this.isStrict) { //ripristinare quello sopra appea funzionerà tutto
                     //Leggo se è attiva solo la maglia larga ed i dati sono del primo NL
+                    this.alarmSet = true;
                     this.measureDto.setId("" + date.getTime());
                     this.measureDto.setNoiselogger(noiselogger);
                     this.measureDto.setTimestamp(timestamp);
@@ -101,20 +116,13 @@ public class ReceivingData extends Thread {
                     measureBean.save(measure);
                     System.out.println("Measure SALVATO!");
 
-//                String description = "Timestamp last value: "
-//                        + timestamp
-//                        + "Value level:"
-//                        + value
-//                        + "Status:OK Battery:"
-//                        + battery;
-
                     //Retrieve old measure
                     this.mapsData = this.mapsDataBean.find(noiselogger);
                     //update value
                     this.mapsData.setBattery(battery);
                     this.mapsData.setTimestamp(timestamp);
                     this.mapsData.setValue(value);
-                    if (value != 0) { //Leak detected, save first value
+                    if (value > 600) { //Leak detected, save first value
 //                    if (value != 0) { //ripristinare una volta effettuato il test   
                         this.valueF = value;
 
@@ -127,7 +135,7 @@ public class ReceivingData extends Thread {
 
                         //send email to all company users
                         String host = "smtp.gmail.com";
-                        String from = "smart.leak.detection@gmail.com";
+                        String from = "servizio.tiled@gmail.com";
                         String pass = "smartleakdetection";
                         Properties props = System.getProperties();
                         props.put("mail.smtp.starttls.enable", "true");
@@ -157,11 +165,15 @@ public class ReceivingData extends Thread {
                         for (int i = 0; i < toAddress.length; i++) {
                             message.addRecipient(Message.RecipientType.TO, toAddress[i]);
                         }
-                        message.setSubject("Smart Leak Detection - Perdita Rilevata");
-                        message.setContent("<h1>Smart Leak Detection</h1> <br> <div> Perdita rilevata dal noise logger:" + noiselogger + " </div>", "text/html");
+                        message.setSubject("TI-LeD - Notifica rilevazione area di perdita");
+                        message.setContent("<h1>TI-LeD</h1> <br> <div> Gentile utente,<br><br>"
+                                + "Il sistema TI-LeD ha appena rilevato una area di perdita nella zone del noise logger #" + noiselogger
+                                + ".<br>Le ricordiamo di attivare quanto prima la maglia fitta per individuare il punto esatto della perdita."
+                                + "<br><br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
                         Transport transport = session.getTransport("smtp");
-                        //transport.connect(host, from, pass);
-                        //transport.sendMessage(message, message.getAllRecipients());
+                        transport.connect(host, from, pass);
+                        transport.sendMessage(message, message.getAllRecipients());
+                        System.out.println("EMAIL INVIATA");
                         transport.close();
 
 
@@ -171,11 +183,23 @@ public class ReceivingData extends Thread {
                     }
                 }
                 if (isStrict) {
-                    if (this.secondNL.compareTo(noiselogger) == 0) { //save second value
+                    if (this.secondNL.compareTo(noiselogger) == 0 && value > 300) { //save second value
                         this.valueS = value;
+                        this.mapsData = this.mapsDataBean.find(noiselogger);
+                        //update value to display in maps for #strictStyle also battery and status
+                        this.mapsData.setBattery(battery);
+                        this.mapsData.setTimestamp(timestamp);
+                        this.mapsData.setValue(value);
+                        this.mapsDataBean.update(mapsData); //update last measure for the noiselogger
                     }
-                    if (this.thirdNL.compareTo(noiselogger) == 0) { //save third value
+                    if (this.thirdNL.compareTo(noiselogger) == 0 && value > 300) { //save third value
                         this.valueT = value;
+                        //update value to display in maps for #strictStyle also battery and status
+                        this.mapsData.setBattery(battery);
+                        this.mapsData.setTimestamp(timestamp);
+                        this.mapsData.setValue(value);
+                        this.mapsDataBean.update(mapsData); //update last measure for the noiselogger
+
                     }
                     if (this.valueS != 0 && this.valueT != 0) {
                         MapsDataDTO leak = new MapsDataDTO();
@@ -185,32 +209,72 @@ public class ReceivingData extends Thread {
                         leak.setStyle("leak");
                         leak.setTimestamp("leak");
                         leak.setValue(0);
+                        //send email to all company users
+                        String host = "smtp.gmail.com";
+                        String from = "servizio.tiled@gmail.com";
+                        String pass = "smartleakdetection";
+                        Properties props = System.getProperties();
+                        props.put("mail.smtp.starttls.enable", "true");
+                        props.put("mail.smtp.host", host);
+                        props.put("mail.smtp.user", from);
+                        props.put("mail.smtp.password", pass);
+                        props.put("mail.smtp.port", "587");
+                        props.put("mail.smtp.auth", "true");
+
+                        List<User> list = userBean.findAll(company);
+                        String[] to = new String[list.size()];
+                        for (int i = 0; i < list.size(); i++) {
+                            to[i] = list.get(i).getEmail();
+                        }
+
+                        Session session = Session.getDefaultInstance(props, null);
+                        MimeMessage message = new MimeMessage(session);
+                        message.setFrom(new InternetAddress(from));
+
+                        InternetAddress[] toAddress = new InternetAddress[to.length];
+
+                        for (int i = 0; i < to.length; i++) {        // To get the array of addresses
+                            toAddress[i] = new InternetAddress(to[i]);
+                        }
+                        System.out.println(Message.RecipientType.TO);
+
+                        for (int i = 0; i < toAddress.length; i++) {
+                            message.addRecipient(Message.RecipientType.TO, toAddress[i]);
+                        }
+                        message.setSubject("TI-LeD - Individuato punto di perdita");
+                        message.setContent("<h1>TI-LeD</h1> <br> <div>Gentile utente,<br><br>"
+                                + "in seguito alla attivazione della maglia fitta, il sistema TI-LeD ha localizzato una perdita sulla Sua rete.<br>"
+                                + "Può consultare la mappa tramite il nostro portale per visualizzare la posizione precisa.<br><br>"
+                                + "Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
+                        Transport transport = session.getTransport("smtp");
+                        transport.connect(host, from, pass);
+                        transport.sendMessage(message, message.getAllRecipients());
+                        System.out.println("EMAIL INVIATA");
+                        transport.close();
+
                         //Elaborate data
                         if (this.valueS > this.valueT) {
                             leak.setLatitude(45.11065555);
                             leak.setLongitude(7.66566111);
                             MapsData mapsLeak = new MapsData(leak);
                             this.mapsDataBean.save(mapsLeak);
+                            //Send Data
                             System.out.println("PERDITA PRIMO TRATTO: valore2: " + this.valueS + " valore3: " + this.valueT);
-                            //FIX-ME tratto tra il primo ed il secondo NL
                         } else {
-                            //FIX-ME tratto tra primo e terzo NL
                             leak.setLatitude(45.10998333);
                             leak.setLongitude(7.6661);
                             MapsData mapsLeak = new MapsData(leak);
                             this.mapsDataBean.save(mapsLeak);
+                            //Send email
                             System.out.println("PERDITA SECONDO TRATTO valore2: " + this.valueS + " valore3: " + this.valueT);
                         }
-
                         this.isStrict = false; //reset maglia fitta
                     }
                 }
-                Thread.sleep(2000);
+//                Thread.sleep(5000);
             }
 
         } catch (MessagingException ex) {
-            Logger.getLogger(ReceivingData.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
             Logger.getLogger(ReceivingData.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

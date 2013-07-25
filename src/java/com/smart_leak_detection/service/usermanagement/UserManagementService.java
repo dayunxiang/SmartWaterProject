@@ -52,14 +52,16 @@ public class UserManagementService {
     private MapsDataBean mapsDataBean;
     ReceivingData recThread;
 
-    @GET
-    @Path("ping")
+    @POST
+    @Path("startcom")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response ping(@Context HttpServletRequest req) {
-        if (recThread == null) {
-            this.recThread = new ReceivingData(measureBean, userBean, mapsDataBean);
-            recThread.start();
+    public Response ping(@FormParam("ip") String ip,
+            @Context HttpServletRequest req) {
+        if (recThread != null) {
+            this.recThread.interrupt();
         }
+        this.recThread = new ReceivingData(ip, measureBean, userBean, mapsDataBean);
+        recThread.start();
 
         JsonResponse json = new JsonResponse();
         json.setStatus("SUCCESS");
@@ -80,7 +82,7 @@ public class UserManagementService {
         if (req.getUserPrincipal() == null) {
             try {
                 req.login(email, password);
-                req.getServletContext().log("Authentication Demo: successfully logged in " + email);
+                req.getServletContext().log("TI-LeD: successfully logged in " + email);
             } catch (ServletException e) {
                 e.printStackTrace();
                 json.setStatus("FAILED");
@@ -95,7 +97,7 @@ public class UserManagementService {
         json.setStatus("SUCCESS");
 
         User user = userBean.find(email);
-        req.getServletContext().log("Authentication Demo: successfully retrieved User Profile from DB for " + email);
+        req.getServletContext().log("TI-LeD: successfully retrieved User Profile from DB for " + email);
         json.setData(user);
 
         //we don't want to send the hashed password out in the json response
@@ -160,7 +162,7 @@ public class UserManagementService {
 
         //Send email to user
         String host = "smtp.gmail.com";
-        String from = "smart.leak.detection@gmail.com";
+        String from = "servizio.tiled@gmail.com";
         String pass = "smartleakdetection";
         Properties props = System.getProperties();
         props.put("mail.smtp.starttls.enable", "true");
@@ -186,8 +188,14 @@ public class UserManagementService {
         for (int i = 0; i < toAddress.length; i++) {
             message.addRecipient(Message.RecipientType.TO, toAddress[i]);
         }
-        message.setSubject("Smart Leak Detection - Registrazione effettuata");
-        message.setContent("<h1>Smart Leak Detection</h1> <br> <div> Registrazione Effettuata </div>", "text/html");
+        message.setSubject("TI-LeD - Conferma registrazione");
+        message.setContent("<h1>TI-LeD</h1> <br> <div>Gentile " + user.getFirstName() + " " + user.getLastName()
+                + ",<br>benvenuto nel servizio TI LeD - Telecom Italia Leak Detection.<br>"
+                + "Da questo momento potrà gestire la rete idrica in maniera efficiente.<br>"
+                + "Di seguito i Suoi dati per accedere al servizio:<br>"
+                + "email: " + user.getEmail()
+                + "<br>password: " + user.getPassword()
+                + "Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
         Transport transport = session.getTransport("smtp");
         transport.connect(host, from, pass);
         transport.sendMessage(message, message.getAllRecipients());

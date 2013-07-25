@@ -14,10 +14,17 @@ import java.math.BigInteger;
 
 public class MeterData {
 
-    public String gatewayId = "TelitGG863_3316042807_LOCAL";
+    public String gatewayId;
     public String meterId = "ITR";
+    public String ip;
 
-    public MeterData() {
+    public MeterData(String ip) {
+        this.ip = ip;
+        if (this.ip.compareTo("localhost") == 0) {
+            this.gatewayId = "TelitGG863_3316042807_LOCAL";
+        }else{
+            this.gatewayId = "TelitGG863_3316042807_FIELD";
+        }
     }
 
     public MeterReadings getData() {
@@ -28,11 +35,20 @@ public class MeterData {
         if (gwServerAddress != null) {
             ArrayList<SAP> saps = GuruxWrapper.getSAPAssignment(gwServerAddress.address, gwServerAddress.port);
             for (SAP sap : saps) {
-                System.out.println("sap.name = " + sap.name + " meterId = " + this.meterId);
-                if (sap.name.contains(this.meterId)) {
-                    System.out.println("execute getMeterReadings: SAP address: " + sap.address);
-                    res = GuruxWrapper.getMeterReadings(gwServerAddress.address, gwServerAddress.port, 2);
-                   return res;
+                if (saps.size() == 1) {
+                    System.out.println("sap.name = " + sap.name + " meterId = " + this.meterId);
+                    if (sap.name.contains(this.meterId)) {
+                        System.out.println("execute getMeterReadings: SAP address: " + sap.address);
+                        res = GuruxWrapper.getMeterReadings(gwServerAddress.address, gwServerAddress.port, 1);
+                        return res;
+                    }
+                } else {
+                    System.out.println("sap.name = " + sap.name + " meterId = " + this.meterId);
+                    if (sap.name.contains(this.meterId)) {
+                        System.out.println("execute getMeterReadings: SAP address: " + sap.address);
+                        res = GuruxWrapper.getMeterReadings(gwServerAddress.address, gwServerAddress.port, 2);
+                        return res;
+                    }
                 }
             }
         }
@@ -43,7 +59,7 @@ public class MeterData {
         DlmsServerAddress res = null;
 
         if (gatewayId.equals("TelitGG863_3316042807_FIELD")) {
-            res = new DlmsServerAddress("10.64.183.248", 4059, "TelitGG863_3316042807"); //change with Gateway IP address
+            res = new DlmsServerAddress(this.ip, 4059, "TelitGG863_3316042807"); //change with Gateway IP address
         } else if (gatewayId.equals("TelitGG863_3316042807_LOCAL")) {
             res = new DlmsServerAddress("192.168.121.3", 4059, "TelitGG863_3316042807");
         } else if (gatewayId.equals("TelitGG863_3316042807_LAB")) {

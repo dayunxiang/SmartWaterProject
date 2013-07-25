@@ -11,7 +11,7 @@
     <head>
         <link rel="stylesheet" type="text/css" href="../css/formStyle.css" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Welcome Page</title>
+        <title>TI-LeD - Telecom Italia Leak Detection</title>
 
         <!-- see https://github.com/douglascrockford/JSON-js -->
         <!-- alternative: http://code.google.com/p/jquery-json/ -->
@@ -23,6 +23,33 @@
         <script src="<%=request.getContextPath()%>/js/json2.js" type="text/javascript"></script>
 
         <%@ include file="/WEB-INF/includes/head/jquery.jsp" %>
+
+        <style type="text/css">
+            #logo{
+                height: 50px;
+            }
+            #title{
+                margin-left: 5px;
+                font-size: large;
+                font-weight: bold;
+                margin-left: 150px;
+            }
+            #sub_title{
+                margin-left: 5px;
+                font-size: medium;
+                margin-left: 120px;
+            }
+            #field{
+                margin-left: 150px;
+                padding-top: 1em;
+                padding-bottom: 1em;
+                border: 1px solid;
+                width: 300px;
+            }
+            #auth_error{
+                margin-left: 150px;
+            }
+        </style>
 
 
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
@@ -87,7 +114,6 @@
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign').html("Logout");
                         $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
-                        $('#ticket').attr("href", "<%=request.getContextPath()%>/secure/ticket/ticket.jsp");
                     }
 
 
@@ -226,13 +252,13 @@
                     isBlank = true;
                 }
 
-                if (this.codFiscale.value != "") {
-                    var cf = codFiscaleCheck(this.codFiscale.value);
-                    if (cf != "") {
-                        document.getElementById("codFiscale_div").setAttribute("style", "color: red");
-                        errorMsg += cf;
-                    }
-                }
+//                if (this.codFiscale.value != "") {
+//                    var cf = codFiscaleCheck(this.codFiscale.value);
+//                    if (cf != "") {
+//                        document.getElementById("codFiscale_div").setAttribute("style", "color: red");
+//                        errorMsg += cf;
+//                    }
+//                }
 
                 //check cellulare
                 document.getElementById("cellular_div").setAttribute("style", "color: black");
@@ -383,141 +409,262 @@
 
     </head>
     <body>
-        <div style="clear:both; margin-top:20px;">&nbsp;</div>
+        <div style="clear:both; margin-top:40px;">&nbsp;</div>
         <div id="header"><!-- begin header -->
 
             <div class="mainbar" >
                 <div>
                     <ul class="mainMenu" >
+                        <li class="" style="float:left;">
+                            <img id="logo" src="<%=request.getContextPath()%>/file/Logo_TILab.jpg">
+                        </li>
                         <li class="" style="float:left;"><!-- for links with no dropdown -->
-                            <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/login/login.jsp">+You</a>
-                        </li>
-                        <li class="" style="float:left;">
-                        <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
-                        </li>
-                        <li class="" style="float:left;">
-                            <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Gestione Ticket</a>
+                            <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/homepage.jsp">+You</a>
                         </li>
                         <!-- Using class="current" for the link of the current page -->
-                        <li class="current" style="float:right; margin-right:3em;"><!-- for links with no dropdown -->
-                            <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sign-up</a>
+                        <li class="" style="float:left;">
+                            <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
                         </li>
-                        <!--                    <li style="border-right:0;">
-                                                <dl class="staticMenu">
-                                                    <dt><a class="" href="settings" onClick="return false;">Account<span class="arrow"></span></a></dt>
-                                                    <dd>
-                                                        <ul class="mainMenuSub" style="right: -1px; left: auto; display: none;">
-                                                            <li><a href="http://www.google.co.in/reader">Reader</a></li>
-                                                            <li><a href="https://sites.google.com">Sites</a></li>
-                                                            <li><a href="http://groups.google.co.in">Groups</a></li>
-                                                            <li><a href="http://www.youtube.com">YouTube</a></li>
-                                                            <li>
-                                                                <div class="mid-line">
-                                                                </div>
-                                                            </li>
-                                                            <li><a href="http://www.google.co.in/imghp?hl=en&tab=wi">Images</a></li>
-                                                            <li><a href="http://maps.google.co.in/maps?hl=en&tab=wl">Maps</a></li>
-                                                            <li><a href="http://translate.google.co.in/">Translate</a></li>
-                                                            <li><a href="http://books.google.co.in">Books</a></li>
-                                                            <li><a href="http://scholar.google.co.in/">Scholar</a></li>
-                                                            <li><a href="http://blogsearch.google.co.in">Blogs</a></li>
-                                                            <li>
-                                                                <div class="mid-line">
-                                                                </div>
-                                                            </li>
-                                                            <li><a href="http://www.google.co.in/intl/en/options/">even more >></a></li>
-                                                            <li>
-                                                                <div class="mid-line">
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </dd>
-                                                </dl>
-                                            </li>-->
+                        <li class="" style="float:left;">
+                            <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/ticket/ticket.jsp">Gestione Ticket</a>
+                        </li>
+                        <li class="" style="float:right;"><!-- for links with no dropdown -->
+                            <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Registrati</a>
+                        </li>
+                        <li class="" style="float:right;"><!-- for links with no dropdown -->
+                            <a id="reset" target="_self" href="<%=request.getContextPath()%>/reset.jsp">Reset Valori Mappa</a>
+                        </li>
+                        <li class="" style="float:right;"><!-- for links with no dropdown -->
+                            <a id="reset" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
+                        </li>
                     </ul>             	
                 </div>
             </div>
             <br/><br/>
         </div><!-- end header -->	
+        <div>
+            <br><br>
+            <h1 id="title">Benvenuto nel servizio TI-LeD</h1>
+            <h2 id="sub_title">Inserisci i dati per effettuare la registrazione</h2>
+            <br><br><br>        
+            <p>         
+                <img id="logo_tiled" style="height: 30%; width: 30%; float: right; margin-right: 15%" src="<%=request.getContextPath()%>/file/LOGO_TI_LED.png" align="middle">
+            <table id="field">
+                <form id="registerForm" name="registerForm" action="<%=request.getContextPath()%>/services/auth/register" method="post">
+                    <tr align="center">
+                        <td>
+                            *Tutti i campi sono obbligatori
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td id="fname_div">
+                            <label for="fname">Nome</label> 
+                        </td>
+                        <td>
+                            <input type="text" id="fname" name="fname"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td id="lname_div">
+                            <label for="lname">Cognome</label> 
+                        </td>
+                        <td>
+                            <input type="text" id="lname" name="lname"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td id="email_div">
+                            <label for="email">Email</label> 
+                        </td>
+                        <td>
+                            <input type="text" id="email" name="email"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td id="password1_div">
+                            <label for="password1">Password</label> 
+                        </td>
+                        <td>
+                            <input type="password" id="password1" name="password1"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td id="password2_div">
+                            <label for="password2">Conferma Password</label> 
+                        </td>
+                        <td>
+                            <input type="password" id="password2" name="password2"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td id="utilityKey_div">
+                            <label for="utilityKey">Inserisci la chiave dell'Utility</label> 
+                        </td>
+                        <td>
+                            <input type="text" id="utilityKey" name="utilityKey"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td id="place_div">
+                            <label for="place">Luogo di nascita</label> 
+                        </td>
+                        <td>
+                            <input type="text" id="place" name="place"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td id="birth_div">
+                            <label for="birth">Data di nascita (dd/mm/yyyy)</label> 
+                        </td>
+                        <td>
+                            <input type="text" id="birth" name="birth"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td id="way_div">
+                            <label for="way">Via</label> 
+                        </td>
+                        <td>
+                            <input type="text" id="way" name="way"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td id="codFiscale_div">
+                            <label for="codFiscale">Codice Fiscale</label> 
+                        </td>
+                        <td>
+                            <input type="text" id="codFiscale" name="codFiscale"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td id="cellular_div">
+                            <label for="cellular">Numero di cellulare</label> 
+                        </td>
+                        <td>
+                            <input type="text" id="cellular" name="cellular"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td id="company_div">
+                            <label for="company">Azienda</label> 
+                        </td>
+                        <td>
+                            <input type="text" id="company" name="company"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td id="job_div">
+                            <label for="job">Ruolo</label> 
+                        </td>
+                        <td>
+                            <input type="text" id="job" name="job"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td id="secretQ_div">
+                            <label for="secretQ">Domanda segreta</label> 
+                        </td>
+                        <td>
+                            <input type="text" id="secretQ" name="secretQ"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td id="secretR_div">
+                            <label for="secretR">Risposta segreta</label> 
+                        </td>
+                        <td>
+                            <input type="text" id="secretR" name="secretR"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td style="color: red">
+                        </td>
+                        <td>
+                            <input type="submit" value="Register" />
+                        </td>
+                    </tr>
 
-        <h1>Welcome to our service</h1>
-        <div class="register">
-            <form id="registerForm" name="registerForm" action="<%=request.getContextPath()%>/services/auth/register" method="post">
-                <fieldset>
-                    <legend>Registration</legend>
 
-                    <div id="info">*Tutti i campi sono obbligatori</div>
-                    <div id="fname_div">
-                        <label for="fname">Nome</label> 
-                        <input type="text" id="fname" name="fname"/>
-                    </div>
-                    <div id="lname_div">
-                        <label for="lname">Cognome</label> 
-                        <input type="text" id="lname" name="lname"/>
-                    </div>              
-                    <div id="email_div">
-                        <label for="email">Email</label> 
-                        <input type="text" id="email" name="email"/>
-                    </div>
-                    <div id="password1_div">
-                        <label for="password1">Password</label> 
-                        <input type="password" id="password1" name="password1"/>
-                    </div>
-                    <div id="password2_div">
-                        <label for="password2">Conferma Password</label> 
-                        <input type="password" id="password2" name="password2"/>
-                    </div>
-                    <div id="utilityKey_div">
-                        <label for="utilityKey">Inserisci la chiave dell'Utility</label> 
-                        <input type="text" id="utilityKey" name="utilityKey"/>
-                    </div>
-                    <div id="place_div">
-                        <label for="place">Luogo di nascita</label> 
-                        <input type="text" id="place" name="place"/>
-                    </div>  
-                    <div id="birth_div">
-                        <label for="birth">Data di nascita (dd/mm/yyyy)</label> 
-                        <input type="text" id="birth" name="birth"/>
-                    </div>
-                    <div id="way_div">
-                        <label for="way">Via</label> 
-                        <input type="text" id="way" name="way"/>
-                    </div>
-                    <div id="codFiscale_div">
-                        <label for="codFiscale">Codice Fiscale</label> 
-                        <input type="text" id="codFiscale" name="codFiscale"/>
-                    </div>
-                    <div id="cellular_div">
-                        <label for="cellular">Numero di cellulare</label> 
-                        <input type="text" id="cellular" name="cellular"/>
-                    </div>
-                    <div id="company_div">
-                        <label for="company">Azienda</label> 
-                        <input type="text" id="company" name="company"/>
-                    </div>
-                    <div id="job_div">
-                        <label for="job">Ruolo</label> 
-                        <input type="text" id="job" name="job"/>
-                    </div>
-                    <div id="secretQ_div">
-                        <label for="secretQ">Domanda segreta</label> 
-                        <input type="text" id="secretQ" name="secretQ"/>
-                    </div>
-                    <div id="secretR_div">
-                        <label for="secretR">Risposta segreta</label> 
-                        <input type="text" id="secretR" name="secretR"/>
-                    </div>
-                    <div id="auth_error" style="color: red">
-                    </div>
+            </table>
+        </p>
+    </div>
+    <div id="auth_error" style="color: red">
 
-                    <div class="buttonRow">
-                        <input type="submit" value="Register" />
-                    </div>
+        <!--        <table id="register">
+                    <form id="registerForm" name="registerForm" action="<%=request.getContextPath()%>/services/auth/register" method="post">
+                        <fieldset>
+                            <div id="info">*Tutti i campi sono obbligatori</div>
+                            <div id="fname_div">
+                                <label for="fname">Nome</label> 
+                                <input type="text" id="fname" name="fname"/>
+                            </div>
+                            <div id="lname_div">
+                                <label for="lname">Cognome</label> 
+                                <input type="text" id="lname" name="lname"/>
+                            </div>              
+                            <div id="email_div">
+                                <label for="email">Email</label> 
+                                <input type="text" id="email" name="email"/>
+                            </div>
+                            <div id="password1_div">
+                                <label for="password1">Password</label> 
+                                <input type="password" id="password1" name="password1"/>
+                            </div>
+                            <div id="password2_div">
+                                <label for="password2">Conferma Password</label> 
+                                <input type="password" id="password2" name="password2"/>
+                            </div>
+                            <div id="utilityKey_div">
+                                <label for="utilityKey">Inserisci la chiave dell'Utility</label> 
+                                <input type="text" id="utilityKey" name="utilityKey"/>
+                            </div>
+                            <div id="place_div">
+                                <label for="place">Luogo di nascita</label> 
+                                <input type="text" id="place" name="place"/>
+                            </div>  
+                            <div id="birth_div">
+                                <label for="birth">Data di nascita (dd/mm/yyyy)</label> 
+                                <input type="text" id="birth" name="birth"/>
+                            </div>
+                            <div id="way_div">
+                                <label for="way">Via</label> 
+                                <input type="text" id="way" name="way"/>
+                            </div>
+                            <div id="codFiscale_div">
+                                <label for="codFiscale">Codice Fiscale</label> 
+                                <input type="text" id="codFiscale" name="codFiscale"/>
+                            </div>
+                            <div id="cellular_div">
+                                <label for="cellular">Numero di cellulare</label> 
+                                <input type="text" id="cellular" name="cellular"/>
+                            </div>
+                            <div id="company_div">
+                                <label for="company">Azienda</label> 
+                                <input type="text" id="company" name="company"/>
+                            </div>
+                            <div id="job_div">
+                                <label for="job">Ruolo</label> 
+                                <input type="text" id="job" name="job"/>
+                            </div>
+                            <div id="secretQ_div">
+                                <label for="secretQ">Domanda segreta</label> 
+                                <input type="text" id="secretQ" name="secretQ"/>
+                            </div>
+                            <div id="secretR_div">
+                                <label for="secretR">Risposta segreta</label> 
+                                <input type="text" id="secretR" name="secretR"/>
+                            </div>
+                            <div id="auth_error" style="color: red">
+                            </div>
+        
+                            <div class="buttonRow">
+                                <input type="submit" value="Register" />
+                            </div>
+        
+                        </fieldset>
+                    </form> 
+                </table>-->
 
-                </fieldset>
-            </form> 
-        </div>
-
-    </body>
+</body>
 
 </html>

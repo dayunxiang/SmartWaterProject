@@ -47,8 +47,44 @@ public class MapsDataManagementService {
 
         List<MapsData> list = this.mapsDataBean.findAll();
 
+        req.getServletContext().log("INVIO LISTA");
 
         json.setData(list);
+
+        json.setStatus("SUCCESS");
+
+        return Response.ok().entity(json).build();
+    }
+
+    @GET
+    @Path("reset")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response reset(@Context HttpServletRequest req) {
+        JsonResponse json = new JsonResponse();
+
+        List<MapsData> list = this.mapsDataBean.findAll();
+        MapsData mapsData;
+        req.getServletContext().log("INIZIO RESET");
+
+        for (int i = 0; i < list.size(); i++) {
+            mapsData = list.get(i);
+            if (mapsData.getStyle().compareTo("#alarmStyle") == 0) {
+                mapsData.setValue(0);
+                mapsData.setStyle("#largeStyle");
+                this.mapsDataBean.update(mapsData);
+                req.getServletContext().log("AGGIORNO VALORE");
+            } else if (mapsData.getStyle().compareTo("#strictStyle") == 0) {
+                if (mapsData.getValue() != 0) {
+                    mapsData.setValue(0);
+                    this.mapsDataBean.update(mapsData);
+                    req.getServletContext().log("AGGIORNO VALORE");
+                }
+            } else if (mapsData.getStyle().compareTo("leak") == 0) {
+                this.mapsDataBean.remove(mapsData);
+                req.getServletContext().log("AGGIORNO VALORE");
+            }
+        }
+        req.getServletContext().log("TABELLA RESETTATA");
 
         json.setStatus("SUCCESS");
 

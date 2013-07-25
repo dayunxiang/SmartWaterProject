@@ -8,9 +8,42 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style type="text/css">
             #logo{
-                height: 30px;
+                height: 50px;
+                margin-left: 0px;
             }
+            #logo_tiled{
+                padding-top: 1em;
+            }
+            #title{
+                text-align: center;
+            }
+            #sub_title{
+                text-align: center;
+            }
+            #field{
+                margin-left: 150px;
+                padding-top: 1em;
+                padding-bottom: 1em;
+                border: 1px solid;
+                width: 400px;
+                height: 300px;
+            }
+            /*            #login #buttonRow,#register #buttonRow{
+                            text-align: left;
+                        }
+                        #buttonRow{
+                            margin-left: 10em;
+                            padding-right: 10px;
+                        }
+                        #login input[type=submit],#register input[type=submit]{
+                            color: #fff;
+                            border: 2px outset;
+                        }
+                        #login{
+                            margin-left: 30%;
+                        }*/
         </style>
+        <!--        <link rel="stylesheet" type="text/css" href="css/formStyle.css" />-->
         <script src="<%=request.getContextPath()%>/js/json2.js" type="text/javascript"></script>
 
         <%@ include file="/WEB-INF/includes/head/jquery.jsp" %>
@@ -68,37 +101,35 @@
             function close() {
                 $(last_o).parent().find("div").hide();
             }
-            $(function() {
-                "use strict";
-                $(document).ready(function() {
-                    if (<%=request.getUserPrincipal()%> != null) {
-                        $('#sign-in').html("<%=request.getUserPrincipal()%>");
-                        $('#sign').html("Logout");
-                        $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
-                        $('#ticket').attr("href", "<%=request.getContextPath()%>/secure/ticket/ticket.jsp");
-
-                    }
-                    var destinationUrl = "<%=request.getContextPath()%>/services/auth/ping";
-
-                    $.ajax({
-                        url: destinationUrl,
-                        type: "GET",
-                        cache: false,
-                        dataType: "json",
-                        success: function(data, textStatus, jqXHR) {
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            $('#info').html("Servizio momentaneamente fuori servizio");
-                        },
-                        complete: function(jqXHR, textStatus) {
-                            //alert("complete");
-                        }
-                    });
-
-
-                    return false;
-                });
-            });
+//            $(function() {
+//                "use strict";
+//                $(document).ready(function() {
+//                    if (<%=request.getUserPrincipal()%> != null) {
+//                        $('#sign-in').html("<%=request.getUserPrincipal()%>");
+//                        $('#sign').html("Logout");
+//                        $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
+//                    }
+//                    var destinationUrl = "<%=request.getContextPath()%>/services/auth/ping";
+//
+//                    $.ajax({
+//                        url: destinationUrl,
+//                        type: "GET",
+//                        cache: false,
+//                        dataType: "json",
+//                        success: function(data, textStatus, jqXHR) {
+//                        },
+//                        error: function(jqXHR, textStatus, errorThrown) {
+//                            $('#info').html("Servizio momentaneamente fuori servizio");
+//                        },
+//                        complete: function(jqXHR, textStatus) {
+//                            //alert("complete");
+//                        }
+//                    });
+//
+//
+//                    return false;
+//                });
+//            });
             $(function() {
                 "use strict";
 
@@ -134,74 +165,148 @@
                     return false;
                 });
             });
+            $(function() {
+                "use strict";
+
+                $(document.forms['loginForm']).submit(function(event) {
+
+                    var data = {
+                        email: this.email.value,
+                        password: this.password.value
+                    };
+
+                    //only for test --- to remove and delete comment above
+//                    var data = {
+//                        email: "pelldav@gmail.com",
+//                        password: "davide"
+//                    };
+
+                    var destinationUrl = this.action;
+
+                    $.ajax({
+                        url: destinationUrl,
+                        type: "POST",
+                        data: data,
+                        cache: false,
+                        dataType: "json",
+                        success: function(data, textStatus, jqXHR) {
+                            //alert("success");
+                            if (data.status == "SUCCESS") {
+                                //redirect to secured page
+                                window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/secure/index.jsp");
+                            } else {
+                                alert("failed");
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            alert("error - HTTP STATUS: " + jqXHR.status);
+                        },
+                        complete: function(jqXHR, textStatus) {
+                            //alert("complete");
+                        }
+                    });
+
+                    //event.preventDefault();
+                    return false;
+                });
+            });
         </script>       
 
-        <title>Smart Leak Detection - Homepage</title> 
+        <title>TI-LeD - Telecom Italia Leak Detection</title> 
     </head>
-    <div style="clear:both; margin-top:20px;">&nbsp;</div>
+    <div style="clear:both; margin-top:40px;">&nbsp;</div>
     <div id="header"><!-- begin header -->
 
         <div class="mainbar" >
             <div>
                 <ul class="mainMenu" >
                     <li class="" style="float:left;">
-                        <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
+                        <img id="logo" src="<%=request.getContextPath()%>/file/Logo_TILab.jpg">
                     </li>
-                    <li class="" style="float:left;"><!-- for links with no dropdown -->
-                        <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/login/login.jsp">+You</a>
+                    <li class="current" style="float:left;"><!-- for links with no dropdown -->
+                        <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/homepage.jsp">+You</a>
                     </li>
                     <!-- Using class="current" for the link of the current page -->
-                    <li class="current" style="float:left;">
+                    <li class="" style="float:left;">
                         <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
                     </li>
                     <li class="" style="float:left;">
-                        <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Gestione Ticket</a>
+                        <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/ticket/ticket.jsp">Gestione Ticket</a>
                     </li>
-                    <li class="" style="float:right; margin-right:3em;"><!-- for links with no dropdown -->
-                        <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sign-up</a>
+                    <li class="" style="float:right;"><!-- for links with no dropdown -->
+                        <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Registrati</a>
                     </li>
-                    <!--                    <li style="border-right:0;">
-                                            <dl class="staticMenu">
-                                                <dt><a class="" href="settings" onClick="return false;">Account<span class="arrow"></span></a></dt>
-                                                <dd>
-                                                    <ul class="mainMenuSub" style="right: -1px; left: auto; display: none;">
-                                                        <li><a href="http://www.google.co.in/reader">Reader</a></li>
-                                                        <li><a href="https://sites.google.com">Sites</a></li>
-                                                        <li><a href="http://groups.google.co.in">Groups</a></li>
-                                                        <li><a href="http://www.youtube.com">YouTube</a></li>
-                                                        <li>
-                                                            <div class="mid-line">
-                                                            </div>
-                                                        </li>
-                                                        <li><a href="http://www.google.co.in/imghp?hl=en&tab=wi">Images</a></li>
-                                                        <li><a href="http://maps.google.co.in/maps?hl=en&tab=wl">Maps</a></li>
-                                                        <li><a href="http://translate.google.co.in/">Translate</a></li>
-                                                        <li><a href="http://books.google.co.in">Books</a></li>
-                                                        <li><a href="http://scholar.google.co.in/">Scholar</a></li>
-                                                        <li><a href="http://blogsearch.google.co.in">Blogs</a></li>
-                                                        <li>
-                                                            <div class="mid-line">
-                                                            </div>
-                                                        </li>
-                                                        <li><a href="http://www.google.co.in/intl/en/options/">even more >></a></li>
-                                                        <li>
-                                                            <div class="mid-line">
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </dd>
-                                            </dl>
-                                        </li>-->
+                    <li class="" style="float:right;"><!-- for links with no dropdown -->
+                        <a id="reset" target="_self" href="<%=request.getContextPath()%>/reset.jsp">Reset Valori Mappa</a>
+                    </li>
+                    <li class="" style="float:right;"><!-- for links with no dropdown -->
+                        <a id="reset" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
+                    </li>
                 </ul>             	
             </div>
         </div>
         <br/><br/>
     </div><!-- end header -->	
-
     <body>
-        <h1>Smart Leak Detection</h1>
-        <br><br><br>
-        <div id="info"></div>
+        <div style="text-align: center">
+            <br><br>
+            <h1 id="title">TI-LeD</h1>
+            <h2 id="sub_title">Servizio di Smart Leak Detection</h2>
+            <br><br><br>
+        </div>
+        <!--        <div id="login">
+                    <form id="loginForm" name="loginForm" action="<%=request.getContextPath()%>/services/auth/login" method="post">
+                        <fieldset>
+                            <legend>Login</legend>
+        
+                            <div>
+                                <label for="email">Email</label> 
+                                <input type="text" id="email" name="email"/>
+                                <label for="password">Password</label> 
+                                <input type="password" id="password" name="password"/>
+                            </div>
+                                                <div>
+                                                    <label for="password">Password</label> 
+                                                    <input type="password" id="password" name="password"/>
+                                                </div>
+        
+                            <div class="buttonRow">
+                                <input type="submit" value="Login" />
+        
+                                <a href="<%=request.getContextPath()%>/auth/auth.jsp"> Registrati!</a>
+                            </div>
+                        </fieldset>
+                    </form> 
+                </div>-->
+        <!--        <fieldset id="field" style="align: center;">-->
+        <div>
+            <p>         
+                <img id="logo_tiled" style="height: 30%; width: 30%; float: right; margin-right: 15%;" src="<%=request.getContextPath()%>/file/LOGO_TI_LED.png" align="middle">
+            <table id="field">
+                <tr align="center">
+                    <td>
+                        <form id="loginForm" name="loginForm" action="<%=request.getContextPath()%>/services/auth/login" method="post">
+                            <font size="3"><b>Email</b></font> 
+                            <br>
+                            <input size="50px" type="text" id="email" name="email"/>
+                            <br>
+                            <br>
+                            <font size="3"><b>Password</b></font>
+                            <br>
+                            <input size="50px" type="password" id="password" name="password"/>
+                            <br>
+                            <br>
+                            <br>
+                            <input type="submit" value="Login"  size="3"/>
+                            <div style="clear:both; margin-top:20px;">&nbsp;</div>
+                            <a href="<%=request.getContextPath()%>/auth/auth.jsp"><font size="3"> Registrati!</font></a>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </p>
+    </div>
+    <!--        </fieldset>-->
 
-    </body>
+</body>
 </html>

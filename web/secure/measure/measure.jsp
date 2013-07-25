@@ -9,25 +9,43 @@
         <style type="text/css">
             table {
                 width: 100%;
-                border: 1px solid #cef;
+                border: 2px solid #000000;
                 text-align: left; }
             th {
                 font-weight: bold;
-                background-color: #acf;
-                border-bottom: 1px solid #cef; }
+                color: white;
+                background-color: #c40109;
+                border-bottom: 1px solid; 
+                font-size: large;
+            }
             td,th {
                 padding: 4px 5px; }
-            .odd {
-                background-color: #3399ff; }
-            .odd td {
-                border-bottom: 1px solid #3399ff; }  
+            tr:nth-of-type(odd) {
+                /*                background-color:#07abd8;*/
+                background-color: #b9b9b9;
+                alignment-adjust: central;
+            }
+            /*            .odd {
+                            background-color: #3399ff; }
+                        .odd td {
+                            border-bottom: 1px solid #3399ff; }  */
             #logo{
-                height: 30px;
+                height: 50px;
             }
             #measureList{
                 margin-left: 5px;
                 margin-right: 5px;
             }
+            #title{
+                margin-left: 5px;
+                font-size: large;
+                font-weight: bold;
+            }
+            /*            #logo_tiled{
+                            height: 7%;
+                            width: 7%;
+                            padding-left: 200px;
+                        }*/
         </style>
         <script src="<%=request.getContextPath()%>/js/json2.js" type="text/javascript"></script>
 
@@ -89,12 +107,13 @@
             $(function() {
                 "use strict";
                 $(document).ready(function() {
+                    $('#title').append('Storico Noise logger #' + getUrlValue("nl") +
+                            '<img id="logo_tiled" style="height: 15%; width: 15%; padding-left:65%; align:middle;" src="<%=request.getContextPath()%>/file/LOGO_TI_LED.png" align="middle">');
                     if ("<%=request.getUserPrincipal()%>" != "") {
 
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign').html("Logout");
                         $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
-                        $('#ticket').attr("href", "<%=request.getContextPath()%>/secure/ticket/ticket.jsp");
                         $('#storico').attr("href", document.URL);
                     }
 
@@ -104,7 +123,7 @@
             });
         </script>
 
-        <title>JSP Page</title>
+        <title>TI-LeD - Telecom Italia Leak Detection</title>
         <script type="text/javascript">
             function getUrlValue(VarSearch) {
                 var SearchString = window.location.search.substring(1);
@@ -168,7 +187,7 @@
                             if (data.status == "SUCCESS") {
 
                                 for (var key = 0, size = data.data.length; key < size; key++) {
-                                    table += '<tr><td>'
+                                    table += '<tr><td>#'
                                             + data.data[key].noiselogger
                                             + '</td><td>'
                                             + data.data[key].timestamp
@@ -176,7 +195,7 @@
                                             + data.data[key].value
                                             + '</td><td>'
                                             + data.data[key].battery
-                                            + '</td></tr>';
+                                            + '%</td></tr>';
                                 }
                                 $('#table_content').html(table);
                             } else {
@@ -239,69 +258,49 @@
 
     </head>
     <body>
-        <div style="clear:both; margin-top:20px;">&nbsp;</div>
+        <div style="clear:both; margin-top:40px;">&nbsp;</div>
         <div id="header"><!-- begin header -->
 
             <div class="mainbar" >
                 <div>
                     <ul class="mainMenu" >
-                        <!-- Using class="current" for the link of the current page -->
+                        <!--                         Using class="current" for the link of the current page -->
                         <li class="" style="float:left;">
-                            <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
+                            <img id="logo" src="<%=request.getContextPath()%>/file/Logo_TILab.jpg">
                         </li>
                         <li class="" style="float:left;"><!-- for links with no dropdown -->
-                            <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/login/login.jsp">+You</a>
+                            <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/homepage.jsp">+You</a>
                         </li>
+                        <!-- Using class="current" for the link of the current page -->
                         <li class="" style="float:left;">
                             <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
                         </li>
                         <li class="" style="float:left;">
-                            <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Gestione Ticket</a>
+                            <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/ticket/ticket.jsp">Gestione Ticket</a>
                         </li>
-                        <li class="current" style="float:left;">
+                        <li class="current" style="float:left;" >
                             <a id="storico" target="_self">Storico Noise Logger</a>
                         </li>
-                        <li class="" style="float:right; margin-right:3em;"><!-- for links with no dropdown -->
-                            <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sign-up</a>
+                        <li class="" style="float:right;"><!-- for links with no dropdown -->
+                            <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Registrati</a>
                         </li>
-                        <!--                    <li style="border-right:0;">
-                                                <dl class="staticMenu">
-                                                    <dt><a class="" href="settings" onClick="return false;">Account<span class="arrow"></span></a></dt>
-                                                    <dd>
-                                                        <ul class="mainMenuSub" style="right: -1px; left: auto; display: none;">
-                                                            <li><a href="http://www.google.co.in/reader">Reader</a></li>
-                                                            <li><a href="https://sites.google.com">Sites</a></li>
-                                                            <li><a href="http://groups.google.co.in">Groups</a></li>
-                                                            <li><a href="http://www.youtube.com">YouTube</a></li>
-                                                            <li>
-                                                                <div class="mid-line">
-                                                                </div>
-                                                            </li>
-                                                            <li><a href="http://www.google.co.in/imghp?hl=en&tab=wi">Images</a></li>
-                                                            <li><a href="http://maps.google.co.in/maps?hl=en&tab=wl">Maps</a></li>
-                                                            <li><a href="http://translate.google.co.in/">Translate</a></li>
-                                                            <li><a href="http://books.google.co.in">Books</a></li>
-                                                            <li><a href="http://scholar.google.co.in/">Scholar</a></li>
-                                                            <li><a href="http://blogsearch.google.co.in">Blogs</a></li>
-                                                            <li>
-                                                                <div class="mid-line">
-                                                                </div>
-                                                            </li>
-                                                            <li><a href="http://www.google.co.in/intl/en/options/">even more >></a></li>
-                                                            <li>
-                                                                <div class="mid-line">
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </dd>
-                                                </dl>
-                                            </li>-->
+                        <li class="" style="float:right;"><!-- for links with no dropdown -->
+                            <a id="reset" target="_self" href="<%=request.getContextPath()%>/reset.jsp">Reset Valori Mappa</a>
+                        </li>
+                        <li class="" style="float:right;"><!-- for links with no dropdown -->
+                            <a id="reset" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
+                        </li>
                     </ul>             	
                 </div>
             </div>
-            <h1>You are logged in.</h1>
-            <button id="setNewMeasure">Set New Measure</button>
-
+            <!--            <br/><br/>-->
+            <div id="title_bar">
+                <p id="title">
+<!--                    <img id="logo_tiled" src="<%=request.getContextPath()%>/file/LOGO_TI_LED.png" align="middle">-->
+                </p>
+            </div>
+            <!--            <button id="setNewMeasure">Set New Measure</button>-->
+<!--                <img id="logo_tiled" src="<%=request.getContextPath()%>/file/LOGO_TI_LED.png"/></div>-->
             <br/><br/>
             <div id="measureList">
                 <table id="MeasureTable">

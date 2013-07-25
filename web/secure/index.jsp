@@ -6,25 +6,35 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8; initial-scale=1.0; user-scalable=no">
-
+        <!--        <script>
+                    ESPN_refresh = window.setTimeout(function() {window.location.href = window.location.href}, 10000);
+                </script>   
+            <noscript>   
+                <meta http-equiv=”refresh” content=”10″ />   
+            </noscript>-->
         <style type="text/css">
+            #logo{
+                height: 50px;
+            }
             html, body {
                 height: 100%;
             }
             #map-canvas {
                 width: 99%;
-                height: 78%;
+                height: 68%;
                 border: 1px solid black;
                 padding-left: 0.5%;
                 padding-right: 0.5%;
             }
             .olPopup p { margin:0px; font-size: .9em;}
             .olPopup h2 { font-size:1.2em; }
-            #logo{
-                height: 30px;
+            #title{
+                margin-left: 5px;
+                font-size: large;
+                font-weight: bold;
             }
         </style>
-        <title>Secured JSP Page</title>
+        <title>TI-LeD - Telecom Italia Leak Detection</title>
 
         <!-- see https://github.com/douglascrockford/JSON-js -->
         <script src="<%=request.getContextPath()%>/js/json2.js" type="text/javascript"></script>
@@ -88,7 +98,6 @@
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign').html("Logout");
                         $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
-                        $('#ticket').attr("href", "<%=request.getContextPath()%>/secure/ticket/ticket.jsp");
                     }
 
 
@@ -119,7 +128,8 @@
                                 mapTypeId: google.maps.MapTypeId.ROADMAP
                             });
                             var ctaLayer = new google.maps.KmlLayer({
-                                url: 'http://caweb.elislab.elis.org/SmartWater/Turin_Pipe.kml'
+                                url: 'http://caweb.elislab.elis.org/SmartWater/Turin_Pipe.kml',
+                                suppressInfoWindows: true
                             });
                             ctaLayer.setMap(map);
                             var infowindow = new google.maps.InfoWindow();
@@ -127,11 +137,14 @@
                             for (var key = 0, size = data.data.length; key < size; key++) {
                                 var image;
                                 if (data.data[key].style == "#largeStyle")
-                                    image = "http://labs.google.com/ridefinder/images/mm_20_purple.png";
+                                    //                                    image = "http://labs.google.com/ridefinder/images/mm_20_purple.png";
+                                    image = "<%=request.getContextPath()%>/file/iconeNL/Viola3.png";
                                 else if (data.data[key].style == "#strictStyle")
-                                    image = "http://labs.google.com/ridefinder/images/mm_20_white.png";
+                                    //                                    image = "http://labs.google.com/ridefinder/images/mm_20_white.png";
+                                    image = "<%=request.getContextPath()%>/file/iconeNL/Bianco3.png";
                                 else if (data.data[key].style == "#alarmStyle") {
-                                    image = "http://labs.google.com/ridefinder/images/mm_20_red.png";
+                                    //                                    image = "http://labs.google.com/ridefinder/images/mm_20_red.png";
+                                    image = "<%=request.getContextPath()%>/file/iconeNL/rosso3.png";
                                     //draw a circle in alarm area
                                     var centerCoordinate = new google.maps.LatLng(data.data[key].latitude, data.data[key].longitude);
                                     var alarmOptions = {
@@ -147,14 +160,16 @@
                                     var alarmCircle = new google.maps.Circle(alarmOptions);
                                 }
                                 else if (data.data[key].style == "#errorStyle")
-                                    image = "http://labs.google.com/ridefinder/images/mm_20_yellow.png";
+                                    //                                    image = "http://labs.google.com/ridefinder/images/mm_20_yellow.png";
+                                    image = "<%=request.getContextPath()%>/file/iconeNL/giallo3.png";
                                 else if (data.data[key].style == "leak")
-                                    image = "http://labs.google.com/ridefinder/images/mm_20_black.png";
-
+                                    //                                    image = "http://labs.google.com/ridefinder/images/mm_20_black.png";
+                                    image = "<%=request.getContextPath()%>/file/iconeNL/triangolo3.png";
                                 marker = new google.maps.Marker({
                                     position: new google.maps.LatLng(data.data[key].latitude, data.data[key].longitude),
                                     map: map,
-                                    icon: image
+                                    icon: image,
+                                    scaledSize: 0.1
                                 });
                                 google.maps.event.addListener(marker, 'click', (function(marker, key) {
                                     return function() {
@@ -194,7 +209,14 @@
                                         if (data.data[key].style == "#strictStyle") {
                                             content = '<div class = "geoxml3_infowindow"> <h3> Noise logger #' + data.data[key].noiselogger +
                                                     '</h3><br><h3>Sensore non attivo</h3></div>';
+                                            '<br>Batteria: ' + colorBattery + data.data[key].battery + '%</font>' +
+                                                    '<br>Stato: ' + colorStatus + data.data[key].status + '</font><br></h3></div>';
                                         }
+                                        if(data.data[key].style == "leak"){
+                                            content = '<div class = "geoxml3_infowindow"> <h3> Perdita' +
+                                                    '</h3></div>';
+                                        }
+                                        
                                         infowindow.setContent(content);
                                         infowindow.open(map, marker);
                                     }
@@ -254,7 +276,7 @@
     </head>
 
     <body>
-        <div style="clear:both; margin-top:20px;">&nbsp;</div>
+        <div style="clear:both; margin-top:40px;">&nbsp;</div>
         <div id="header"><!-- begin header -->
 
             <div class="mainbar" >
@@ -262,32 +284,44 @@
                     <ul class="mainMenu" >
                         <!-- Using class="current" for the link of the current page -->
                         <li class="" style="float:left;">
-                            <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
+                            <img id="logo" src="<%=request.getContextPath()%>/file/Logo_TILab.jpg">
                         </li>
                         <li class="" style="float:left;"><!-- for links with no dropdown -->
-                            <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/login/login.jsp">+You</a>
+                            <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/homepage.jsp">+You</a>
                         </li>
+                        <!-- Using class="current" for the link of the current page -->
                         <li class="current" style="float:left;">
                             <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
                         </li>
                         <li class="" style="float:left;">
-                            <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Gestione Ticket</a>
+                            <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/ticket/ticket.jsp">Gestione Ticket</a>
                         </li>
-                        <li class="" style="float:right; margin-right:3em;"><!-- for links with no dropdown -->
-                            <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Sign-up</a>
+                        <li class="" style="float:right;"><!-- for links with no dropdown -->
+                            <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Registrati</a>
+                        </li>
+                        <li class="" style="float:right;"><!-- for links with no dropdown -->
+                            <a id="reset" target="_self" href="<%=request.getContextPath()%>/reset.jsp">Reset Valori Mappa</a>
+                        </li>
+                        <li class="" style="float:right;"><!-- for links with no dropdown -->
+                            <a id="reset" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
                         </li>
                     </ul>             	
                 </div>
             </div>
-            <br/><br/>
         </div><!-- end header -->	
-
-        <h1>Smart Leak Detection</h1>
-        <h4>by Smart Team</h4>
+        <div id="title_bar">
+            <p id="title">
+                TI LeD - Telecom Italia Leak Detection
+                <img id="logo_tiled" style="height: 15%; width: 15%; padding-left:45%; align:middle;" src="<%=request.getContextPath()%>/file/LOGO_TI_LED.png" align="middle">                
+            </p>
+        </div>
+        <!--        <h1>TI-LeD</h1>-->
         <br/><br/>
 
         <div id="map-canvas"></div>
         <div id="info"></div>
+        <!--        <button onclick='window.location.replace("https://" + window.location.host + "/SmartLeakDetection/secure/measure/activate.jsp?nl=25");'>Activate</button><br>
+                <button onclick='window.location.replace("https://" + window.location.host + "/SmartLeakDetection/secure/ticket/newTicket.jsp?nl=25");'>newticket</button><br>-->
 
     </body>
 </html>

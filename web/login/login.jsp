@@ -26,107 +26,107 @@
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
         <link href="<%=request.getContextPath()%>/css/top_menu.css" rel="stylesheet" type="text/css"/>
         <script type="text/javascript">
-var SubMenutimer;
-var last_o;
-$(".mainbar").ready(function() {
-    $(".staticMenu dt a").click(function() {
-        $(this).parents(".staticMenu").find(".noti_bubble").hide();
-        $(".staticMenu dd ul").not($(this).parents(".staticMenu").find("ul")).hide();
-        $(".staticMenu dt a").not($(this)).removeClass("selected");
-        $(this).parents(".staticMenu").find("ul").toggle();
+            var SubMenutimer;
+            var last_o;
+            $(".mainbar").ready(function() {
+                $(".staticMenu dt a").click(function() {
+                    $(this).parents(".staticMenu").find(".noti_bubble").hide();
+                    $(".staticMenu dd ul").not($(this).parents(".staticMenu").find("ul")).hide();
+                    $(".staticMenu dt a").not($(this)).removeClass("selected");
+                    $(this).parents(".staticMenu").find("ul").toggle();
 
-        if ($(this).parents(".staticMenu").find("ul").css("display") == "none") {
-            $(this).removeClass("selected");
-        } else {
-            $(this).addClass("selected");
-        }
-    });
+                    if ($(this).parents(".staticMenu").find("ul").css("display") == "none") {
+                        $(this).removeClass("selected");
+                    } else {
+                        $(this).addClass("selected");
+                    }
+                });
 
-    $(".staticMenu dd ul li a").click(function() {
-        var text = $(this).html();
-        $(".staticMenu dt a span").html(text);
-        $(".staticMenu dd ul").hide();
-    });
+                $(".staticMenu dd ul li a").click(function() {
+                    var text = $(this).html();
+                    $(".staticMenu dt a span").html(text);
+                    $(".staticMenu dd ul").hide();
+                });
 
-    $(document).bind('click', function(e) {
-        var $clicked = $(e.target);
-        if (!$clicked.parents().hasClass("staticMenu")) {
-            $(".staticMenu dd ul").hide();
-            $(".staticMenu dt a").removeClass("selected");
-        }
-    });
-});
+                $(document).bind('click', function(e) {
+                    var $clicked = $(e.target);
+                    if (!$clicked.parents().hasClass("staticMenu")) {
+                        $(".staticMenu dd ul").hide();
+                        $(".staticMenu dt a").removeClass("selected");
+                    }
+                });
+            });
 
-function openSubMenu(o) {
-    cancelSubMenuClose();
-    if (last_o)
-        $(last_o).parent().find("div").hide();
-    last_o = o;
-    $(o).parent().find("div").show();
-}
-
-function closeSubMenu() {
-    SubMenutimer = setTimeout("close()", 500);
-}
-
-function cancelSubMenuClose() {
-    clearTimeout(SubMenutimer);
-}
-
-function close() {
-    $(last_o).parent().find("div").hide();
-}
-
-$(function() {
-    "use strict";
-    $(document).ready(function() {
-        if (<%=request.getUserPrincipal()%> != null) {
-
-            $('#sign-in').html("<%=request.getUserPrincipal()%>");
-            $('#sign').html("Logout");
-            $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
-            $('#ticket').attr("href", "<%=request.getContextPath()%>/secure/ticket/ticket.jsp");
-        }
-
-
-        return false;
-    });
-});
-$(function() {
-    "use strict";
-
-    $('#sign').click(function() {
-        if (<%=request.getUserPrincipal()%> == null) {
-            window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/auth/auth.jsp");
-            return false;
-        }
-        var destinationUrl = this.href;
-
-        $.ajax({
-            url: destinationUrl,
-            type: "GET",
-            cache: false,
-            dataType: "json",
-            success: function(data, textStatus, jqXHR) {
-                //alert("success");
-                if (data.status == "SUCCESS") {
-                    //redirect to welcome page
-                    window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/");
-                } else {
-                    alert("failed");
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert("error - HTTP STATUS: " + jqXHR.status);
-            },
-            complete: function(jqXHR, textStatus) {
-                //alert("complete");
+            function openSubMenu(o) {
+                cancelSubMenuClose();
+                if (last_o)
+                    $(last_o).parent().find("div").hide();
+                last_o = o;
+                $(o).parent().find("div").show();
             }
-        });
 
-        return false;
-    });
-});
+            function closeSubMenu() {
+                SubMenutimer = setTimeout("close()", 500);
+            }
+
+            function cancelSubMenuClose() {
+                clearTimeout(SubMenutimer);
+            }
+
+            function close() {
+                $(last_o).parent().find("div").hide();
+            }
+
+            $(function() {
+                "use strict";
+                $(document).ready(function() {
+                    if (<%=request.getUserPrincipal()%> != null) {
+
+                        $('#sign-in').html("<%=request.getUserPrincipal()%>");
+                        $('#sign').html("Logout");
+                        $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
+                        $('#ticket').attr("href", "<%=request.getContextPath()%>/secure/ticket/ticket.jsp");
+                    }
+
+
+                    return false;
+                });
+            });
+            $(function() {
+                "use strict";
+
+                $('#sign').click(function() {
+                    if (<%=request.getUserPrincipal()%> == null) {
+                        window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/auth/auth.jsp");
+                        return false;
+                    }
+                    var destinationUrl = this.href;
+
+                    $.ajax({
+                        url: destinationUrl,
+                        type: "GET",
+                        cache: false,
+                        dataType: "json",
+                        success: function(data, textStatus, jqXHR) {
+                            //alert("success");
+                            if (data.status == "SUCCESS") {
+                                //redirect to welcome page
+                                window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/");
+                            } else {
+                                alert("failed");
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            alert("error - HTTP STATUS: " + jqXHR.status);
+                        },
+                        complete: function(jqXHR, textStatus) {
+                            //alert("complete");
+                        }
+                    });
+
+                    return false;
+                });
+            });
         </script>
 
 

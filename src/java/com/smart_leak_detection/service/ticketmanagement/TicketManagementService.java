@@ -88,27 +88,6 @@ public class TicketManagementService {
             return Response.ok().entity(json).build();
         }
 
-//        //Retrive info for the noise logger selected
-//        Class cls = this.getClass();
-//        ProtectionDomain pDomain = cls.getProtectionDomain();
-//        CodeSource cSource = pDomain.getCodeSource();
-//        URL loc = cSource.getLocation();
-//        String path = loc.getPath().split("W")[0] + "file/Noise_loggers_v4.kml";
-////        String path = "../../../../../web/file/Noise_loggers_v4.kml";
-////        URI url = new URI(path);
-//        req.getServletContext().log("ECCOLOOOOOO: " + path);
-//
-//        Kml kml = Kml.unmarshal(new File(path));
-//        Document document = (Document) kml.getFeature(); //Get the document features
-//        Iterator<Feature> iterator = document.getFeature().iterator(); //Create an iterator for the placemark
-//        Feature feature = null;
-//        while (iterator.hasNext()) {
-//            feature = iterator.next();
-//            if (feature.getName().compareTo(noiselogger) == 0) {
-//                break;
-//            }
-//        }
-//        req.getServletContext().log("ECCOLOOOOOO: " + feature.getDescription());
         MapsData mapsData = this.mapsDataBean.find(noiselogger);
         
         int battery = mapsData.getBattery();
@@ -146,7 +125,7 @@ public class TicketManagementService {
         ticketBean.save(ticket);
         //Send email to user
         String host = "smtp.gmail.com";
-        String from = "smart.leak.detection@gmail.com";
+        String from = "servizio.tiled@gmail.com";
         String pass = "smartleakdetection";
         Properties props = System.getProperties();
         props.put("mail.smtp.starttls.enable", "true");
@@ -172,8 +151,11 @@ public class TicketManagementService {
         for (int i = 0; i < toAddress.length; i++) {
             message.addRecipient(Message.RecipientType.TO, toAddress[i]);
         }
-        message.setSubject("Smart Leak Detection - Richiesta Manutenzione");
-        message.setContent("<h1>Smart Leak Detection</h1> <br> <div> Registrazione di manutenzione inviata <br>" + newTicket.toString() + "</div>", "text/html");
+        message.setSubject("TI-LeD - Ticket aperto #" + newTicket.getId());
+        message.setContent("<h1>TI-LeD</h1> <br> <div> Gentile utente,<br><br>" +
+                "la richiesta di supporto è stata creata ed assegnata con il numero #" + newTicket.getId() +
+                "Potrà seguire l&lsquoavanzamento della richiesta sul nostro portale." +
+                "<br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
         Transport transport = session.getTransport("smtp");
         transport.connect(host, from, pass);
         transport.sendMessage(message, message.getAllRecipients());

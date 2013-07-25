@@ -9,10 +9,10 @@
         <script>
             ESPN_refresh = window.setTimeout(function() {
                 window.location.href = "<%=request.getContextPath()%>/secure/index.jsp"
-            }, 10000);
+            }, 7000);
         </script>   
     <noscript>   
-        <meta http-equiv=”refresh” content=”10″ />   
+        <meta http-equiv=”refresh” content=”5″ />   
     </noscript>
     <style type="text/css">
         #logo{
@@ -107,16 +107,6 @@
     </script>
 
     <script type="text/javascript">
-        function getUrlValue(VarSearch) {
-            var SearchString = window.location.search.substring(1);
-            var VariableArray = SearchString.split('&');
-            for (var i = 0; i < VariableArray.length; i++) {
-                var KeyValuePair = VariableArray[i].split('=');
-                if (KeyValuePair[0] == VarSearch) {
-                    return KeyValuePair[1];
-                }
-            }
-        }
         $(function() {
             "use strict";
             $('#sign').click(function() {
@@ -154,21 +144,17 @@
         $(function() {
             "use strict";
             $(document).ready(function() {
-                var data = {
-                    noiselogger: getUrlValue("nl")
-                };
                 $.ajax({
-                    url: "<%=request.getContextPath()%>/services/ticket/newticket",
-                    type: "POST",
-                    data: data,
+                    url: "<%=request.getContextPath()%>/services/mapsdata/reset",
+                    type: "GET",
                     cache: false,
                     dataType: "json",
                     success: function(data, textStatus, jqXHR) {
                         //alert("success");
                         if (data.status == "SUCCESS") {
                             //redirect to secured page
-                            $('#title').html('Inserito nuovo ticket #' + data.data.id);
-                            $('#subtitle').html('Riceverai una email di avvenuta apertura ticket');
+                            $('#title').html('Dati della mappa resettati con successo');
+                            $('#subtitle').html('Adesso è possibile procedere con una nuova simulazione');
 
                         } else {
                         }
@@ -214,13 +200,13 @@
                     <li class="" style="float:left;">
                         <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/ticket/ticket.jsp">Gestione Ticket</a>
                     </li>
-                    <li class="current" style="float:left;">
+                    <li class="" style="float:left;">
                         <a id="newTicket" target="_self">Richiesta Manutenzione</a>
                     </li>
                     <li class="" style="float:right;"><!-- for links with no dropdown -->
                         <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Registrati</a>
                     </li>
-                    <li class="" style="float:right;"><!-- for links with no dropdown -->
+                    <li class="current" style="float:right;"><!-- for links with no dropdown -->
                         <a id="reset" target="_self" href="<%=request.getContextPath()%>/reset.jsp">Reset Valori Mappa</a>
                     </li>
                     <li class="" style="float:right;"><!-- for links with no dropdown -->
@@ -232,9 +218,6 @@
         <h1 id="title"></h1>
         <h2 id="subtitle"></h2>
 
-        <br/><br/>
-
-        <div id="info"></div>
 
 </body>
 </html>

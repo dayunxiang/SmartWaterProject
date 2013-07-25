@@ -5,44 +5,35 @@
 
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8; initial-scale=1.0; user-scalable=no">
+        <!--        <script>
+                    ESPN_refresh = window.setTimeout(function() {
+                        window.location.href = "<%=request.getContextPath()%>/secure/index.jsp"
+                    }, 7000);
+                </script>   
+            <noscript>   
+                <meta http-equiv=”refresh” content=”5″ />   
+            </noscript>-->
         <style type="text/css">
-            table {
-                width: 100%;
-                border: 2px solid #000000;
-                text-align: left; }
-            th {
-                font-weight: bold;
-                color: white;
-                background-color: #c40109;
-                border-bottom: 1px solid;
-                font-size: large;
-            }
-            td,th {
-                padding: 4px 5px; }
-            tr:nth-of-type(odd) {
-                /*                background-color:#07abd8;*/
-                background-color: #b9b9b9;
-                alignment-adjust: central;
-            }
-            /*            .odd {
-                            background-color: #def; }
-                        .odd td {
-                            border-bottom: 1px solid #cef; }  */
             #logo{
                 height: 50px;
             }
-            #ticketsList{
-                margin-left: 5px;
-                margin-right: 5px;
-            }
             #title{
-                margin-left: 5px;
+                margin-left: 10px;
                 font-size: large;
                 font-weight: bold;
             }
+            #subtitle{
+                margin-left: 10px;
+                font-size: small;
+            }
         </style>
+        <title>TI-LeD - Telecom Italia Leak Detection</title>
+
+        <!-- see https://github.com/douglascrockford/JSON-js -->
         <script src="<%=request.getContextPath()%>/js/json2.js" type="text/javascript"></script>
+        <script src="<%=request.getContextPath()%>/js/geoxml3.js" type="text/javascript"></script>
+
 
         <%@ include file="/WEB-INF/includes/head/jquery.jsp" %>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
@@ -102,59 +93,95 @@
             $(function() {
                 "use strict";
                 $(document).ready(function() {
-                    $('#title').append('Lista Ticket' +
-                            '<img id="logo_tiled" style="height: 15%; width: 15%; padding-left:65%; align:middle;" src="<%=request.getContextPath()%>/file/LOGO_TI_LED.png" align="middle">');
-                    if ("<%=request.getUserPrincipal()%>" != "") {
+                if ("<%=request.getUserPrincipal()%>" != "" && "<%=request.getUserPrincipal()%>" == null) {
 
-                        $('#sign-in').html("<%=request.getUserPrincipal()%>");
+                    $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign').html("Logout");
-                        $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
+                    $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
                     }
+
+
+                    return false;
+                });
+            });
+        </script>
+
+        <script type="text/javascript">
+            $(function() {
+                "use strict";
+                $('#sign').click(function() {
+                    if ("<%=request.getUserPrincipal()%>" == "") {
+                        window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/auth/auth.jsp");
+                        return false;
+                    }
+                    var destinationUrl = this.href;
+
                     $.ajax({
-                        url: "<%=request.getContextPath()%>/services/ticket/list",
+                        url: destinationUrl,
                         type: "GET",
                         cache: false,
                         dataType: "json",
                         success: function(data, textStatus, jqXHR) {
                             //alert("success");
-                            var table;
                             if (data.status == "SUCCESS") {
-
-                                for (var key = 0, size = data.data.length; key < size; key++) {
-                                    table += '<tr><td>'
-                                            + data.data[key].noiselogger
-                                            + '</td><td>'
-                                            + data.data[key].stato
-                                            + '</td><td>'
-                                            + data.data[key].info
-                                            + '</td></tr>';
-                                }
-                                $('#table_content').html(table);
+                                //redirect to welcome page
+                                window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/");
                             } else {
                                 alert("failed");
                             }
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
-                            //alert("error - HTTP STATUS: "+jqXHR.status);
-                            if (textStatus == "parsererror") {
-                                alert("You session has timed out");
-                                //forward to welcomde page
-                                window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/homepage.jsp");
-                            }
+                            alert("error - HTTP STATUS: " + jqXHR.status);
                         },
                         complete: function(jqXHR, textStatus) {
                             //alert("complete");
                         }
                     });
+
+                    return false;
+                });
+            });
+            function addComunication() {
+                var ip = this.ip.value;
+                if (ip == "" || ip == null) {
+                    this.ip = 'localhost';
+                }
+                var data = {
+                    ip: ip
+                };
+            var destinationUrl = "<%=request.getContextPath()%>/services/auth/startcom";
+
+                $.ajax({
+                    url: destinationUrl,
+                    type: "POST",
+                    data: data,
+                    cache: false,
+                    dataType: "json",
+                    success: function(data, textStatus, jqXHR) {
+                        if (data.status == "SUCCESS") {
+                            //redirect to secured page
+                            $('#title').html('Comunicazione con il gateway avviata con successo');
+                            $('#subtitle').html('Adesso è possibile ricevere i dati dalla rete');
+
+                        } else {
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        $('#title').html('Problemi di comunicazione con il server');
+                        $('#subtitle').html('Riprovare ad avviare la comunicazione');
+                    },
+                    complete: function(jqXHR, textStatus) {
+                        //alert("complete");
+                    }
                 });
 
+
                 return false;
-            });
+            }
         </script>
 
-        <title>TI-LeD - Telecom Italia Leak Detection</title>
     </head>
-    <body>
+    <body id="body">
         <div style="clear:both; margin-top:40px;">&nbsp;</div>
         <div id="header"><!-- begin header -->
 
@@ -172,7 +199,7 @@
                         <li class="" style="float:left;">
                             <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
                         </li>
-                        <li class="current" style="float:left;">
+                        <li class="" style="float:left;">
                             <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/ticket/ticket.jsp">Gestione Ticket</a>
                         </li>
                         <li class="" style="float:right;"><!-- for links with no dropdown -->
@@ -181,28 +208,34 @@
                         <li class="" style="float:right;"><!-- for links with no dropdown -->
                             <a id="reset" target="_self" href="<%=request.getContextPath()%>/reset.jsp">Reset Valori Mappa</a>
                         </li>
-                        <li class="" style="float:right;"><!-- for links with no dropdown -->
+                        <li class="current" style="float:right;"><!-- for links with no dropdown -->
                             <a id="reset" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
                         </li>
                     </ul>             	
                 </div>
             </div>
-            <div id="title_bar">
-                <p id="title">
-<!--                    <img id="logo_tiled" src="<%=request.getContextPath()%>/file/LOGO_TI_LED.png" align="middle">-->
+            <div>
+                <p>         
+                    <img id="logo_tiled" style="height: 30%; width: 30%; float: right; margin-right: 15%;" src="<%=request.getContextPath()%>/file/LOGO_TI_LED.png" align="middle">
+                <table id="field">
+                    <tr align="center">
+                        <td>
+                            <font size="3"><b>Indirizzo IP</b></font> 
+                            <br>
+                            <input size="50px" type="text" id="ip" name="ip"/>
+                            <br>
+                            <br>
+                            <button id="addIp" onclick="addComunication()">Avvia Comunicazione</button>
+                            <div style="clear:both; margin-top:20px;">&nbsp;</div>
+                        </td>
+                    </tr>
+                </table>
                 </p>
             </div>
-            <br/><br/>
-            <div id="ticketsList">
-                <table id="TicketTable">
-                    <thead>
-                        <tr><th>Noise Logger</th><th>Stato</th><th>Info</th></tr>
-                    </thead>
-                    <tbody id="table_content">
+            <br><br>
+            <h1 id="title"></h1>
+            <h2 id="subtitle"></h2>
 
-                    </tbody>
-            </div>
 
     </body>
-
 </html>
