@@ -1,6 +1,7 @@
 package com.smart_leak_detection.data;
 
 import com.smart_leak_detection.data.gurux.DlmsServerAddress;
+import com.smart_leak_detection.data.gurux.GuruxHelper;
 import com.smart_leak_detection.data.gurux.GuruxWrapper;
 import com.smart_leak_detection.data.gurux.MeterReadings;
 import com.smart_leak_detection.data.gurux.SAP;
@@ -11,41 +12,43 @@ import java.util.Date;
 
 
 import java.math.BigInteger;
+import org.apache.log4j.Logger;
 
 public class MeterData {
 
     public String gatewayId;
     public String meterId = "ITR";
     public String ip;
+    private Logger logger = Logger.getLogger(MeterData.class);
 
     public MeterData(String ip) {
         this.ip = ip;
         if (this.ip.compareTo("localhost") == 0) {
             this.gatewayId = "TelitGG863_3316042807_LOCAL";
-        }else{
+        } else {
             this.gatewayId = "TelitGG863_3316042807_FIELD";
         }
     }
 
     public MeterReadings getData() {
-        System.out.println("try to execute getMeterReadings");
+        logger.info("try to execute getMeterReadings");
         MeterReadings res = new MeterReadings();
         DlmsServerAddress gwServerAddress = getGatewayServerAddress(this.gatewayId);
-        System.out.println("INDIRIZZO: " + gwServerAddress.address);
+        logger.info("INDIRIZZO: " + gwServerAddress.address);
         if (gwServerAddress != null) {
             ArrayList<SAP> saps = GuruxWrapper.getSAPAssignment(gwServerAddress.address, gwServerAddress.port);
             for (SAP sap : saps) {
                 if (saps.size() == 1) {
-                    System.out.println("sap.name = " + sap.name + " meterId = " + this.meterId);
+                    logger.info("sap.name = " + sap.name + " meterId = " + this.meterId);
                     if (sap.name.contains(this.meterId)) {
-                        System.out.println("execute getMeterReadings: SAP address: " + sap.address);
+                        logger.info("execute getMeterReadings: SAP address: " + sap.address);
                         res = GuruxWrapper.getMeterReadings(gwServerAddress.address, gwServerAddress.port, 1);
                         return res;
                     }
                 } else {
-                    System.out.println("sap.name = " + sap.name + " meterId = " + this.meterId);
+                    logger.info("sap.name = " + sap.name + " meterId = " + this.meterId);
                     if (sap.name.contains(this.meterId)) {
-                        System.out.println("execute getMeterReadings: SAP address: " + sap.address);
+                        logger.info("execute getMeterReadings: SAP address: " + sap.address);
                         res = GuruxWrapper.getMeterReadings(gwServerAddress.address, gwServerAddress.port, 2);
                         return res;
                     }
@@ -65,24 +68,6 @@ public class MeterData {
         } else if (gatewayId.equals("TelitGG863_3316042807_LAB")) {
             res = new DlmsServerAddress("163.162.40.250", 4059, "TelitGG863_3316042807");
         }
-        return res;
-    }
-
-    String getXmlPacket(String contentTypes, String payload) {
-        Date now = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        String creationDate = formatter.format(now);
-
-        String res =
-                "<contentInstance>"
-                + "<contentTypes>" + contentTypes + "</contentTypes>"
-                + "<content>"
-                + "<telitSmartMeteringPacket>"
-                + "<creationDate>" + creationDate + "</creationDate>"
-                + payload
-                + "</telitSmartMeteringPacket>"
-                + "</content>"
-                + "</contentInstance>";
         return res;
     }
 }

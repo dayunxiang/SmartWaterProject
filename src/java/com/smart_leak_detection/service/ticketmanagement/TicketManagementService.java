@@ -21,22 +21,10 @@ import com.smart_leak_detection.model.ticketmanagement.TicketBean;
 import com.smart_leak_detection.model.ticketmanagement.dto.TicketDTO;
 import com.smart_leak_detection.model.usermanagement.User;
 import com.smart_leak_detection.model.usermanagement.UserBean;
-import de.micromata.opengis.kml.v_2_2_0.Coordinate;
-import de.micromata.opengis.kml.v_2_2_0.Document;
-import de.micromata.opengis.kml.v_2_2_0.Feature;
-import de.micromata.opengis.kml.v_2_2_0.Kml;
-import de.micromata.opengis.kml.v_2_2_0.Placemark;
-import de.micromata.opengis.kml.v_2_2_0.Point;
-import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.security.CodeSource;
 import java.security.Principal;
-import java.security.ProtectionDomain;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import javax.mail.Message;
@@ -146,7 +134,7 @@ public class TicketManagementService {
         for (int i = 0; i < to.length; i++) {        // To get the array of addresses
             toAddress[i] = new InternetAddress(to[i]);
         }
-        System.out.println(Message.RecipientType.TO);
+        req.getServletContext().log(Message.RecipientType.TO.toString());
 
         for (int i = 0; i < toAddress.length; i++) {
             message.addRecipient(Message.RecipientType.TO, toAddress[i]);

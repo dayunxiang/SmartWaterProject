@@ -1,17 +1,11 @@
 package com.smart_leak_detection.service.sensormanagementservice;
 
-import com.smart_leak_detection.data.DataListener;
-import com.smart_leak_detection.data.ReceivingData;
-import com.smart_leak_detection.data.protocol.Channel;
-import com.smart_leak_detection.data.protocol.Config;
 import com.smart_leak_detection.json.JsonResponse;
-import com.smart_leak_detection.model.measuremanagement.Measure;
 import com.smart_leak_detection.model.measuremanagement.MeasureBean;
 import com.smart_leak_detection.model.sensormanagement.SensorBean;
 import com.smart_leak_detection.model.usermanagement.UserBean;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -53,23 +47,18 @@ public class SensorManagementService {
 
         JsonResponse json = new JsonResponse();
 
-        Principal principal = req.getUserPrincipal();
-        //only login if not already logged in...
-        if (principal == null) {
-            json.setStatus("FAILED");
-            json.setErrorMsg("Authentication failed");
-            return Response.ok().entity(json).build();
-        }
-
-        //In realtà andranno calcolati i noise loggers interni all'area circoscritta
-        //per essere attivati, noi manderemo solo un intero per attivare la lettura dagli altri sensori
-
-        //Coding message
-        int message = 0;
-        //send message - not implemented
-//        Config config = new Config(12345);
-//        Channel channel = new Channel(config);
-//        channel.sendData(message);
+//        Principal principal = req.getUserPrincipal();
+//        //only login if not already logged in...
+//        if (principal == null) {
+//            json.setStatus("FAILED");
+//            json.setErrorMsg("Authentication failed");
+//            return Response.ok().entity(json).build();
+//        }
+//
+//        //In realtà andranno calcolati i noise loggers interni all'area circoscritta
+//        //per essere attivati, noi manderemo solo un intero per attivare la lettura dagli altri sensori
+//
+//        //Coding message
         
         json.setStatus("SUCCESS");
 

@@ -1,8 +1,5 @@
 package com.smart_leak_detection.service.measuremanagementservice;
 
-import com.smart_leak_detection.data.ReceivingData;
-import com.smart_leak_detection.data.protocol.Channel;
-import com.smart_leak_detection.data.protocol.Config;
 import com.smart_leak_detection.json.JsonResponse;
 import com.smart_leak_detection.model.measuremanagement.Measure;
 import com.smart_leak_detection.model.measuremanagement.MeasureBean;

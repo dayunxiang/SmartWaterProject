@@ -19,12 +19,12 @@
                 height: 50px;
             }
             #title{
-                margin-left: 10px;
+                margin-left: 15px;
                 font-size: large;
                 font-weight: bold;
             }
             #subtitle{
-                margin-left: 10px;
+                margin-left: 15px;
                 font-size: small;
             }
         </style>
@@ -93,11 +93,11 @@
             $(function() {
                 "use strict";
                 $(document).ready(function() {
-                if ("<%=request.getUserPrincipal()%>" != "" && "<%=request.getUserPrincipal()%>" == null) {
+                    if ("<%=request.getUserPrincipal()%>" != "" && "<%=request.getUserPrincipal()%>" == null) {
 
-                    $('#sign-in').html("<%=request.getUserPrincipal()%>");
+                        $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign').html("Logout");
-                    $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
+                        $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
                     }
 
 
@@ -144,13 +144,12 @@
             function addComunication() {
                 var ip = this.ip.value;
                 if (ip == "" || ip == null) {
-                    this.ip = 'localhost';
+                    ip = "localhost";
                 }
                 var data = {
                     ip: ip
                 };
-            var destinationUrl = "<%=request.getContextPath()%>/services/auth/startcom";
-
+                var destinationUrl = "<%=request.getContextPath()%>/services/auth/startcom";
                 $.ajax({
                     url: destinationUrl,
                     type: "POST",
@@ -214,12 +213,15 @@
                     </ul>             	
                 </div>
             </div>
-            <div>
+            <div style="margin-left: 25px;">
                 <p>         
                     <img id="logo_tiled" style="height: 30%; width: 30%; float: right; margin-right: 15%;" src="<%=request.getContextPath()%>/file/LOGO_TI_LED.png" align="middle">
+                    <br><br><br><br>
                 <table id="field">
                     <tr align="center">
                         <td>
+                            <font size="2">Inserisci l'indirizzo IP pubblico del gateway; qualora fosse collegato via USB premi solamente il pulsante.</font>
+                            <br><br>
                             <font size="3"><b>Indirizzo IP</b></font> 
                             <br>
                             <input size="50px" type="text" id="ip" name="ip"/>

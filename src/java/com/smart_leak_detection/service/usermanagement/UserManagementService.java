@@ -1,8 +1,6 @@
 package com.smart_leak_detection.service.usermanagement;
 
 import com.smart_leak_detection.data.ReceivingData;
-import com.smart_leak_detection.data.protocol.Channel;
-import com.smart_leak_detection.data.protocol.Config;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -183,7 +181,7 @@ public class UserManagementService {
         for (int i = 0; i < to.length; i++) {        // To get the array of addresses
             toAddress[i] = new InternetAddress(to[i]);
         }
-        System.out.println(Message.RecipientType.TO);
+        req.getServletContext().log(Message.RecipientType.TO.toString());
 
         for (int i = 0; i < toAddress.length; i++) {
             message.addRecipient(Message.RecipientType.TO, toAddress[i]);

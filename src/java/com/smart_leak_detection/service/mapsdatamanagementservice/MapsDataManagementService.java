@@ -3,8 +3,6 @@ package com.smart_leak_detection.service.mapsdatamanagementservice;
 import com.smart_leak_detection.json.JsonResponse;
 import com.smart_leak_detection.model.mapsmanagement.MapsData;
 import com.smart_leak_detection.model.mapsmanagement.MapsDataBean;
-import com.smart_leak_detection.model.ticketmanagement.Ticket;
-import com.smart_leak_detection.model.usermanagement.User;
 import java.security.Principal;
 import java.util.List;
 import javax.ejb.EJB;
