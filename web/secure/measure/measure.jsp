@@ -112,6 +112,7 @@
                     if ("<%=request.getUserPrincipal()%>" != "") {
 
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
+                        $('#sign-in').attr("href", "<%=request.getContextPath()%>/secure/index.jsp");
                         $('#sign').html("Logout");
                         $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
                         $('#storico').attr("href", document.URL);
@@ -292,9 +293,9 @@
                         <li class="" style="float:right;"> 
                             <a id="startcom" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
                         </li>
-<!--                        <li class="" style="float:right;"> for links with no dropdown 
-                            <a id="simul" target="_self" href="<%=request.getContextPath()%>/secure/simulation.jsp">Simulazione Dati</a>
-                        </li>-->
+                        <!--                        <li class="" style="float:right;"> for links with no dropdown 
+                                                    <a id="simul" target="_self" href="<%=request.getContextPath()%>/secure/simulation.jsp">Simulazione Dati</a>
+                                                </li>-->
                     </ul>             	
                 </div>
             </div>

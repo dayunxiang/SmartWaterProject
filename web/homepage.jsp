@@ -101,35 +101,18 @@
             function close() {
                 $(last_o).parent().find("div").hide();
             }
-//            $(function() {
-//                "use strict";
-//                $(document).ready(function() {
-//                    if (<%=request.getUserPrincipal()%> != null) {
-//                        $('#sign-in').html("<%=request.getUserPrincipal()%>");
-//                        $('#sign').html("Logout");
-//                        $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
-//                    }
-//                    var destinationUrl = "<%=request.getContextPath()%>/services/auth/ping";
-//
-//                    $.ajax({
-//                        url: destinationUrl,
-//                        type: "GET",
-//                        cache: false,
-//                        dataType: "json",
-//                        success: function(data, textStatus, jqXHR) {
-//                        },
-//                        error: function(jqXHR, textStatus, errorThrown) {
-//                            $('#info').html("Servizio momentaneamente fuori servizio");
-//                        },
-//                        complete: function(jqXHR, textStatus) {
-//                            //alert("complete");
-//                        }
-//                    });
-//
-//
-//                    return false;
-//                });
-//            });
+            $(function() {
+                "use strict";
+                $(document).ready(function() {
+                    if (<%=request.getUserPrincipal()%> != null) {
+                        $('#sign-in').html("<%=request.getUserPrincipal()%>");
+                        $('#sign-in').attr("href", "<%=request.getContextPath()%>/secure/index.jsp");
+                        $('#sign').html("Logout");
+                        $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
+                    }
+                    return false;
+                });
+            });
             $(function() {
                 "use strict";
 

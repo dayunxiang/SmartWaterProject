@@ -95,6 +95,7 @@
                 $(document).ready(function() {
                     if ("<%=request.getUserPrincipal()%>" != "null" && "<%=request.getUserPrincipal()%>" != "") {
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
+                        $('#sign-in').attr("href", "<%=request.getContextPath()%>/secure/index.jsp");
                         $('#sign').html("Logout");
                         $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
                     }
