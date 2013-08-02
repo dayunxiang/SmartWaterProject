@@ -63,7 +63,7 @@ public class ReceivingData extends Thread {
     public void run() {
         MeterReadings data;
         System.out.println("Receiver IN ESECUZIONE");
-        try {
+//        try {
             while (true) {
                 date = new Date();
                 System.out.println("Receiver IN ATTESA DI UN PACCHETTO");
@@ -122,7 +122,7 @@ public class ReceivingData extends Thread {
                     this.mapsData.setBattery(battery);
                     this.mapsData.setTimestamp(timestamp);
                     this.mapsData.setValue(value);
-                    if (value > 600) { //Leak detected, save first value
+                    if (value > 300) { //Leak detected, save first value
 //                    if (value != 0) { //ripristinare una volta effettuato il test   
                         this.valueF = value;
 
@@ -134,47 +134,47 @@ public class ReceivingData extends Thread {
 
 
                         //send email to all company users
-                        String host = "smtp.gmail.com";
-                        String from = "servizio.tiled@gmail.com";
-                        String pass = "smartleakdetection";
-                        Properties props = System.getProperties();
-                        props.put("mail.smtp.starttls.enable", "true");
-                        props.put("mail.smtp.host", host);
-                        props.put("mail.smtp.user", from);
-                        props.put("mail.smtp.password", pass);
-                        props.put("mail.smtp.port", "587");
-                        props.put("mail.smtp.auth", "true");
-
-                        List<User> list = userBean.findAll(company);
-                        String[] to = new String[list.size()];
-                        for (int i = 0; i < list.size(); i++) {
-                            to[i] = list.get(i).getEmail();
-                        }
-
-                        Session session = Session.getDefaultInstance(props, null);
-                        MimeMessage message = new MimeMessage(session);
-                        message.setFrom(new InternetAddress(from));
-
-                        InternetAddress[] toAddress = new InternetAddress[to.length];
-
-                        for (int i = 0; i < to.length; i++) {        // To get the array of addresses
-                            toAddress[i] = new InternetAddress(to[i]);
-                        }
-                        System.out.println(Message.RecipientType.TO);
-
-                        for (int i = 0; i < toAddress.length; i++) {
-                            message.addRecipient(Message.RecipientType.TO, toAddress[i]);
-                        }
-                        message.setSubject("TI-LeD - Notifica rilevazione area di perdita");
-                        message.setContent("<h1>TI-LeD</h1> <br> <div> Gentile utente,<br><br>"
-                                + "Il sistema TI-LeD ha appena rilevato una area di perdita nella zone del noise logger #" + noiselogger
-                                + ".<br>Le ricordiamo di attivare quanto prima la maglia fitta per individuare il punto esatto della perdita."
-                                + "<br><br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
-                        Transport transport = session.getTransport("smtp");
-                        transport.connect(host, from, pass);
-                        transport.sendMessage(message, message.getAllRecipients());
-                        System.out.println("EMAIL INVIATA");
-                        transport.close();
+//                        String host = "smtp.gmail.com";
+//                        String from = "servizio.tiled@gmail.com";
+//                        String pass = "smartleakdetection";
+//                        Properties props = System.getProperties();
+//                        props.put("mail.smtp.starttls.enable", "true");
+//                        props.put("mail.smtp.host", host);
+//                        props.put("mail.smtp.user", from);
+//                        props.put("mail.smtp.password", pass);
+//                        props.put("mail.smtp.port", "587");
+//                        props.put("mail.smtp.auth", "true");
+//
+//                        List<User> list = userBean.findAll(company);
+//                        String[] to = new String[list.size()];
+//                        for (int i = 0; i < list.size(); i++) {
+//                            to[i] = list.get(i).getEmail();
+//                        }
+//
+//                        Session session = Session.getDefaultInstance(props, null);
+//                        MimeMessage message = new MimeMessage(session);
+//                        message.setFrom(new InternetAddress(from));
+//
+//                        InternetAddress[] toAddress = new InternetAddress[to.length];
+//
+//                        for (int i = 0; i < to.length; i++) {        // To get the array of addresses
+//                            toAddress[i] = new InternetAddress(to[i]);
+//                        }
+//                        System.out.println(Message.RecipientType.TO);
+//
+//                        for (int i = 0; i < toAddress.length; i++) {
+//                            message.addRecipient(Message.RecipientType.TO, toAddress[i]);
+//                        }
+//                        message.setSubject("TI-LeD - Notifica rilevazione area di perdita");
+//                        message.setContent("<h1>TI-LeD</h1> <br> <div> Gentile utente,<br><br>"
+//                                + "Il sistema TI-LeD ha appena rilevato una area di perdita nella zone del noise logger #" + noiselogger
+//                                + ".<br>Le ricordiamo di attivare quanto prima la maglia fitta per individuare il punto esatto della perdita."
+//                                + "<br><br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
+//                        Transport transport = session.getTransport("smtp");
+//                        transport.connect(host, from, pass);
+//                        transport.sendMessage(message, message.getAllRecipients());
+//                        System.out.println("EMAIL INVIATA");
+//                        transport.close();
 
 
 
@@ -183,7 +183,7 @@ public class ReceivingData extends Thread {
                     }
                 }
                 if (isStrict) {
-                    if (this.secondNL.compareTo(noiselogger) == 0 && value > 300) { //save second value
+                    if (this.secondNL.compareTo(noiselogger) == 0 && value > 400) { //save second value
                         this.valueS = value;
                         this.mapsData = this.mapsDataBean.find(noiselogger);
                         //update value to display in maps for #strictStyle also battery and status
@@ -192,7 +192,7 @@ public class ReceivingData extends Thread {
                         this.mapsData.setValue(value);
                         this.mapsDataBean.update(mapsData); //update last measure for the noiselogger
                     }
-                    if (this.thirdNL.compareTo(noiselogger) == 0 && value > 300) { //save third value
+                    if (this.thirdNL.compareTo(noiselogger) == 0 && value > 400) { //save third value
                         this.valueT = value;
                         //update value to display in maps for #strictStyle also battery and status
                         this.mapsData.setBattery(battery);
@@ -209,48 +209,48 @@ public class ReceivingData extends Thread {
                         leak.setStyle("leak");
                         leak.setTimestamp("leak");
                         leak.setValue(0);
-                        //send email to all company users
-                        String host = "smtp.gmail.com";
-                        String from = "servizio.tiled@gmail.com";
-                        String pass = "smartleakdetection";
-                        Properties props = System.getProperties();
-                        props.put("mail.smtp.starttls.enable", "true");
-                        props.put("mail.smtp.host", host);
-                        props.put("mail.smtp.user", from);
-                        props.put("mail.smtp.password", pass);
-                        props.put("mail.smtp.port", "587");
-                        props.put("mail.smtp.auth", "true");
-
-                        List<User> list = userBean.findAll(company);
-                        String[] to = new String[list.size()];
-                        for (int i = 0; i < list.size(); i++) {
-                            to[i] = list.get(i).getEmail();
-                        }
-
-                        Session session = Session.getDefaultInstance(props, null);
-                        MimeMessage message = new MimeMessage(session);
-                        message.setFrom(new InternetAddress(from));
-
-                        InternetAddress[] toAddress = new InternetAddress[to.length];
-
-                        for (int i = 0; i < to.length; i++) {        // To get the array of addresses
-                            toAddress[i] = new InternetAddress(to[i]);
-                        }
-                        System.out.println(Message.RecipientType.TO);
-
-                        for (int i = 0; i < toAddress.length; i++) {
-                            message.addRecipient(Message.RecipientType.TO, toAddress[i]);
-                        }
-                        message.setSubject("TI-LeD - Individuato punto di perdita");
-                        message.setContent("<h1>TI-LeD</h1> <br> <div>Gentile utente,<br><br>"
-                                + "in seguito alla attivazione della maglia fitta, il sistema TI-LeD ha localizzato una perdita sulla Sua rete.<br>"
-                                + "Può consultare la mappa tramite il nostro portale per visualizzare la posizione precisa.<br><br>"
-                                + "Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
-                        Transport transport = session.getTransport("smtp");
-                        transport.connect(host, from, pass);
-                        transport.sendMessage(message, message.getAllRecipients());
-                        System.out.println("EMAIL INVIATA");
-                        transport.close();
+//                        //send email to all company users
+//                        String host = "smtp.gmail.com";
+//                        String from = "servizio.tiled@gmail.com";
+//                        String pass = "smartleakdetection";
+//                        Properties props = System.getProperties();
+//                        props.put("mail.smtp.starttls.enable", "true");
+//                        props.put("mail.smtp.host", host);
+//                        props.put("mail.smtp.user", from);
+//                        props.put("mail.smtp.password", pass);
+//                        props.put("mail.smtp.port", "587");
+//                        props.put("mail.smtp.auth", "true");
+//
+//                        List<User> list = userBean.findAll(company);
+//                        String[] to = new String[list.size()];
+//                        for (int i = 0; i < list.size(); i++) {
+//                            to[i] = list.get(i).getEmail();
+//                        }
+//
+//                        Session session = Session.getDefaultInstance(props, null);
+//                        MimeMessage message = new MimeMessage(session);
+//                        message.setFrom(new InternetAddress(from));
+//
+//                        InternetAddress[] toAddress = new InternetAddress[to.length];
+//
+//                        for (int i = 0; i < to.length; i++) {        // To get the array of addresses
+//                            toAddress[i] = new InternetAddress(to[i]);
+//                        }
+//                        System.out.println(Message.RecipientType.TO);
+//
+//                        for (int i = 0; i < toAddress.length; i++) {
+//                            message.addRecipient(Message.RecipientType.TO, toAddress[i]);
+//                        }
+//                        message.setSubject("TI-LeD - Individuato punto di perdita");
+//                        message.setContent("<h1>TI-LeD</h1> <br> <div>Gentile utente,<br><br>"
+//                                + "in seguito alla attivazione della maglia fitta, il sistema TI-LeD ha localizzato una perdita sulla Sua rete.<br>"
+//                                + "Può consultare la mappa tramite il nostro portale per visualizzare la posizione precisa.<br><br>"
+//                                + "Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
+////                        Transport transport = session.getTransport("smtp");
+//                        transport.connect(host, from, pass);
+//                        transport.sendMessage(message, message.getAllRecipients());
+//                        System.out.println("EMAIL INVIATA");
+//                        transport.close();
 
                         //Elaborate data
                         if (this.valueS > this.valueT) {
@@ -274,9 +274,10 @@ public class ReceivingData extends Thread {
 //                Thread.sleep(5000);
             }
 
-        } catch (MessagingException ex) {
-            Logger.getLogger(ReceivingData.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        } 
+//        catch (MessagingException ex) {
+//            Logger.getLogger(ReceivingData.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     public void setStrict() {

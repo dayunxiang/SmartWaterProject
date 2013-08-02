@@ -159,45 +159,45 @@ public class UserManagementService {
         req.getServletContext().log("successfully registered new user: '" + newUser.getEmail() + "':'" + newUser.getPassword1() + "'");
 
         //Send email to user
-        String host = "smtp.gmail.com";
-        String from = "servizio.tiled@gmail.com";
-        String pass = "smartleakdetection";
-        Properties props = System.getProperties();
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.user", from);
-        props.put("mail.smtp.password", pass);
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.auth", "true");
-
-        String[] to = {newUser.getEmail()};
-
-        Session session = Session.getDefaultInstance(props, null);
-        MimeMessage message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(from));
-
-        InternetAddress[] toAddress = new InternetAddress[to.length];
-
-        for (int i = 0; i < to.length; i++) {        // To get the array of addresses
-            toAddress[i] = new InternetAddress(to[i]);
-        }
-        req.getServletContext().log(Message.RecipientType.TO.toString());
-
-        for (int i = 0; i < toAddress.length; i++) {
-            message.addRecipient(Message.RecipientType.TO, toAddress[i]);
-        }
-        message.setSubject("TI-LeD - Conferma registrazione");
-        message.setContent("<h1>TI-LeD</h1> <br> <div>Gentile " + user.getFirstName() + " " + user.getLastName()
-                + ",<br>benvenuto nel servizio TI LeD - Telecom Italia Leak Detection.<br>"
-                + "Da questo momento potrà gestire la rete idrica in maniera efficiente.<br>"
-                + "Di seguito i Suoi dati per accedere al servizio:<br>"
-                + "email: " + user.getEmail()
-                + "<br>password: " + user.getPassword()
-                + "Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
-        Transport transport = session.getTransport("smtp");
-        transport.connect(host, from, pass);
-        transport.sendMessage(message, message.getAllRecipients());
-        transport.close();
+//        String host = "smtp.gmail.com";
+//        String from = "servizio.tiled@gmail.com";
+//        String pass = "smartleakdetection";
+//        Properties props = System.getProperties();
+//        props.put("mail.smtp.starttls.enable", "true");
+//        props.put("mail.smtp.host", host);
+//        props.put("mail.smtp.user", from);
+//        props.put("mail.smtp.password", pass);
+//        props.put("mail.smtp.port", "587");
+//        props.put("mail.smtp.auth", "true");
+//
+//        String[] to = {newUser.getEmail()};
+//
+//        Session session = Session.getDefaultInstance(props, null);
+//        MimeMessage message = new MimeMessage(session);
+//        message.setFrom(new InternetAddress(from));
+//
+//        InternetAddress[] toAddress = new InternetAddress[to.length];
+//
+//        for (int i = 0; i < to.length; i++) {        // To get the array of addresses
+//            toAddress[i] = new InternetAddress(to[i]);
+//        }
+//        req.getServletContext().log(Message.RecipientType.TO.toString());
+//
+//        for (int i = 0; i < toAddress.length; i++) {
+//            message.addRecipient(Message.RecipientType.TO, toAddress[i]);
+//        }
+//        message.setSubject("TI-LeD - Conferma registrazione");
+//        message.setContent("<h1>TI-LeD</h1> <br> <div>Gentile " + user.getFirstName() + " " + user.getLastName()
+//                + ",<br>benvenuto nel servizio TI LeD - Telecom Italia Leak Detection.<br>"
+//                + "Da questo momento potrà gestire la rete idrica in maniera efficiente.<br>"
+//                + "Di seguito i Suoi dati per accedere al servizio:<br>"
+//                + "email: " + user.getEmail()
+//                + "<br>password: " + user.getPassword()
+//                + "Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
+//        Transport transport = session.getTransport("smtp");
+//        transport.connect(host, from, pass);
+//        transport.sendMessage(message, message.getAllRecipients());
+//        transport.close();
         req.getServletContext().log("Email sent to: '" + newUser.getEmail());
 
 
@@ -214,6 +214,7 @@ public class UserManagementService {
         return Response.ok().entity(json).build();
     }
 
+    //Activate for real PoC
     @POST
     @Path("activate")
     @Produces(MediaType.APPLICATION_JSON)

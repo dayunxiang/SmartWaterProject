@@ -129,6 +129,7 @@
                             });
                             var ctaLayer = new google.maps.KmlLayer({
                                 url: 'http://caweb.elislab.elis.org/SmartWater/Turin_Pipe.kml',
+//                                url: 'http://caweb.elislab.elis.org/SmartWater/Pipe.kml',
                                 suppressInfoWindows: true
                             });
                             ctaLayer.setMap(map);
@@ -212,11 +213,11 @@
                                             '<br>Batteria: ' + colorBattery + data.data[key].battery + '%</font>' +
                                                     '<br>Stato: ' + colorStatus + data.data[key].status + '</font><br></h3></div>';
                                         }
-                                        if(data.data[key].style == "leak"){
+                                        if (data.data[key].style == "leak") {
                                             content = '<div class = "geoxml3_infowindow"> <h3> Perdita' +
                                                     '</h3></div>';
                                         }
-                                        
+
                                         infowindow.setContent(content);
                                         infowindow.open(map, marker);
                                     }
@@ -302,9 +303,12 @@
                         <li class="" style="float:right;"><!-- for links with no dropdown -->
                             <a id="reset" target="_self" href="<%=request.getContextPath()%>/reset.jsp">Reset Valori Mappa</a>
                         </li>
-                        <li class="" style="float:right;"><!-- for links with no dropdown -->
-                            <a id="reset" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
+                        <li class="" style="float:right;"> 
+                            <a id="startcom" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
                         </li>
+<!--                        <li class="" style="float:right;"> for links with no dropdown 
+                            <a id="simul" target="_self" href="<%=request.getContextPath()%>/secure/simulation.jsp">Simulazione Dati</a>
+                        </li>-->
                     </ul>             	
                 </div>
             </div>
@@ -320,7 +324,7 @@
 
         <div id="map-canvas"></div>
         <div id="info"></div>
-        <!--        <button onclick='window.location.replace("https://" + window.location.host + "/SmartLeakDetection/secure/measure/activate.jsp?nl=25");'>Activate</button><br>
+        <!--        <button onclick='window.location.replace("httpss://" + window.location.host + "/SmartLeakDetection/secure/measure/activate.jsp?nl=25");'>Activate</button><br>
                 <button onclick='window.location.replace("https://" + window.location.host + "/SmartLeakDetection/secure/ticket/newTicket.jsp?nl=25");'>newticket</button><br>-->
 
     </body>

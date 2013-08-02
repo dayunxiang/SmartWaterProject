@@ -7,9 +7,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8; initial-scale=1.0; user-scalable=no">
         <script>
-                    ESPN_refresh = window.setTimeout(function() {
-                        window.location.href = "<%=request.getContextPath()%>/secure/index.jsp"
-                    }, 7000);
+            ESPN_refresh = window.setTimeout(function() {
+                window.location.href = "<%=request.getContextPath()%>/secure/index.jsp"
+            }, 7000);
         </script>   
     <noscript>   
         <meta http-equiv=”refresh” content=”7″ />   
@@ -39,71 +39,71 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
     <link href="<%=request.getContextPath()%>/css/top_menu.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript">
-                var SubMenutimer;
-                var last_o;
-                $(".mainbar").ready(function() {
-                    $(".staticMenu dt a").click(function() {
-                        $(this).parents(".staticMenu").find(".noti_bubble").hide();
-                        $(".staticMenu dd ul").not($(this).parents(".staticMenu").find("ul")).hide();
-                        $(".staticMenu dt a").not($(this)).removeClass("selected");
-                        $(this).parents(".staticMenu").find("ul").toggle();
+            var SubMenutimer;
+            var last_o;
+            $(".mainbar").ready(function() {
+                $(".staticMenu dt a").click(function() {
+                    $(this).parents(".staticMenu").find(".noti_bubble").hide();
+                    $(".staticMenu dd ul").not($(this).parents(".staticMenu").find("ul")).hide();
+                    $(".staticMenu dt a").not($(this)).removeClass("selected");
+                    $(this).parents(".staticMenu").find("ul").toggle();
 
-                        if ($(this).parents(".staticMenu").find("ul").css("display") == "none") {
-                            $(this).removeClass("selected");
-                        } else {
-                            $(this).addClass("selected");
-                        }
-                    });
+                    if ($(this).parents(".staticMenu").find("ul").css("display") == "none") {
+                        $(this).removeClass("selected");
+                    } else {
+                        $(this).addClass("selected");
+                    }
+                });
 
-                    $(".staticMenu dd ul li a").click(function() {
-                        var text = $(this).html();
-                        $(".staticMenu dt a span").html(text);
+                $(".staticMenu dd ul li a").click(function() {
+                    var text = $(this).html();
+                    $(".staticMenu dt a span").html(text);
+                    $(".staticMenu dd ul").hide();
+                });
+
+                $(document).bind('click', function(e) {
+                    var $clicked = $(e.target);
+                    if (!$clicked.parents().hasClass("staticMenu")) {
                         $(".staticMenu dd ul").hide();
-                    });
-
-                    $(document).bind('click', function(e) {
-                        var $clicked = $(e.target);
-                        if (!$clicked.parents().hasClass("staticMenu")) {
-                            $(".staticMenu dd ul").hide();
-                            $(".staticMenu dt a").removeClass("selected");
-                        }
-                    });
+                        $(".staticMenu dt a").removeClass("selected");
+                    }
                 });
+            });
 
-                function openSubMenu(o) {
-                    cancelSubMenuClose();
-                    if (last_o)
-                        $(last_o).parent().find("div").hide();
-                    last_o = o;
-                    $(o).parent().find("div").show();
-                }
-
-                function closeSubMenu() {
-                    SubMenutimer = setTimeout("close()", 500);
-                }
-
-                function cancelSubMenuClose() {
-                    clearTimeout(SubMenutimer);
-                }
-
-                function close() {
+            function openSubMenu(o) {
+                cancelSubMenuClose();
+                if (last_o)
                     $(last_o).parent().find("div").hide();
-                }
+                last_o = o;
+                $(o).parent().find("div").show();
+            }
 
-                $(function() {
-                    "use strict";
-                    $(document).ready(function() {
-                        if ("<%=request.getUserPrincipal()%>" != "") {
+            function closeSubMenu() {
+                SubMenutimer = setTimeout("close()", 500);
+            }
 
-                            $('#sign-in').html("<%=request.getUserPrincipal()%>");
-                            $('#sign').html("Logout");
-                            $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
-                        }
+            function cancelSubMenuClose() {
+                clearTimeout(SubMenutimer);
+            }
+
+            function close() {
+                $(last_o).parent().find("div").hide();
+            }
+
+            $(function() {
+                "use strict";
+                $(document).ready(function() {
+                    if ("<%=request.getUserPrincipal()%>" != "") {
+
+                        $('#sign-in').html("<%=request.getUserPrincipal()%>");
+                        $('#sign').html("Logout");
+                        $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
+                    }
 
 
-                        return false;
-                    });
+                    return false;
                 });
+            });
     </script>
 
     <script type="text/javascript">
@@ -151,6 +151,7 @@
                 return false;
             });
         });
+        //Function for real PoC
         $(function() {
             "use strict";
             $(document).ready(function() {
@@ -190,6 +191,48 @@
                 return false;
             });
         });
+
+//Function for simulation
+//        $(function() {
+//            "use strict";
+//            $(document).ready(function() {
+//                $('#title').html('Elaborazione in corso...Attendere');
+//                var data = {
+//                    noiselogger: getUrlValue("nl")
+//                };
+//                $.ajax({
+//                    url: "<%=request.getContextPath()%>/services/measure/activate",
+//                    type: "POST",
+//                    data: data,
+//                    cache: false,
+//                    dataType: "json",
+//                    success: function(data, textStatus, jqXHR) {
+//                        //alert("success");
+//                        if (data.status == "SUCCESS") {
+//                            //redirect to secured page
+//                            $('#title').html('Maglia fitta attivata');
+//                            $('#subtitle').html('Il sistema sta elaborando i dati<br>Riceverai una email non appena verrà individuata la perdita');
+////                                $("#info").html("Maglia fitta attivata");
+//                        } else {
+//                        }
+//                    },
+//                    error: function(jqXHR, textStatus, errorThrown) {
+//                        //alert("error - HTTP STATUS: "+jqXHR.status);
+//                        if (textStatus == "parsererror") {
+//                            alert("You session has timed out");
+//                            //forward to welcomde page
+//                            window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/homepage.jsp");
+//                        }
+//                    },
+//                    complete: function(jqXHR, textStatus) {
+//                        //alert("complete");
+//                    }
+//
+//                });
+//
+//                return false;
+//            });
+//        });
     </script>
 
 </head>
@@ -222,15 +265,17 @@
                     <li class="" style="float:right;"><!-- for links with no dropdown -->
                         <a id="reset" target="_self" href="<%=request.getContextPath()%>/reset.jsp">Reset Valori Mappa</a>
                     </li>
-                    <li class="" style="float:right;"><!-- for links with no dropdown -->
-                        <a id="reset" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
+                    <li class="" style="float:right;"> for links with no dropdown 
+                        <a id="startcom" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
                     </li>
+                    <!--                    <li class="" style="float:right;"> for links with no dropdown 
+                                            <a id="simul" target="_self" href="<%=request.getContextPath()%>/secure/simulation.jsp">Simulazione Dati</a>
+                                        </li>-->
                 </ul>             	
             </div>
         </div>
         <h1 id="title"></h1>
         <h2 id="subtitle"></h2>
-
         <br/><br/>
 
         <div id="info"></div>

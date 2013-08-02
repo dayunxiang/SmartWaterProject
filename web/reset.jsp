@@ -93,8 +93,7 @@
             $(function() {
                 "use strict";
                 $(document).ready(function() {
-                    if ("<%=request.getUserPrincipal()%>" != "") {
-
+                    if ("<%=request.getUserPrincipal()%>" != "null" && "<%=request.getUserPrincipal()%>" != "") {
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign').html("Logout");
                         $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
@@ -144,6 +143,7 @@
         $(function() {
             "use strict";
             $(document).ready(function() {
+                $('#title').html('Elaborazione in corso...Attendere');
                 $.ajax({
                     url: "<%=request.getContextPath()%>/services/mapsdata/reset",
                     type: "GET",
@@ -200,17 +200,14 @@
                     <li class="" style="float:left;">
                         <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/ticket/ticket.jsp">Gestione Ticket</a>
                     </li>
-                    <li class="" style="float:left;">
-                        <a id="newTicket" target="_self">Richiesta Manutenzione</a>
-                    </li>
                     <li class="" style="float:right;"><!-- for links with no dropdown -->
                         <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Registrati</a>
                     </li>
                     <li class="current" style="float:right;"><!-- for links with no dropdown -->
                         <a id="reset" target="_self" href="<%=request.getContextPath()%>/reset.jsp">Reset Valori Mappa</a>
                     </li>
-                    <li class="" style="float:right;"><!-- for links with no dropdown -->
-                        <a id="reset" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
+                    <li class="" style="float:right;">
+                        <a id="startcom" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
                     </li>
                 </ul>             	
             </div>

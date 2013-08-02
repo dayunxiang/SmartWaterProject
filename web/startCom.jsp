@@ -93,7 +93,7 @@
             $(function() {
                 "use strict";
                 $(document).ready(function() {
-                    if ("<%=request.getUserPrincipal()%>" != "" && "<%=request.getUserPrincipal()%>" == null) {
+                    if ("<%=request.getUserPrincipal()%>" != "" && "<%=request.getUserPrincipal()%>" != "null") {
 
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign').html("Logout");
@@ -208,7 +208,7 @@
                             <a id="reset" target="_self" href="<%=request.getContextPath()%>/reset.jsp">Reset Valori Mappa</a>
                         </li>
                         <li class="current" style="float:right;"><!-- for links with no dropdown -->
-                            <a id="reset" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
+                            <a id="startcom" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
                         </li>
                     </ul>             	
                 </div>
