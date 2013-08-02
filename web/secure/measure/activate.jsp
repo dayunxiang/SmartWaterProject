@@ -152,56 +152,14 @@
             });
         });
         //Function for real PoC
-        $(function() {
-            "use strict";
-            $(document).ready(function() {
-                var data = {
-                    noiselogger: getUrlValue("nl")
-                };
-                $.ajax({
-                    url: "<%=request.getContextPath()%>/services/auth/activate",
-                    type: "POST",
-                    data: data,
-                    cache: false,
-                    dataType: "json",
-                    success: function(data, textStatus, jqXHR) {
-                        //alert("success");
-                        if (data.status == "SUCCESS") {
-                            //redirect to secured page
-                            $('#title').html('Maglia fitta attivata');
-                            $('#subtitle').html('Il sistema sta elaborando i dati<br>Riceverai una email non appena verrà individuata la perdita');
-//                                $("#info").html("Maglia fitta attivata");
-                        } else {
-                        }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        //alert("error - HTTP STATUS: "+jqXHR.status);
-                        if (textStatus == "parsererror") {
-                            alert("You session has timed out");
-                            //forward to welcomde page
-                            window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/homepage.jsp");
-                        }
-                    },
-                    complete: function(jqXHR, textStatus) {
-                        //alert("complete");
-                    }
-
-                });
-
-                return false;
-            });
-        });
-
-//Function for simulation
 //        $(function() {
 //            "use strict";
 //            $(document).ready(function() {
-//                $('#title').html('Elaborazione in corso...Attendere');
 //                var data = {
 //                    noiselogger: getUrlValue("nl")
 //                };
 //                $.ajax({
-//                    url: "<%=request.getContextPath()%>/services/measure/activate",
+//                    url: "<%=request.getContextPath()%>/services/auth/activate",
 //                    type: "POST",
 //                    data: data,
 //                    cache: false,
@@ -233,6 +191,48 @@
 //                return false;
 //            });
 //        });
+
+//Function for simulation
+        $(function() {
+            "use strict";
+            $(document).ready(function() {
+                $('#title').html('Elaborazione in corso...Attendere');
+                var data = {
+                    noiselogger: getUrlValue("nl")
+                };
+                $.ajax({
+                    url: "<%=request.getContextPath()%>/services/measure/activate",
+                    type: "POST",
+                    data: data,
+                    cache: false,
+                    dataType: "json",
+                    success: function(data, textStatus, jqXHR) {
+                        //alert("success");
+                        if (data.status == "SUCCESS") {
+                            //redirect to secured page
+                            $('#title').html('Maglia fitta attivata');
+                            $('#subtitle').html('Il sistema sta elaborando i dati<br>Riceverai una email non appena verrà individuata la perdita');
+//                                $("#info").html("Maglia fitta attivata");
+                        } else {
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        //alert("error - HTTP STATUS: "+jqXHR.status);
+                        if (textStatus == "parsererror") {
+                            alert("You session has timed out");
+                            //forward to welcomde page
+                            window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/homepage.jsp");
+                        }
+                    },
+                    complete: function(jqXHR, textStatus) {
+                        //alert("complete");
+                    }
+
+                });
+
+                return false;
+            });
+        });
     </script>
 
 </head>
@@ -265,12 +265,12 @@
                     <li class="" style="float:right;"><!-- for links with no dropdown -->
                         <a id="reset" target="_self" href="<%=request.getContextPath()%>/reset.jsp">Reset Valori Mappa</a>
                     </li>
-                    <li class="" style="float:right;"> for links with no dropdown 
-                        <a id="startcom" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
-                    </li>
                     <!--                    <li class="" style="float:right;"> for links with no dropdown 
-                                            <a id="simul" target="_self" href="<%=request.getContextPath()%>/secure/simulation.jsp">Simulazione Dati</a>
+                                            <a id="startcom" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
                                         </li>-->
+                    <li class="" style="float:right;"> for links with no dropdown 
+                        <a id="simul" target="_self" href="<%=request.getContextPath()%>/secure/simulation.jsp">Simulazione Dati</a>
+                    </li>
                 </ul>             	
             </div>
         </div>

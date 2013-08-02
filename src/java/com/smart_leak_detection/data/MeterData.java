@@ -38,22 +38,22 @@ public class MeterData {
         if (gwServerAddress != null) {
             ArrayList<SAP> saps = GuruxWrapper.getSAPAssignment(gwServerAddress.address, gwServerAddress.port);
             for (SAP sap : saps) {
-//                logger.info("SIZEEEEE: " + saps.size());
-//                if (saps.size() == 1) {
-//                    logger.info("sap.name = " + sap.name + " meterId = " + this.meterId);
-//                    if (sap.name.contains(this.meterId)) {
-//                        logger.info("execute getMeterReadings: SAP address: " + sap.address);
-//                        res = GuruxWrapper.getMeterReadings(gwServerAddress.address, gwServerAddress.port, 1);
-//                        return res;
-//                    }
-//                } else {
+                logger.info("SIZEEEEE: " + saps.size());
+                if (saps.size() == 1) {
+                    logger.info("sap.name = " + sap.name + " meterId = " + this.meterId);
+                    if (sap.name.contains(this.meterId)) {
+                        logger.info("execute getMeterReadings: SAP address: " + sap.address);
+                        res = GuruxWrapper.getMeterReadings(gwServerAddress.address, gwServerAddress.port, 1);
+                        return res;
+                    }
+                } else {
                     logger.info("sap.name = " + sap.name + " meterId = " + this.meterId);
                     if (sap.name.contains(this.meterId)) {
                         logger.info("execute getMeterReadings: SAP address: " + sap.address);
                         res = GuruxWrapper.getMeterReadings(gwServerAddress.address, gwServerAddress.port, 2);
                         return res;
                     }
-//                }
+                }
             }
         }
         return res;
