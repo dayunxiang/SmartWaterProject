@@ -38,7 +38,7 @@
 
         <!-- see https://github.com/douglascrockford/JSON-js -->
         <script src="<%=request.getContextPath()%>/js/json2.js" type="text/javascript"></script>
-        <script src="<%=request.getContextPath()%>/js/geoxml3.js" type="text/javascript"></script>
+<!--        <script src="<%=request.getContextPath()%>/js/geoxml3.js" type="text/javascript"></script>-->
 
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.0.min.js"></script>
         <link href="<%=request.getContextPath()%>/css/top_menu.css" rel="stylesheet" type="text/css"/>
@@ -129,7 +129,7 @@
                             });
                             var ctaLayer = new google.maps.KmlLayer({
                                 url: 'http://caweb.elislab.elis.org/SmartWater/Turin_Pipe.kml',
-//                                url: 'http://caweb.elislab.elis.org/SmartWater/Pipe.kml',
+//                                url: 'http://caweb.elislab.elis.org/SmartWater/San_Vito_Pipe.kml',
                                 suppressInfoWindows: true
                             });
                             ctaLayer.setMap(map);

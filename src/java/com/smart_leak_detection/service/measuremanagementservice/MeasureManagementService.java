@@ -94,6 +94,7 @@ public class MeasureManagementService {
         mapsData.setBattery(80);
         mapsData.setTimestamp(timestamp);
         mapsData.setValue(Integer.valueOf(value));
+        this.measureBean.save(measure);
 
         if (Integer.valueOf(value) > 600) { //Leak detected, save first value
 
@@ -288,9 +289,12 @@ public class MeasureManagementService {
 //            transport.close();
 
             //Elaborate data
-
+            // Coordinate perdita Torino
             leak.setLatitude(45.10998333);
             leak.setLongitude(7.6661);
+            //Coordinate San Vito
+//            leak.setLatitude(38.176452);
+//            leak.setLongitude(12.734897);
             MapsData mapsLeak = new MapsData(leak);
             this.mapsDataBean.save(mapsLeak);
             //Send email

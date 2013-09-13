@@ -200,6 +200,7 @@
                                             + '%</td></tr>';
                                 }
                                 $('#table_content').html(table);
+                                $('#title').html('Elenco delle ultime misure effettuate - Noise Logger #' + data.data[key - 1].noiselogger);
                             } else {
                                 alert("failed");
                             }
