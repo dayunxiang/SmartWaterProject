@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8; initial-scale=1.0; user-scalable=no">
         <script>
             ESPN_refresh = window.setTimeout(function() {
-                window.location.href = "<%=request.getContextPath()%>/secure/index.jsp"
+                window.location.href = "<%=request.getContextPath()%>/homepage.jsp"
             }, 7000);
         </script>   
     <noscript>   
@@ -97,7 +97,7 @@
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign-in').attr("href", "<%=request.getContextPath()%>/secure/index.jsp");
                         $('#sign').html("Logout");
-                        $('#sign').attr("href", "<%=request.getContextPath()%>/auth/logout.jsp");
+                        $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
                     }
 
 
@@ -112,7 +112,7 @@
             $(document).ready(function() {
                 $('#title').html('Elaborazione in corso...Attendere');
                 $.ajax({
-                    url: "<%=request.getContextPath()%>/services/mapsdata/reset",
+                    url: "<%=request.getContextPath()%>/services/auth/logout",
                     type: "GET",
                     cache: false,
                     dataType: "json",
@@ -120,8 +120,11 @@
                         //alert("success");
                         if (data.status == "SUCCESS") {
                             //redirect to secured page
-                            $('#title').html('Dati della mappa resettati con successo');
-                            $('#subtitle').html('Adesso è possibile procedere con una nuova simulazione');
+                            $('#title').html('Logout effettuato con successo');
+                            $('#sign-in').html("+You");
+                        $('#sign-in').attr("href", "<%=request.getContextPath()%>/homepage.jsp");
+                        $('#sign').html("Registrati");
+                        $('#sign').attr("href", "<%=request.getContextPath()%>/auth/auth.jsp");
 
                         } else {
                         }
@@ -167,10 +170,10 @@
                     <li class="" style="float:left;">
                         <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/ticket/ticket.jsp">Gestione Ticket</a>
                     </li>
-                    <li class="" style="float:right;"><!-- for links with no dropdown -->
+                    <li class="current" style="float:right;"><!-- for links with no dropdown -->
                         <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Registrati</a>
                     </li>
-                    <li class="current" style="float:right;"><!-- for links with no dropdown -->
+                    <li class="" style="float:right;"><!-- for links with no dropdown -->
                         <a id="reset" target="_self" href="<%=request.getContextPath()%>/reset.jsp">Reset Valori Mappa</a>
                     </li>
                     <li class="" style="float:right;">

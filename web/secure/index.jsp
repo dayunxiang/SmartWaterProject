@@ -98,7 +98,7 @@
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign-in').attr("href", "<%=request.getContextPath()%>/secure/index.jsp");
                         $('#sign').html("Logout");
-                        $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
+                        $('#sign').attr("href", "<%=request.getContextPath()%>/secure/logout.jsp");
                     }
 
 
@@ -237,43 +237,6 @@
                 });
             }
             google.maps.event.addDomListener(window, 'load', initialize);</script>
-
-        <script type="text/javascript">
-            var noiselogger;
-            $(function() {
-                "use strict";
-                $('#sign').click(function() {
-                    if ("<%=request.getUserPrincipal()%>" == "") {
-                        window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/auth/auth.jsp");
-                        return false;
-                    }
-                    var destinationUrl = this.href;
-                    $.ajax({
-                        url: destinationUrl,
-                        type: "GET",
-                        cache: false,
-                        dataType: "json",
-                        success: function(data, textStatus, jqXHR) {
-                            //alert("success");
-                            if (data.status == "SUCCESS") {
-                                //redirect to welcome page
-                                window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/");
-                            } else {
-                                alert("failed");
-                            }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            alert("error - HTTP STATUS: " + jqXHR.status);
-                        },
-                        complete: function(jqXHR, textStatus) {
-                            //alert("complete");
-                        }
-                    });
-                    return false;
-                });
-            });
-
-        </script>
 
     </head>
 
