@@ -417,7 +417,7 @@
                 <div>
                     <ul class="mainMenu" >
                         <li class="" style="float:left;">
-                            <img id="logo" src="<%=request.getContextPath()%>/file/Logo_TILab.jpg">
+                        <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
                         </li>
                         <li class="" style="float:left;"><!-- for links with no dropdown -->
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/homepage.jsp">+You</a>
@@ -429,7 +429,7 @@
                         <li class="" style="float:left;">
                             <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/ticket/ticket.jsp">Gestione Ticket</a>
                         </li>
-                        <li class="" style="float:right;"><!-- for links with no dropdown -->
+                        <li class="current" style="float:right;"><!-- for links with no dropdown -->
                             <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Registrati</a>
                         </li>
                         <li class="" style="float:right;"><!-- for links with no dropdown -->
