@@ -220,7 +220,7 @@
                     <ul class="mainMenu" >
                         <!-- Using class="current" for the link of the current page -->
                         <li class="" style="float:left;">
-                            <img id="logo" src="<%=request.getContextPath()%>/file/Logo_TILab.jpg">
+                        <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
                         </li>
                         <li class="" style="float:left;"><!-- for links with no dropdown -->
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/homepage.jsp">+You</a>
