@@ -107,8 +107,9 @@
                     if ("<%=request.getUserPrincipal()%>" != "") {
 
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
+                        $('#sign-in').attr("href", "<%=request.getContextPath()%>/secure/index.jsp");
                         $('#sign').html("Logout");
-                        $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
+                        $('#sign').attr("href", "<%=request.getContextPath()%>/secure/logout.jsp");
                     }
                     $.ajax({
                         url: "<%=request.getContextPath()%>/services/ticket/list",
@@ -163,7 +164,7 @@
                     <ul class="mainMenu" >
                         <!-- Using class="current" for the link of the current page -->
                         <li class="" style="float:left;">
-                        <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
+                            <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
                         </li>
                         <li class="" style="float:left;"><!-- for links with no dropdown -->
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/homepage.jsp">+You</a>
@@ -181,9 +182,9 @@
                         <li class="" style="float:right;"><!-- for links with no dropdown -->
                             <a id="reset" target="_self" href="<%=request.getContextPath()%>/reset.jsp">Reset Valori Mappa</a>
                         </li>
-<!--                        <li class="" style="float:right;">
-                            <a id="startcom" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
-                        </li>-->
+                        <!--                        <li class="" style="float:right;">
+                                                    <a id="startcom" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
+                                                </li>-->
                         <li class="" style="float:right;">
                             <a id="simul" target="_self" href="<%=request.getContextPath()%>/secure/simulation.jsp">Simulazione Dati</a>
                         </li>

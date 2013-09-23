@@ -112,45 +112,11 @@
                     if (<%=request.getUserPrincipal()%> != null) {
 
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
+                        $('#sign-in').attr("href", "<%=request.getContextPath()%>/secure/index.jsp");
                         $('#sign').html("Logout");
-                        $('#sign').attr("href", "<%=request.getContextPath()%>/services/auth/logout");
+                        $('#sign').attr("href", "<%=request.getContextPath()%>/secure/logout.jsp");
                     }
 
-
-                    return false;
-                });
-            });
-            $(function() {
-                "use strict";
-
-                $('#sign').click(function() {
-                    if (<%=request.getUserPrincipal()%> == null) {
-                        window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/auth/auth.jsp");
-                        return false;
-                    }
-                    var destinationUrl = this.href;
-
-                    $.ajax({
-                        url: destinationUrl,
-                        type: "GET",
-                        cache: false,
-                        dataType: "json",
-                        success: function(data, textStatus, jqXHR) {
-                            //alert("success");
-                            if (data.status == "SUCCESS") {
-                                //redirect to welcome page
-                                window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/");
-                            } else {
-                                alert("failed");
-                            }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            alert("error - HTTP STATUS: " + jqXHR.status);
-                        },
-                        complete: function(jqXHR, textStatus) {
-                            //alert("complete");
-                        }
-                    });
 
                     return false;
                 });
@@ -416,7 +382,7 @@
                 <div>
                     <ul class="mainMenu" >
                         <li class="" style="float:left;">
-                        <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
+                            <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
                         </li>
                         <li class="" style="float:left;"><!-- for links with no dropdown -->
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/homepage.jsp">+You</a>

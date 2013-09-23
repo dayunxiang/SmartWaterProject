@@ -112,43 +112,43 @@ public class TicketManagementService {
         //such exceptions will be caught by our ExceptionMapper, i.e. javax.transaction.RollbackException
         ticketBean.save(ticket);
         //Send email to user
-        String host = "smtp.gmail.com";
-        String from = "servizio.tiled@gmail.com";
-        String pass = "smartleakdetection";
-        Properties props = System.getProperties();
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.user", from);
-        props.put("mail.smtp.password", pass);
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.auth", "true");
-
-        String[] to = {user.getEmail()};
-
-        Session session = Session.getDefaultInstance(props, null);
-        MimeMessage message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(from));
-
-        InternetAddress[] toAddress = new InternetAddress[to.length];
-
-        for (int i = 0; i < to.length; i++) {        // To get the array of addresses
-            toAddress[i] = new InternetAddress(to[i]);
-        }
-        req.getServletContext().log(Message.RecipientType.TO.toString());
-
-        for (int i = 0; i < toAddress.length; i++) {
-            message.addRecipient(Message.RecipientType.TO, toAddress[i]);
-        }
-        message.setSubject("TI-LeD - Ticket aperto #" + newTicket.getId());
-        message.setContent("<h1>TI-LeD</h1> <br> <div> Gentile utente,<br><br>" +
-                "la richiesta di supporto è stata creata ed assegnata con il numero #" + newTicket.getId() +
-                "Potrà seguire l&lsquoavanzamento della richiesta sul nostro portale." +
-                "<br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
-        Transport transport = session.getTransport("smtp");
-        transport.connect(host, from, pass);
-        transport.sendMessage(message, message.getAllRecipients());
-        transport.close();
-        req.getServletContext().log("Email sent to: '" + user.getEmail());
+//        String host = "smtp.gmail.com";
+//        String from = "servizio.tiled@gmail.com";
+//        String pass = "smartleakdetection";
+//        Properties props = System.getProperties();
+//        props.put("mail.smtp.starttls.enable", "true");
+//        props.put("mail.smtp.host", host);
+//        props.put("mail.smtp.user", from);
+//        props.put("mail.smtp.password", pass);
+//        props.put("mail.smtp.port", "587");
+//        props.put("mail.smtp.auth", "true");
+//
+//        String[] to = {user.getEmail()};
+//
+//        Session session = Session.getDefaultInstance(props, null);
+//        MimeMessage message = new MimeMessage(session);
+//        message.setFrom(new InternetAddress(from));
+//
+//        InternetAddress[] toAddress = new InternetAddress[to.length];
+//
+//        for (int i = 0; i < to.length; i++) {        // To get the array of addresses
+//            toAddress[i] = new InternetAddress(to[i]);
+//        }
+//        req.getServletContext().log(Message.RecipientType.TO.toString());
+//
+//        for (int i = 0; i < toAddress.length; i++) {
+//            message.addRecipient(Message.RecipientType.TO, toAddress[i]);
+//        }
+//        message.setSubject("TI-LeD - Ticket aperto #" + newTicket.getId());
+//        message.setContent("<h1>TI-LeD</h1> <br> <div> Gentile utente,<br><br>" +
+//                "la richiesta di supporto è stata creata ed assegnata con il numero #" + newTicket.getId() +
+//                "Potrà seguire l&lsquoavanzamento della richiesta sul nostro portale." +
+//                "<br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
+//        Transport transport = session.getTransport("smtp");
+//        transport.connect(host, from, pass);
+//        transport.sendMessage(message, message.getAllRecipients());
+//        transport.close();
+//        req.getServletContext().log("Email sent to: '" + user.getEmail());
 
         json.setStatus("SUCCESS");
 
