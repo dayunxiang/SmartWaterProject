@@ -123,6 +123,8 @@
 
                                 for (var key = 0, size = data.data.length; key < size; key++) {
                                     table += '<tr><td>'
+                                            + data.data[key].id
+                                            + '</td><td>'
                                             + data.data[key].noiselogger
                                             + '</td><td>'
                                             + data.data[key].stato
@@ -200,7 +202,7 @@
             <div id="ticketsList">
                 <table id="TicketTable">
                     <thead>
-                        <tr><th>Noise Logger</th><th>Stato</th><th>Info</th></tr>
+                        <tr><th>ID</th><th>Noise Logger</th><th>Stato</th><th>Info</th></tr>
                     </thead>
                     <tbody id="table_content">
 
