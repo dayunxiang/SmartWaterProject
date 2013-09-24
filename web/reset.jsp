@@ -174,7 +174,7 @@
                         <a id="reset" target="_self" href="<%=request.getContextPath()%>/reset.jsp">Reset Valori Mappa</a>
                     </li>
                     <li class="" style="float:right;">
-                        <a id="startcom" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
+                        <a id="startcom" target="_self" href="<%=request.getContextPath()%>/secure/startCom.jsp">Avvia Comunicazione</a>
                     </li>
                 </ul>             	
             </div>
