@@ -123,6 +123,8 @@
 
                                 for (var key = 0, size = data.data.length; key < size; key++) {
                                     table += '<tr><td>'
+                                            + data.data[key].id
+                                            + '</td><td>'
                                             + data.data[key].noiselogger
                                             + '</td><td>'
                                             + data.data[key].stato
@@ -164,7 +166,7 @@
                     <ul class="mainMenu" >
                         <!-- Using class="current" for the link of the current page -->
                         <li class="" style="float:left;">
-                        <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
+                            <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
                         </li>
                         <li class="" style="float:left;"><!-- for links with no dropdown -->
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/homepage.jsp">+You</a>
@@ -200,7 +202,7 @@
             <div id="ticketsList">
                 <table id="TicketTable">
                     <thead>
-                        <tr><th>Noise Logger</th><th>Stato</th><th>Info</th></tr>
+                        <tr><th>ID</th><th>Noise Logger</th><th>Stato</th><th>Info</th></tr>
                     </thead>
                     <tbody id="table_content">
 
