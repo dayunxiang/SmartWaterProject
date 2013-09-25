@@ -161,8 +161,8 @@
                                 else if (data.data[key].style == "#errorStyle")
                                     image = "<%=request.getContextPath()%>/file/iconeNL/giallo3.png";
                                 else if (data.data[key].style == "#measureStyle")
-                                    image = "http://labs.google.com/ridefinder/images/mm_20_black.png";
-//                                    image = "<%=request.getContextPath()%>/file/iconeNL/Blu3.png";
+//                                    image = "http://labs.google.com/ridefinder/images/mm_20_black.png";
+                                    image = "<%=request.getContextPath()%>/file/iconeNL/Blu3.png";
                                 else if (data.data[key].style == "leak")
                                     image = "<%=request.getContextPath()%>/file/iconeNL/triangolo3.png";
                                 marker = new google.maps.Marker({
