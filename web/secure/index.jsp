@@ -143,8 +143,8 @@
                                 else if (data.data[key].style == "#strictStyle")
                                     image = "<%=request.getContextPath()%>/file/iconeNL/Bianco3.png";
                                 else if (data.data[key].style == "#measureStyle")
-//                                    image = "<%=request.getContextPath()%>/file/iconeNL/Blu3.png";
-                                    image = "http://labs.google.com/ridefinder/images/mm_20_black.png";
+                                    image = "<%=request.getContextPath()%>/file/iconeNL/Blu3.png";
+//                                    image = "http://labs.google.com/ridefinder/images/mm_20_black.png";
                                 else if (data.data[key].style == "#alarmStyle") {
                                     image = "<%=request.getContextPath()%>/file/iconeNL/rosso3.png";
                                     //draw a circle in alarm area
