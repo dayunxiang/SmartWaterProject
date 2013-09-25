@@ -139,13 +139,10 @@
                             for (var key = 0, size = data.data.length; key < size; key++) {
                                 var image;
                                 if (data.data[key].style == "#largeStyle")
-                                    //                                    image = "http://labs.google.com/ridefinder/images/mm_20_purple.png";
                                     image = "<%=request.getContextPath()%>/file/iconeNL/Viola3.png";
                                 else if (data.data[key].style == "#strictStyle")
-                                    //                                    image = "http://labs.google.com/ridefinder/images/mm_20_white.png";
                                     image = "<%=request.getContextPath()%>/file/iconeNL/Bianco3.png";
                                 else if (data.data[key].style == "#alarmStyle") {
-                                    //                                    image = "http://labs.google.com/ridefinder/images/mm_20_red.png";
                                     image = "<%=request.getContextPath()%>/file/iconeNL/rosso3.png";
                                     //draw a circle in alarm area
                                     var centerCoordinate = new google.maps.LatLng(data.data[key].latitude, data.data[key].longitude);
@@ -162,10 +159,11 @@
                                     var alarmCircle = new google.maps.Circle(alarmOptions);
                                 }
                                 else if (data.data[key].style == "#errorStyle")
-                                    //                                    image = "http://labs.google.com/ridefinder/images/mm_20_yellow.png";
                                     image = "<%=request.getContextPath()%>/file/iconeNL/giallo3.png";
+                                else if (data.data[key].style == "#measureStyle")
+                                    image = "http://labs.google.com/ridefinder/images/mm_20_black.png";
+//                                    image = "<%=request.getContextPath()%>/file/iconeNL/Blu3.png";
                                 else if (data.data[key].style == "leak")
-                                    //                                    image = "http://labs.google.com/ridefinder/images/mm_20_black.png";
                                     image = "<%=request.getContextPath()%>/file/iconeNL/triangolo3.png";
                                 marker = new google.maps.Marker({
                                     position: new google.maps.LatLng(data.data[key].latitude, data.data[key].longitude),
@@ -211,8 +209,12 @@
                                         if (data.data[key].style == "#strictStyle") {
                                             content = '<div class = "geoxml3_infowindow"> <h3> Noise logger #' + data.data[key].noiselogger +
                                                     '</h3><br><h3>Sensore non attivo</h3></div>';
-                                            '<br>Batteria: ' + colorBattery + data.data[key].battery + '%</font>' +
-                                                    '<br>Stato: ' + colorStatus + data.data[key].status + '</font><br></h3></div>';
+//                                            '<br>Batteria: ' + colorBattery + data.data[key].battery + '%</font>' +
+//                                                    '<br>Stato: ' + colorStatus + data.data[key].status + '</font><br></h3></div>';
+                                        }
+                                        if (data.data[key].style == "#measureStyle") {
+                                            content = '<div class = "geoxml3_infowindow"> <h3> Noise logger #' + data.data[key].noiselogger +
+                                                    '</h3><br><h3>Sensore attivato per la ricerca della perdita</h3></div>';
                                         }
                                         if (data.data[key].style == "leak") {
                                             content = '<div class = "geoxml3_infowindow"> <h3> Perdita' +
@@ -249,7 +251,7 @@
                     <ul class="mainMenu" >
                         <!-- Using class="current" for the link of the current page -->
                         <li class="" style="float:left;">
-                        <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
+                            <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
                         </li>
                         <li class="" style="float:left;"><!-- for links with no dropdown -->
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/homepage.jsp">+You</a>

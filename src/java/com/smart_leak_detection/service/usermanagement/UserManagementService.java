@@ -21,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.smart_leak_detection.json.JsonResponse;
+import com.smart_leak_detection.model.mapsmanagement.MapsData;
 import com.smart_leak_detection.model.mapsmanagement.MapsDataBean;
 import com.smart_leak_detection.model.measuremanagement.MeasureBean;
 import com.smart_leak_detection.model.usermanagement.Group;
@@ -232,6 +233,17 @@ public class UserManagementService {
             return Response.ok().entity(json).build();
         }
 
+        MapsData mapsData = new MapsData();
+
+        //Modify style for maps visualization
+        mapsData = this.mapsDataBean.find("24");
+        mapsData.setStyle("#measureStyle");
+        this.mapsDataBean.update(mapsData); //update noise logger #24
+
+        mapsData = this.mapsDataBean.find("41");
+        mapsData.setStyle("#measureStyle");
+        this.mapsDataBean.update(mapsData); //update noise logger ;41
+        
         //Attivo la lettura da parte del thread dei valori degli altri sensori
         this.recThread.setStrict();
 
