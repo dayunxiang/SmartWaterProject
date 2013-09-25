@@ -122,6 +122,12 @@ public class ReceivingData extends Thread {
                     this.mapsData.setBattery(battery);
                     this.mapsData.setTimestamp(timestamp);
                     this.mapsData.setValue(value);
+                    
+                    //Set the errorStyle if battery is low or there is an error
+                    if (battery < 20 || this.mapsData.getStatus().compareTo("OK") != 0) {
+                        this.mapsData.setStyle("#errorStyle");
+                    }
+                    
                     if (value > 300) { //Leak detected, save first value
 //                    if (value != 0) { //ripristinare una volta effettuato il test   
                         this.valueF = value;
