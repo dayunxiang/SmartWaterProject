@@ -222,6 +222,7 @@ public class MeasureManagementService {
         mapsData.setBattery(80);
         mapsData.setTimestamp(timestamp);
         mapsData.setValue(600);
+        mapsData.setStyle("#measureStyle"); //update style formaps visualization
         this.mapsDataBean.update(mapsData); //update last measure for the noiselogger
 
 
@@ -231,7 +232,9 @@ public class MeasureManagementService {
         mapsData.setBattery(80);
         mapsData.setTimestamp(timestamp);
         mapsData.setValue(800);
+        mapsData.setStyle("#measureStyle"); //update style formaps visualization
         this.mapsDataBean.update(mapsData);
+
 
         //Control to prevent user error
         mapsData = this.mapsDataBean.find("leak");

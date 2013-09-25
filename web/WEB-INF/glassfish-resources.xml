@@ -7,7 +7,7 @@
     <property name="portNumber" value="3306"/>
     <property name="databaseName" value="db_auth"/>
     <property name="User" value="root"/>
-    <property name="Password" value="root"/>
+    <property name="Password" value="pelldav"/>
     <property name="URL" value="jdbc:mysql://localhost:3306/db_auth"/>
     <property name="driverClass" value="org.mysql.Driver"/>
   </jdbc-connection-pool>

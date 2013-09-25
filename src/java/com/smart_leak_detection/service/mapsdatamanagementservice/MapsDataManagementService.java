@@ -77,6 +77,13 @@ public class MapsDataManagementService {
                     this.mapsDataBean.update(mapsData);
                     req.getServletContext().log("AGGIORNO VALORE");
                 }
+            } else if (mapsData.getStyle().compareTo("#measureStyle") == 0) {
+                if (mapsData.getValue() != 0) {
+                    mapsData.setValue(0);
+                    mapsData.setStyle("#strictStyle");
+                    this.mapsDataBean.update(mapsData);
+                    req.getServletContext().log("AGGIORNO VALORE");
+                }
             } else if (mapsData.getStyle().compareTo("leak") == 0) {
                 this.mapsDataBean.remove(mapsData);
                 req.getServletContext().log("AGGIORNO VALORE");
