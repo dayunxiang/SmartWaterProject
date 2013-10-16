@@ -135,9 +135,8 @@
 //                        //alert("success");
 //                        if (data.status == "SUCCESS") {
 //                            //redirect to secured page
-//                            $('#title').html('Maglia fitta attivata');
+//                            $('#title').html('Maglia stretta attivata');
 //                            $('#subtitle').html('Il sistema sta elaborando i dati<br>Riceverai una email non appena verrà individuata la perdita');
-////                                $("#info").html("Maglia fitta attivata");
 //                        } else {
 //                        }
 //                    },
@@ -177,9 +176,8 @@
                         //alert("success");
                         if (data.status == "SUCCESS") {
                             //redirect to secured page
-                            $('#title').html('Maglia fitta attivata');
+                            $('#title').html('Maglia stretta attivata');
                             $('#subtitle').html('Il sistema sta elaborando i dati<br>Riceverai una email non appena verrà individuata la perdita');
-//                                $("#info").html("Maglia fitta attivata");
                         } else {
                         }
                     },
@@ -224,7 +222,7 @@
                         <a id="ticket" target="_self" href="<%=request.getContextPath()%>/secure/ticket/ticket.jsp">Gestione Ticket</a>
                     </li>
                     <li class="current" style="float:left;">
-                        <a id="activate" target="_self">Attivazione maglia fitta</a>
+                        <a id="activate" target="_self">Attivazione maglia stretta</a>
                     </li>
                     <li class="" style="float:right;"><!-- for links with no dropdown -->
                         <a id="sign" target="_self" href="<%=request.getContextPath()%>/auth/auth.jsp">Registrati</a>

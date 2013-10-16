@@ -68,6 +68,7 @@ public class MapsDataManagementService {
             mapsData = list.get(i);
             if (mapsData.getStyle().compareTo("#alarmStyle") == 0) {
                 mapsData.setValue(0);
+                mapsData.setBattery(95); //update old value if the user select, in "Simulazione dati" page, the "Invia valore normale" button
                 mapsData.setStyle("#largeStyle");
                 this.mapsDataBean.update(mapsData);
                 req.getServletContext().log("AGGIORNO VALORE");

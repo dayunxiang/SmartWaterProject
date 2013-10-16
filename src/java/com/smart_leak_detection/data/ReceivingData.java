@@ -168,7 +168,7 @@ public class ReceivingData extends Thread {
 //                        message.setSubject("TI-LeD - Notifica rilevazione area di perdita");
 //                        message.setContent("<h1>TI-LeD</h1> <br> <div> Gentile utente,<br><br>"
 //                                + "Il sistema TI-LeD ha appena rilevato una area di perdita nella zone del noise logger #" + noiselogger
-//                                + ".<br>Le ricordiamo di attivare quanto prima la maglia fitta per individuare il punto esatto della perdita."
+//                                + ".<br>Le ricordiamo di attivare quanto prima la maglia stretta per individuare il punto esatto della perdita."
 //                                + "<br><br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
 //                        Transport transport = session.getTransport("smtp");
 //                        transport.connect(host, from, pass);
@@ -243,7 +243,7 @@ public class ReceivingData extends Thread {
 //                        }
 //                        message.setSubject("TI-LeD - Individuato punto di perdita");
 //                        message.setContent("<h1>TI-LeD</h1> <br> <div>Gentile utente,<br><br>"
-//                                + "in seguito alla attivazione della maglia fitta, il sistema TI-LeD ha localizzato una perdita sulla Sua rete.<br>"
+//                                + "in seguito alla attivazione della maglia stretta, il sistema TI-LeD ha localizzato una perdita sulla Sua rete.<br>"
 //                                + "Può consultare la mappa tramite il nostro portale per visualizzare la posizione precisa.<br><br>"
 //                                + "Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
 ////                        Transport transport = session.getTransport("smtp");
@@ -268,7 +268,7 @@ public class ReceivingData extends Thread {
                             //Send email
                             System.out.println("PERDITA SECONDO TRATTO valore2: " + this.valueS + " valore3: " + this.valueT);
                         }
-                        this.isStrict = false; //reset maglia fitta
+                        this.isStrict = false; //reset maglia stretta
                     }
                 }
 //                Thread.sleep(5000);
@@ -282,6 +282,6 @@ public class ReceivingData extends Thread {
 
     public void setStrict() {
         this.isStrict = true;
-        System.out.println("ATTIVO MAGLIA FITTA");
+        System.out.println("ATTIVO MAGLIA STRETTA");
     }
 }
