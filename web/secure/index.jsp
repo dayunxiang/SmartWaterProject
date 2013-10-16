@@ -193,11 +193,11 @@
                                             }
                                         }
                                         if (data.data[key].style == "#alarmStyle") {
-                                            activateAction = "window.location.replace('https://" + window.location.host + "/SmartLeakDetection/secure/measure/activate.jsp?nl=" + data.data[key].noiselogger + "');";
+                                            activateAction = "window.location.replace('https://" + window.location.host + "/TI-LeD/secure/measure/activate.jsp?nl=" + data.data[key].noiselogger + "');";
                                             addButton = '<button onclick="' + activateAction + '">Attiva maglia stretta</button>';
                                         }
-                                        newticketAction = "window.location.replace('https://" + window.location.host + "/SmartLeakDetection/secure/ticket/newTicket.jsp?nl=" + data.data[key].noiselogger + "');";
-                                        storicoAction = "window.location.replace('https://" + window.location.host + "/SmartLeakDetection/secure/measure/measure.jsp?nl=" + data.data[key].noiselogger + "');";
+                                        newticketAction = "window.location.replace('https://" + window.location.host + "/TI-LeD/secure/ticket/newTicket.jsp?nl=" + data.data[key].noiselogger + "');";
+                                        storicoAction = "window.location.replace('https://" + window.location.host + "/TI-LeD/secure/measure/measure.jsp?nl=" + data.data[key].noiselogger + "');";
                                         content = '<div class="geoxml3_infowindow"><h3>Noise logger #' + data.data[key].noiselogger +
                                                 '</h3><br><h3> Data: ' + data.data[key].timestamp +
                                                 '<br>Livello soglia superata: ' + data.data[key].value +

@@ -1,5 +1,5 @@
 #!/bin/sh
-app_name="SmartLeakDetection" 
+app_name="TI-LeD" 
 build_path="/Users/pelldav/University/Tesi/SmartWaterProject/"
 dist_path="/Users/pelldav/University/Tesi/SmartWaterProject/dist/"
 opt="--virtualservers"

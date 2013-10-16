@@ -23,7 +23,7 @@
         <url-pattern>/services/*</url-pattern>
     </servlet-mapping>
     <listener>
-        <listener-class>com.smart_leak_detection.web.listener.EventListener</listener-class>
+        <listener-class>com.ti_led.web.listener.EventListener</listener-class>
     </listener>
     <login-config>
         <auth-method>FORM</auth-method>
@@ -85,5 +85,4 @@
         <res-type>javax.sql.DataSource</res-type>
         <lookup-name>mySQLpool</lookup-name>
     </resource-ref>
-       
 </web-app>
