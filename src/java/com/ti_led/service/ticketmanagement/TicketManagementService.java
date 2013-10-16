@@ -63,7 +63,7 @@ public class TicketManagementService {
         Date date = new Date();
 
         TicketDTO newTicket = new TicketDTO();
-        
+
 
         JsonResponse json = new JsonResponse();
         json.setData(newTicket); //just return the date we received
@@ -77,7 +77,7 @@ public class TicketManagementService {
         }
 
         MapsData mapsData = this.mapsDataBean.find(noiselogger);
-        
+
         int battery = mapsData.getBattery();
         String status = mapsData.getStatus();
 
@@ -123,8 +123,12 @@ public class TicketManagementService {
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", "true");
 
-        String[] to = {user.getEmail()};
-
+//        String[] to = {user.getEmail()};
+        List<User> list = userBean.findAll(user.getCompany());
+        String[] to = new String[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            to[i] = list.get(i).getEmail();
+        }
         Session session = Session.getDefaultInstance(props, null);
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress(from));
@@ -140,10 +144,10 @@ public class TicketManagementService {
             message.addRecipient(Message.RecipientType.TO, toAddress[i]);
         }
         message.setSubject("TI-LeD - Ticket aperto #" + newTicket.getId());
-        message.setContent("<h1>TI-LeD</h1> <br> <div> Gentile utente,<br><br>" +
-                "la richiesta di supporto è stata creata ed assegnata con il numero #" + newTicket.getId() +
-                "Potrà seguire l&lsquoavanzamento della richiesta sul nostro portale." +
-                "<br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
+        message.setContent("<h1>TI-LeD</h1> <br> <div> Gentile utente,<br><br>"
+                + "la richiesta di supporto è stata creata ed assegnata con il numero #" + newTicket.getId()
+                + "Potrà seguire l&lsquoavanzamento della richiesta sul nostro portale."
+                + "<br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
         Transport transport = session.getTransport("smtp");
         transport.connect(host, from, pass);
         transport.sendMessage(message, message.getAllRecipients());
@@ -175,7 +179,7 @@ public class TicketManagementService {
 
         List<Ticket> list = ticketBean.findAll(user.getCompany());
 
-        
+
         json.setData(list);
 
         json.setStatus("SUCCESS");

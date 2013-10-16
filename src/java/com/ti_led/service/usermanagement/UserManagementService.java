@@ -192,8 +192,7 @@ public class UserManagementService {
                 + "Da questo momento potrà gestire la rete idrica in maniera efficiente.<br>"
                 + "Di seguito i Suoi dati per accedere al servizio:<br>"
                 + "email: " + user.getEmail()
-                + "<br>password: " + user.getPassword()
-                + "Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
+                + "<br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
         Transport transport = session.getTransport("smtp");
         transport.connect(host, from, pass);
         transport.sendMessage(message, message.getAllRecipients());

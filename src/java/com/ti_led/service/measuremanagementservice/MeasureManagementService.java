@@ -59,7 +59,7 @@ public class MeasureManagementService {
     @Path("newmeasure")
     @Produces(MediaType.APPLICATION_JSON)
     @TransactionAttribute(TransactionAttributeType.NEVER)
-    public Response newticket(@FormParam("noiselogger") String noiselogger,
+    public Response newMeasure(@FormParam("noiselogger") String noiselogger,
             @FormParam("value") String value,
             @Context HttpServletRequest req) throws MessagingException {
 
