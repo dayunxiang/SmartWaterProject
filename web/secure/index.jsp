@@ -257,7 +257,6 @@
                         <li class="" style="float:left;"><!-- for links with no dropdown -->
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/homepage.jsp">+You</a>
                         </li>
-                        <!-- Using class="current" for the link of the current page -->
                         <li class="current" style="float:left;">
                             <a target="_self" href="<%=request.getContextPath()%>/secure/index.jsp">Mappa Idrica</a>
                         </li>
@@ -291,8 +290,6 @@
 
         <div id="map-canvas"></div>
         <div id="info"></div>
-        <!--        <button onclick='window.location.replace("httpss://" + window.location.host + "/SmartLeakDetection/secure/measure/activate.jsp?nl=25");'>Activate</button><br>
-                <button onclick='window.location.replace("https://" + window.location.host + "/SmartLeakDetection/secure/ticket/newTicket.jsp?nl=25");'>newticket</button><br>-->
-
+        
     </body>
 </html>

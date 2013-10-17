@@ -1,3 +1,13 @@
+/**
+ * Mon Jun 22 16:17:45 2013
+ *
+ * @author Simone Amoroso
+ * @author Davide Pellegrino
+ * @author Pierluigi Scarpetta
+ * @author Mauro Vuolo
+ *
+ * Released under the Apache License, Version 2.0
+ */
 package com.ti_led.service.mapsdatamanagementservice;
 
 import com.ti_led.json.JsonResponse;
@@ -63,7 +73,8 @@ public class MapsDataManagementService {
         List<MapsData> list = this.mapsDataBean.findAll();
         MapsData mapsData;
         req.getServletContext().log("INIZIO RESET");
-
+        
+        //Reset the database mapsdata element to initial value
         for (int i = 0; i < list.size(); i++) {
             mapsData = list.get(i);
             if (mapsData.getStyle().compareTo("#alarmStyle") == 0) {

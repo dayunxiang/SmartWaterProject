@@ -113,6 +113,7 @@
                     noiselogger: 25,
                     value: 0
                 };
+                $('#title').html('Inserisco il valore desiderato...');
                 var destinationUrl = "<%=request.getContextPath()%>/services/measure/newmeasure";
                 $.ajax({
                     url: destinationUrl,
@@ -147,6 +148,7 @@
                     noiselogger: 25,
                     value: 720
                 };
+                $('#title').html('Inserisco il valore desiderato...');
                 var destinationUrl = "<%=request.getContextPath()%>/services/measure/newmeasure";
                 $.ajax({
                     url: destinationUrl,

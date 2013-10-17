@@ -1,3 +1,13 @@
+/**
+ * Mon Jun 22 16:17:45 2013
+ *
+ * @author Simone Amoroso
+ * @author Davide Pellegrino
+ * @author Pierluigi Scarpetta
+ * @author Mauro Vuolo
+ *
+ * Released under the Apache License, Version 2.0
+ */
 package com.ti_led.service.ticketmanagement;
 
 import javax.ejb.EJB;
@@ -99,7 +109,7 @@ public class TicketManagementService {
         }
 
         //set stato - initial state is always "attivo"
-        newTicket.setStato("attivo");
+        newTicket.setStato("aperto");
 
         req.getServletContext().log("ticket creato" + newTicket);
 
@@ -123,7 +133,6 @@ public class TicketManagementService {
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", "true");
 
-//        String[] to = {user.getEmail()};
         List<User> list = userBean.findAll(user.getCompany());
         String[] to = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
@@ -146,8 +155,8 @@ public class TicketManagementService {
         message.setSubject("TI-LeD - Ticket aperto #" + newTicket.getId());
         message.setContent("<h1>TI-LeD</h1> <br> <div> Gentile utente,<br><br>"
                 + "la richiesta di supporto è stata creata ed assegnata con il numero #" + newTicket.getId()
-                + "Potrà seguire l&lsquoavanzamento della richiesta sul nostro portale."
-                + "<br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
+                + ". Potrà seguire l&lsquoavanzamento della richiesta sul nostro portale."
+                + "<br><br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
         Transport transport = session.getTransport("smtp");
         transport.connect(host, from, pass);
         transport.sendMessage(message, message.getAllRecipients());

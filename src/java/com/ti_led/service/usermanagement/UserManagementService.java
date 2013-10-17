@@ -1,3 +1,13 @@
+/**
+ * Mon Jun 22 16:17:45 2013
+ *
+ * @author Simone Amoroso
+ * @author Davide Pellegrino
+ * @author Pierluigi Scarpetta
+ * @author Mauro Vuolo
+ *
+ * Released under the Apache License, Version 2.0
+ */
 package com.ti_led.service.usermanagement;
 
 import com.ti_led.data.ReceivingData;
@@ -55,11 +65,11 @@ public class UserManagementService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response ping(@FormParam("ip") String ip,
             @Context HttpServletRequest req) {
-        if (recThread != null) {
+        if (recThread != null) { //Check if the thread already exists and kill it to prevent socket error
             this.recThread.interrupt();
         }
         this.recThread = new ReceivingData(ip, measureBean, userBean, mapsDataBean);
-        recThread.start();
+        recThread.start(); //Start receiving thread
 
         JsonResponse json = new JsonResponse();
         json.setStatus("SUCCESS");
@@ -188,11 +198,11 @@ public class UserManagementService {
         }
         message.setSubject("TI-LeD - Conferma registrazione");
         message.setContent("<h1>TI-LeD</h1> <br> <div>Gentile " + user.getFirstName() + " " + user.getLastName()
-                + ",<br>benvenuto nel servizio TI LeD - Telecom Italia Leak Detection.<br>"
+                + ",<br><br>benvenuto nel servizio TI LeD - Telecom Italia Leak Detection.<br>"
                 + "Da questo momento potrà gestire la rete idrica in maniera efficiente.<br>"
                 + "Di seguito i Suoi dati per accedere al servizio:<br>"
                 + "email: " + user.getEmail()
-                + "<br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
+                + "<br><br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
         Transport transport = session.getTransport("smtp");
         transport.connect(host, from, pass);
         transport.sendMessage(message, message.getAllRecipients());
@@ -231,7 +241,7 @@ public class UserManagementService {
             return Response.ok().entity(json).build();
         }
 
-        //Attivo la lettura da parte del thread dei valori degli altri sensori
+        //Activate the strict mesh
         this.recThread.setStrict();
 
         json.setStatus("SUCCESS");

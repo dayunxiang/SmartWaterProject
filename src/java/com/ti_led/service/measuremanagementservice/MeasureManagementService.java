@@ -1,3 +1,13 @@
+/**
+ * Mon Jun 22 16:17:45 2013
+ *
+ * @author Simone Amoroso
+ * @author Davide Pellegrino
+ * @author Pierluigi Scarpetta
+ * @author Mauro Vuolo
+ *
+ * Released under the Apache License, Version 2.0
+ */
 package com.ti_led.service.measuremanagementservice;
 
 import com.ti_led.json.JsonResponse;
@@ -54,7 +64,7 @@ public class MeasureManagementService {
         return "alive";
     }
 
-    //Only for test --- new measure is added by other thread
+    //Only for Simulation --- new measure is added by other thread
     @POST
     @Path("newmeasure")
     @Produces(MediaType.APPLICATION_JSON)
@@ -77,7 +87,6 @@ public class MeasureManagementService {
         String timestamp = dateFormat.format(date);
         measure = this.measureBean.find(noiselogger); //Retrive company for the noiselogger
         String company = measure.getCompany();
-//        FIX-ME correggere il servizio perchè adesso oltre a salvare in measure deve salvare in mapsdata
 
         MeasureDTO measureDto = new MeasureDTO();
         measureDto.setId("" + date.getTime());
@@ -136,7 +145,7 @@ public class MeasureManagementService {
             }
             message.setSubject("TI-LeD - Notifica rilevazione area di perdita");
             message.setContent("<h1>TI-LeD</h1> <br> <div> Gentile utente,<br><br>"
-                    + "Il sistema TI-LeD ha appena rilevato una area di perdita nella zone del noise logger #" + noiselogger
+                    + "Il sistema TI-LeD ha appena rilevato una area di perdita nella zona del noise logger #" + noiselogger
                     + ".<br>Le ricordiamo di attivare quanto prima la maglia stretta per individuare il punto esatto della perdita."
                     + "<br><br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
             Transport transport = session.getTransport("smtp");
@@ -297,7 +306,6 @@ public class MeasureManagementService {
 //            leak.setLongitude(12.734897);
             MapsData mapsLeak = new MapsData(leak);
             this.mapsDataBean.save(mapsLeak);
-            //Send email
         }
 
         json.setStatus("SUCCESS");
