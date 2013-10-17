@@ -96,8 +96,9 @@
                     if ("<%=request.getUserPrincipal()%>" != "") {
 
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
+                        $('#sign-in').attr("href", "<%=request.getContextPath()%>/secure/index.jsp");
                         $('#sign').html("Logout");
-                        $('#sign').attr("href", "<%=request.getContextPath()%>/auth/logout.jsp");
+                        $('#sign').attr("href", "<%=request.getContextPath()%>/secure/logout.jsp");
                     }
 
 
@@ -112,6 +113,7 @@
                     noiselogger: 25,
                     value: 0
                 };
+                $('#title').html('Inserisco il valore desiderato...');
                 var destinationUrl = "<%=request.getContextPath()%>/services/measure/newmeasure";
                 $.ajax({
                     url: destinationUrl,
@@ -146,6 +148,7 @@
                     noiselogger: 25,
                     value: 720
                 };
+                $('#title').html('Inserisco il valore desiderato...');
                 var destinationUrl = "<%=request.getContextPath()%>/services/measure/newmeasure";
                 $.ajax({
                     url: destinationUrl,
@@ -186,7 +189,7 @@
                     <ul class="mainMenu" >
                         <!-- Using class="current" for the link of the current page -->
                         <li class="" style="float:left;">
-                        <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
+                            <img id="logo" src="<%=request.getContextPath()%>/file/telecom.jpg">
                         </li>
                         <li class="" style="float:left;"><!-- for links with no dropdown -->
                             <a id="sign-in" target="_self" href="<%=request.getContextPath()%>/homepage.jsp">+You</a>

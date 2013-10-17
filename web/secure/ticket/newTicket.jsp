@@ -98,7 +98,7 @@
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign-in').attr("href", "<%=request.getContextPath()%>/secure/index.jsp");
                         $('#sign').html("Logout");
-                        $('#sign').attr("href", "<%=request.getContextPath()%>/auth/logout.jsp");
+                        $('#sign').attr("href", "<%=request.getContextPath()%>/secure/logout.jsp");
                     }
 
 

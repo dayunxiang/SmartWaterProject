@@ -98,7 +98,7 @@
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign-in').attr("href", "<%=request.getContextPath()%>/secure/index.jsp");
                         $('#sign').html("Logout");
-                        $('#sign').attr("href", "<%=request.getContextPath()%>/auth/logout.jsp");
+                        $('#sign').attr("href", "<%=request.getContextPath()%>/secure/logout.jsp");
                     }
 
 
@@ -135,9 +135,8 @@
                         //alert("success");
                         if (data.status == "SUCCESS") {
                             //redirect to secured page
-                            $('#title').html('Maglia fitta attivata');
+                            $('#title').html('Maglia stretta attivata');
                             $('#subtitle').html('Il sistema sta elaborando i dati<br>Riceverai una email non appena verrà individuata la perdita');
-//                                $("#info").html("Maglia fitta attivata");
                         } else {
                         }
                     },
@@ -177,9 +176,8 @@
 //                        //alert("success");
 //                        if (data.status == "SUCCESS") {
 //                            //redirect to secured page
-//                            $('#title').html('Maglia fitta attivata');
+//                            $('#title').html('Maglia stretta attivata');
 //                            $('#subtitle').html('Il sistema sta elaborando i dati<br>Riceverai una email non appena verrà individuata la perdita');
-////                                $("#info").html("Maglia fitta attivata");
 //                        } else {
 //                        }
 //                    },

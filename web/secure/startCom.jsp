@@ -98,7 +98,7 @@
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign-in').attr("href", "<%=request.getContextPath()%>/secure/index.jsp");
                         $('#sign').html("Logout");
-                        $('#sign').attr("href", "<%=request.getContextPath()%>/auth/logout.jsp");
+                        $('#sign').attr("href", "<%=request.getContextPath()%>/secure/logout.jsp");
                     }
 
 
@@ -175,7 +175,7 @@
                             <a id="reset" target="_self" href="<%=request.getContextPath()%>/reset.jsp">Reset Valori Mappa</a>
                         </li>
                         <li class="current" style="float:right;"><!-- for links with no dropdown -->
-                            <a id="startcom" target="_self" href="<%=request.getContextPath()%>/startCom.jsp">Avvia Comunicazione</a>
+                            <a id="startcom" target="_self" href="<%=request.getContextPath()%>/secure/startCom.jsp">Avvia Comunicazione</a>
                         </li>
                     </ul>             	
                 </div>

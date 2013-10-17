@@ -130,7 +130,6 @@
                             });
                             var ctaLayer = new google.maps.KmlLayer({
                                 url: 'http://caweb.elislab.elis.org/SmartWater/Turin_Pipe.kml',
-//                                url: 'http://caweb.elislab.elis.org/SmartWater/Pipe.kml',
                                 suppressInfoWindows: true
                             });
                             ctaLayer.setMap(map);
@@ -142,6 +141,8 @@
                                     image = "<%=request.getContextPath()%>/file/iconeNL/Viola3.png";
                                 else if (data.data[key].style == "#strictStyle")
                                     image = "<%=request.getContextPath()%>/file/iconeNL/Bianco3.png";
+                                else if (data.data[key].style == "#measureStyle")
+                                    image = "<%=request.getContextPath()%>/file/iconeNL/Blu3.png";
                                 else if (data.data[key].style == "#alarmStyle") {
                                     image = "<%=request.getContextPath()%>/file/iconeNL/rosso3.png";
                                     //draw a circle in alarm area
@@ -160,9 +161,6 @@
                                 }
                                 else if (data.data[key].style == "#errorStyle")
                                     image = "<%=request.getContextPath()%>/file/iconeNL/giallo3.png";
-                                else if (data.data[key].style == "#measureStyle")
-//                                    image = "http://labs.google.com/ridefinder/images/mm_20_black.png";
-                                    image = "<%=request.getContextPath()%>/file/iconeNL/Blu3.png";
                                 else if (data.data[key].style == "leak")
                                     image = "<%=request.getContextPath()%>/file/iconeNL/triangolo3.png";
                                 marker = new google.maps.Marker({
@@ -194,11 +192,11 @@
                                             }
                                         }
                                         if (data.data[key].style == "#alarmStyle") {
-                                            activateAction = "window.location.replace('https://" + window.location.host + "/SmartLeakDetection/secure/measure/activate.jsp?nl=" + data.data[key].noiselogger + "');";
+                                            activateAction = "window.location.replace('https://" + window.location.host + "/TI-LeD/secure/measure/activate.jsp?nl=" + data.data[key].noiselogger + "');";
                                             addButton = '<button onclick="' + activateAction + '">Attiva maglia stretta</button>';
                                         }
-                                        newticketAction = "window.location.replace('https://" + window.location.host + "/SmartLeakDetection/secure/ticket/newTicket.jsp?nl=" + data.data[key].noiselogger + "');";
-                                        storicoAction = "window.location.replace('https://" + window.location.host + "/SmartLeakDetection/secure/measure/measure.jsp?nl=" + data.data[key].noiselogger + "');";
+                                        newticketAction = "window.location.replace('https://" + window.location.host + "/TI-LeD/secure/ticket/newTicket.jsp?nl=" + data.data[key].noiselogger + "');";
+                                        storicoAction = "window.location.replace('https://" + window.location.host + "/TI-LeD/secure/measure/measure.jsp?nl=" + data.data[key].noiselogger + "');";
                                         content = '<div class="geoxml3_infowindow"><h3>Noise logger #' + data.data[key].noiselogger +
                                                 '</h3><br><h3> Data: ' + data.data[key].timestamp +
                                                 '<br>Livello soglia superata: ' + data.data[key].value +
@@ -215,6 +213,8 @@
                                         if (data.data[key].style == "#measureStyle") {
                                             content = '<div class = "geoxml3_infowindow"> <h3> Noise logger #' + data.data[key].noiselogger +
                                                     '</h3><br><h3>Sensore attivato per la ricerca della perdita</h3></div>';
+//                                            '<br>Batteria: ' + colorBattery + data.data[key].battery + '%</font>' +
+//                                                    '<br>Stato: ' + colorStatus + data.data[key].status + '</font><br></h3></div>';
                                         }
                                         if (data.data[key].style == "leak") {
                                             content = '<div class = "geoxml3_infowindow"> <h3> Perdita' +
@@ -285,13 +285,10 @@
                 <img id="logo_tiled" style="height: 15%; width: 15%; padding-left:45%; align:middle;" src="<%=request.getContextPath()%>/file/LOGO_TI_LED.png" align="middle">                
             </p>
         </div>
-        <!--        <h1>TI-LeD</h1>-->
         <br/><br/>
 
         <div id="map-canvas"></div>
         <div id="info"></div>
-        <!--        <button onclick='window.location.replace("httpss://" + window.location.host + "/SmartLeakDetection/secure/measure/activate.jsp?nl=25");'>Activate</button><br>
-                <button onclick='window.location.replace("https://" + window.location.host + "/SmartLeakDetection/secure/ticket/newTicket.jsp?nl=25");'>newticket</button><br>-->
 
     </body>
 </html>

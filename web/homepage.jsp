@@ -123,11 +123,6 @@
                         password: this.password.value
                     };
 
-                    //only for test --- to remove and delete comment above
-//                    var data = {
-//                        email: "pelldav@gmail.com",
-//                        password: "davide"
-//                    };
 
                     var destinationUrl = this.action;
 
@@ -202,31 +197,7 @@
             <h2 id="sub_title">Servizio di Smart Leak Detection</h2>
             <br><br><br>
         </div>
-        <!--        <div id="login">
-                    <form id="loginForm" name="loginForm" action="<%=request.getContextPath()%>/services/auth/login" method="post">
-                        <fieldset>
-                            <legend>Login</legend>
-        
-                            <div>
-                                <label for="email">Email</label> 
-                                <input type="text" id="email" name="email"/>
-                                <label for="password">Password</label> 
-                                <input type="password" id="password" name="password"/>
-                            </div>
-                                                <div>
-                                                    <label for="password">Password</label> 
-                                                    <input type="password" id="password" name="password"/>
-                                                </div>
-        
-                            <div class="buttonRow">
-                                <input type="submit" value="Login" />
-        
-                                <a href="<%=request.getContextPath()%>/auth/auth.jsp"> Registrati!</a>
-                            </div>
-                        </fieldset>
-                    </form> 
-                </div>-->
-        <!--        <fieldset id="field" style="align: center;">-->
+
         <div>
             <p>         
                 <img id="logo_tiled" style="height: 30%; width: 30%; float: right; margin-right: 15%;" src="<%=request.getContextPath()%>/file/LOGO_TI_LED.png" align="middle">
@@ -254,7 +225,6 @@
             </table>
         </p>
     </div>
-    <!--        </fieldset>-->
 
 </body>
 </html>

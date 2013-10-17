@@ -114,7 +114,7 @@
                         $('#sign-in').html("<%=request.getUserPrincipal()%>");
                         $('#sign-in').attr("href", "<%=request.getContextPath()%>/secure/index.jsp");
                         $('#sign').html("Logout");
-                        $('#sign').attr("href", "<%=request.getContextPath()%>/auth/logout.jsp");
+                        $('#sign').attr("href", "<%=request.getContextPath()%>/secure/logout.jsp");
                         $('#storico').attr("href", document.URL);
                     }
 
@@ -167,6 +167,7 @@
                                             + '%</td></tr>';
                                 }
                                 $('#table_content').html(table);
+                                $('#title').html('Elenco delle ultime misure effettuate - Noise Logger #' + data.data[key - 1].noiselogger);
                             } else {
                                 alert("failed");
                             }
@@ -183,43 +184,6 @@
                             //alert("complete");
                         }
                     });
-                });
-            });
-            $(function() {
-                "use strict";
-                $('#setNewMeasure').click(function() {
-                    var data = {
-                        noiselogger: getUrlValue("nl")
-                    };
-                    $.ajax({
-                        url: "<%=request.getContextPath()%>/services/measure/newmeasure",
-                        type: "POST",
-                        data: data,
-                        cache: false,
-                        dataType: "json",
-                        success: function(data, textStatus, jqXHR) {
-                            //alert("success");
-                            if (data.status == "SUCCESS") {
-                                //redirect to secured page
-                                $("#info").html("Measure added");
-                            } else {
-                            }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            //alert("error - HTTP STATUS: "+jqXHR.status);
-                            if (textStatus == "parsererror") {
-                                alert("You session has timed out");
-                                //forward to welcomde page
-                                window.location.replace("https://" + window.location.host + "<%=request.getContextPath()%>/homepage.jsp");
-                            }
-                        },
-                        complete: function(jqXHR, textStatus) {
-                            //alert("complete");
-                        }
-
-                    });
-
-                    return false;
                 });
             });
 
@@ -268,11 +232,8 @@
             <!--            <br/><br/>-->
             <div id="title_bar">
                 <p id="title">
-<!--                    <img id="logo_tiled" src="<%=request.getContextPath()%>/file/LOGO_TI_LED.png" align="middle">-->
                 </p>
             </div>
-            <!--            <button id="setNewMeasure">Set New Measure</button>-->
-<!--                <img id="logo_tiled" src="<%=request.getContextPath()%>/file/LOGO_TI_LED.png"/></div>-->
             <br/><br/>
             <div id="measureList">
                 <table id="MeasureTable">
