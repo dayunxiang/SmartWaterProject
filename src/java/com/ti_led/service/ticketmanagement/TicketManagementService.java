@@ -155,7 +155,7 @@ public class TicketManagementService {
         message.setSubject("TI-LeD - Ticket aperto #" + newTicket.getId());
         message.setContent("<h1>TI-LeD</h1> <br> <div> Gentile utente,<br><br>"
                 + "la richiesta di supporto è stata creata ed assegnata con il numero #" + newTicket.getId()
-                + ". Potrà seguire l&lsquoavanzamento della richiesta sul nostro portale."
+                + ".<br>Potrà seguire l'avanzamento della richiesta sul nostro portale."
                 + "<br><br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
         Transport transport = session.getTransport("smtp");
         transport.connect(host, from, pass);

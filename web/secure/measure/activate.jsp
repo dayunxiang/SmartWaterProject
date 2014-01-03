@@ -122,6 +122,7 @@
 //        $(function() {
 //            "use strict";
 //            $(document).ready(function() {
+//		  $('#title').html('Elaborazione in corso...Attendere');
 //                var data = {
 //                    noiselogger: getUrlValue("nl")
 //                };

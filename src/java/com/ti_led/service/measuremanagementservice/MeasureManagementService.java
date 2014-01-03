@@ -145,7 +145,7 @@ public class MeasureManagementService {
             }
             message.setSubject("TI-LeD - Notifica rilevazione area di perdita");
             message.setContent("<h1>TI-LeD</h1> <br> <div> Gentile utente,<br><br>"
-                    + "Il sistema TI-LeD ha appena rilevato una area di perdita nella zona del noise logger #" + noiselogger
+                    + "il sistema TI-LeD ha appena rilevato una area di perdita nella zona del noise logger #" + noiselogger
                     + ".<br>Le ricordiamo di attivare quanto prima la maglia stretta per individuare il punto esatto della perdita."
                     + "<br><br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
             Transport transport = session.getTransport("smtp");

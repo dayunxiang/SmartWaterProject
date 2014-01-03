@@ -31,6 +31,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.ti_led.json.JsonResponse;
+import com.ti_led.model.mapsmanagement.MapsData;
 import com.ti_led.model.mapsmanagement.MapsDataBean;
 import com.ti_led.model.measuremanagement.MeasureBean;
 import com.ti_led.model.usermanagement.Group;
@@ -240,6 +241,15 @@ public class UserManagementService {
             json.setErrorMsg("Authentication failed");
             return Response.ok().entity(json).build();
         }
+
+	MapsData mapsData = new MapsData();
+	mapsData = this.mapsDataBean.find("24");
+	mapsData.setStyle("#measureStyle"); //update style for maps visualization
+        this.mapsDataBean.update(mapsData); //update the DB
+
+	mapsData = this.mapsDataBean.find("41");
+	mapsData.setStyle("#measureStyle"); //update style for maps visualization
+        this.mapsDataBean.update(mapsData); //update the DB
 
         //Activate the strict mesh
         this.recThread.setStrict();
