@@ -67,216 +67,95 @@ public class ReceivingData extends Thread {
 
     @Override
     public void run() {
-        MeterReadings data;
+        String noiselogger = "25";
+        String value = "720";
         System.out.println("Receiver IN ESECUZIONE");
+
         try {
-            while (true) {
-                date = new Date();
-                System.out.println("Receiver IN ATTESA DI UN PACCHETTO");
-                data = this.meterData.getData();
-                System.out.println("Receiver: Name:" + data.name + " Valve Status: " + data.valveStatus + "Data meter: " + data.meter);
-                String s = data.meter.toString();
-                List<String> parts = new ArrayList<String>();
-                int size = s.length();
-                if (size == 7) {
-                    parts.add(s.substring(0, 3));
-                    parts.add(s.substring(3, 5));
-                    parts.add(s.substring(5, 7));
-                } else {
-                    parts.add(s.substring(0, 2));
-                    parts.add(s.substring(2, 4));
-                    parts.add(s.substring(4, 6));
+            Thread.sleep(15000);
+            Measure measure = new Measure();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            Date date = new Date();
+            String timestamp = dateFormat.format(date);
+            measure = this.measureBean.find(noiselogger); //Retrive company for the noiselogger
+            String company = measure.getCompany();
+
+            MeasureDTO measureDto = new MeasureDTO();
+            measureDto.setId("" + date.getTime());
+            measureDto.setNoiselogger(noiselogger);
+            measureDto.setTimestamp(timestamp);
+            measureDto.setBattery("80");
+            measureDto.setValue(value);
+            measureDto.setCompany(company);
+
+            measure = new Measure(measureDto);
+            MapsData mapsData = new MapsData();
+            mapsData = this.mapsDataBean.find(noiselogger);
+            //update value
+            mapsData.setBattery(80);
+            mapsData.setTimestamp(timestamp);
+            mapsData.setValue(Integer.valueOf(value));
+            this.measureBean.save(measure);
+
+            if (Integer.valueOf(value) > 600) { //Leak detected, save first value
+
+                //modify style kml to display leak                        
+                mapsData.setStyle("#alarmStyle");
+                this.mapsDataBean.update(mapsData); //update last measure for the noiselogger
+                System.out.println("MapsData UPDATE");
+                //send email to all company users
+                String host = "smtp.gmail.com";
+                String from = "servizio.tiled@gmail.com";
+                String pass = "smartleakdetection";
+                Properties props = System.getProperties();
+                props.put("mail.smtp.starttls.enable", "true");
+                props.put("mail.smtp.host", host);
+                props.put("mail.smtp.user", from);
+                props.put("mail.smtp.password", pass);
+                props.put("mail.smtp.port", "587");
+                props.put("mail.smtp.auth", "true");
+
+                List<User> list = userBean.findAll(company);
+                String[] to = new String[list.size()];
+                for (int i = 0; i < list.size(); i++) {
+                    to[i] = list.get(i).getEmail();
                 }
-                int battery = Integer.decode("0x" + parts.get(1)); //Get int value
-                int value = Integer.decode("0x" + parts.get(0)); //Get int value
-                value = value * 1023 / 255;
-                String noiselogger = Integer.decode("0x" + parts.get(2)).toString();
-                if (Integer.valueOf(noiselogger) < 10) {
-                    noiselogger = noiselogger.split("0")[1];
+
+                Session session = Session.getDefaultInstance(props, null);
+                MimeMessage message = new MimeMessage(session);
+                message.setFrom(new InternetAddress(from));
+
+                InternetAddress[] toAddress = new InternetAddress[to.length];
+
+                for (int i = 0; i < to.length; i++) {        // To get the array of addresses
+                    toAddress[i] = new InternetAddress(to[i]);
                 }
-                System.out.println("Noiselogger: " + noiselogger + " Valore: " + value + " Battery: " + battery);
+                System.out.println(Message.RecipientType.TO);
 
-                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-                Date date = new Date();
-                String timestamp = dateFormat.format(date);
-                this.measure = this.measureBean.find(noiselogger); //Retrive company for the noiselogger
-                String company = this.measure.getCompany();
-
-                if (!this.isStrict && noiselogger.compareTo(this.firstNL) == 0 && !alarmSet) {
-                    //Read only if the strict mesh isn't activate and the measure is the first of the noiselogger of the large mesh
-                    this.alarmSet = true;
-                    this.measureDto.setId("" + date.getTime());
-                    this.measureDto.setNoiselogger(noiselogger);
-                    this.measureDto.setTimestamp(timestamp);
-                    this.measureDto.setBattery("" + battery);
-                    this.measureDto.setValue("" + value);
-                    this.measureDto.setCompany(company);
-                    //save new measure
-                    this.measure = new Measure(this.measureDto);
-                    measureBean.save(measure);
-                    System.out.println("Measure SALVATO!");
-
-                    //Retrieve old measure
-                    this.mapsData = this.mapsDataBean.find(noiselogger);
-                    //update value
-                    this.mapsData.setBattery(battery);
-                    this.mapsData.setTimestamp(timestamp);
-                    this.mapsData.setValue(value);
-                    if (value > 300) { //Change with the selected alarm threshold
-                        //Leak detected, save first value
-                        this.valueF = value;
-
-                        //modify style kml to display leak                        
-                        this.mapsData.setStyle("#alarmStyle");
-                        this.mapsDataBean.update(mapsData); //update last measure for the noiselogger
-                        System.out.println("MapsData UPDATE");
-
-
-
-                        //send email to all company users
-                        String host = "smtp.gmail.com";
-                        String from = "servizio.tiled@gmail.com";
-                        String pass = "smartleakdetection";
-                        Properties props = System.getProperties();
-                        props.put("mail.smtp.starttls.enable", "true");
-                        props.put("mail.smtp.host", host);
-                        props.put("mail.smtp.user", from);
-                        props.put("mail.smtp.password", pass);
-                        props.put("mail.smtp.port", "587");
-                        props.put("mail.smtp.auth", "true");
-
-                        List<User> list = userBean.findAll(company);
-                        String[] to = new String[list.size()];
-                        for (int i = 0; i < list.size(); i++) {
-                            to[i] = list.get(i).getEmail();
-                        }
-
-                        Session session = Session.getDefaultInstance(props, null);
-                        MimeMessage message = new MimeMessage(session);
-                        message.setFrom(new InternetAddress(from));
-
-                        InternetAddress[] toAddress = new InternetAddress[to.length];
-
-                        for (int i = 0; i < to.length; i++) {        // To get the array of addresses
-                            toAddress[i] = new InternetAddress(to[i]);
-                        }
-                        System.out.println(Message.RecipientType.TO);
-
-                        for (int i = 0; i < toAddress.length; i++) {
-                            message.addRecipient(Message.RecipientType.TO, toAddress[i]);
-                        }
-                        message.setSubject("TI-LeD - Notifica rilevazione area di perdita");
-                        message.setContent("<h1>TI-LeD</h1> <br> <div> Gentile utente,<br><br>"
-                                + "Il sistema TI-LeD ha appena rilevato una area di perdita nella zone del noise logger #" + noiselogger
-                                + ".<br>Le ricordiamo di attivare quanto prima la maglia stretta per individuare il punto esatto della perdita."
-                                + "<br><br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
-                        Transport transport = session.getTransport("smtp");
-                        transport.connect(host, from, pass);
-                        transport.sendMessage(message, message.getAllRecipients());
-                        System.out.println("EMAIL INVIATA");
-                        transport.close();
-
-
-
-                    } else {
-                        this.mapsDataBean.update(mapsData); //update last measure for the noiselogger
-                    }
+                for (int i = 0; i < toAddress.length; i++) {
+                    message.addRecipient(Message.RecipientType.TO, toAddress[i]);
                 }
-                if (isStrict) {
-                    if (this.secondNL.compareTo(noiselogger) == 0 && value > 400) { //save second value
-                        this.valueS = value;
-                        this.mapsData = this.mapsDataBean.find(noiselogger);
-                        //update value to display in maps for #strictStyle also battery and status
-                        this.mapsData.setBattery(battery);
-                        this.mapsData.setTimestamp(timestamp);
-                        this.mapsData.setValue(value);
-                        this.mapsDataBean.update(mapsData); //update last measure for the noiselogger
-                    }
-                    if (this.thirdNL.compareTo(noiselogger) == 0 && value > 400) { //save third value
-                        this.valueT = value;
-                        //update value to display in maps for #strictStyle also battery and status
-                        this.mapsData.setBattery(battery);
-                        this.mapsData.setTimestamp(timestamp);
-                        this.mapsData.setValue(value);
-                        this.mapsDataBean.update(mapsData); //update last measure for the noiselogger
-
-                    }
-                    if (this.valueS != 0 && this.valueT != 0) {
-                        MapsDataDTO leak = new MapsDataDTO();
-                        leak.setBattery(0);
-                        leak.setNoiselogger("leak");
-                        leak.setStatus("leak");
-                        leak.setStyle("leak");
-                        leak.setTimestamp("leak");
-                        leak.setValue(0);
-//                        //send email to all company users
-                        String host = "smtp.gmail.com";
-                        String from = "servizio.tiled@gmail.com";
-                        String pass = "smartleakdetection";
-                        Properties props = System.getProperties();
-                        props.put("mail.smtp.starttls.enable", "true");
-                        props.put("mail.smtp.host", host);
-                        props.put("mail.smtp.user", from);
-                        props.put("mail.smtp.password", pass);
-                        props.put("mail.smtp.port", "587");
-                        props.put("mail.smtp.auth", "true");
-
-                        List<User> list = userBean.findAll(company);
-                        String[] to = new String[list.size()];
-                        for (int i = 0; i < list.size(); i++) {
-                            to[i] = list.get(i).getEmail();
-                        }
-
-                        Session session = Session.getDefaultInstance(props, null);
-                        MimeMessage message = new MimeMessage(session);
-                        message.setFrom(new InternetAddress(from));
-
-                        InternetAddress[] toAddress = new InternetAddress[to.length];
-
-                        for (int i = 0; i < to.length; i++) {        // To get the array of addresses
-                            toAddress[i] = new InternetAddress(to[i]);
-                        }
-                        System.out.println(Message.RecipientType.TO);
-
-                        for (int i = 0; i < toAddress.length; i++) {
-                            message.addRecipient(Message.RecipientType.TO, toAddress[i]);
-                        }
-                        message.setSubject("TI-LeD - Individuato punto di perdita");
-                        message.setContent("<h1>TI-LeD</h1> <br> <div>Gentile utente,<br><br>"
-                                + "in seguito alla attivazione della maglia stretta, il sistema TI-LeD ha localizzato una perdita sulla Sua rete.<br>"
-                                + "Può consultare la mappa tramite il nostro portale per visualizzare la posizione precisa.<br><br>"
-                                + "Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
-                        Transport transport = session.getTransport("smtp");
-                        transport.connect(host, from, pass);
-                        transport.sendMessage(message, message.getAllRecipients());
-                        System.out.println("EMAIL INVIATA");
-                        transport.close();
-
-                        //Elaborate data
-                        if (this.valueS > this.valueT) {
-                            leak.setLatitude(45.11065555);
-                            leak.setLongitude(7.66566111);
-                            MapsData mapsLeak = new MapsData(leak);
-                            this.mapsDataBean.save(mapsLeak);
-                            //Send Data
-                            System.out.println("PERDITA PRIMO TRATTO: valore2: " + this.valueS + " valore3: " + this.valueT);
-                        } else {
-                            leak.setLatitude(45.10998333);
-                            leak.setLongitude(7.6661);
-                            MapsData mapsLeak = new MapsData(leak);
-                            this.mapsDataBean.save(mapsLeak);
-                            //Send email
-                            System.out.println("PERDITA SECONDO TRATTO valore2: " + this.valueS + " valore3: " + this.valueT);
-                        }
-                        this.isStrict = false; //reset maglia stretta
-                    }
-                }
-//                Thread.sleep(5000);
+                message.setSubject("TI-LeD - Notifica rilevazione area di perdita");
+                message.setContent("<h1>TI-LeD</h1> <br> <div> Gentile utente,<br><br>"
+                        + "il sistema TI-LeD ha appena rilevato una area di perdita nella zona del noise logger #" + noiselogger
+                        + ".<br>Le ricordiamo di attivare quanto prima la maglia stretta per individuare il punto esatto della perdita."
+                        + "<br><br>Cordiali saluti,<br>TI-LeD Team</div>", "text/html");
+                Transport transport = session.getTransport("smtp");
+                transport.connect(host, from, pass);
+                transport.sendMessage(message, message.getAllRecipients());
+                System.out.println("EMAIL INVIATA");
+                transport.close();
+            } else {
+                this.mapsDataBean.update(mapsData); //update last measure for the noiselogger
             }
-
-        } catch (MessagingException ex) {
-            Logger.getLogger(ReceivingData.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            System.out.println("Error");
         }
+
+        System.out.println("rilevazione creata" + measure);
+
+        System.out.println("successfully added new measure: '" + measure.getCompany() + "':'" + measure.getId() + "'");
+
     }
 
     public void setStrict() {

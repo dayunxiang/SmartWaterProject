@@ -33,13 +33,18 @@ import javax.ws.rs.core.Response;
 import com.ti_led.json.JsonResponse;
 import com.ti_led.model.mapsmanagement.MapsData;
 import com.ti_led.model.mapsmanagement.MapsDataBean;
+import com.ti_led.model.measuremanagement.Measure;
 import com.ti_led.model.measuremanagement.MeasureBean;
+import com.ti_led.model.measuremanagement.dto.MeasureDTO;
 import com.ti_led.model.usermanagement.Group;
 import com.ti_led.model.usermanagement.User;
 import com.ti_led.model.usermanagement.UserBean;
 import com.ti_led.model.usermanagement.dto.UserDTO;
 import java.io.IOException;
 import java.security.Principal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -65,13 +70,13 @@ public class UserManagementService {
     @Path("startcom")
     @Produces(MediaType.APPLICATION_JSON)
     public Response ping(@FormParam("ip") String ip,
-            @Context HttpServletRequest req) {
+            @Context HttpServletRequest req) throws MessagingException, InterruptedException {
         if (recThread != null) { //Check if the thread already exists and kill it to prevent socket error
             this.recThread.interrupt();
         }
         this.recThread = new ReceivingData(ip, measureBean, userBean, mapsDataBean);
         recThread.start(); //Start receiving thread
-
+        
         JsonResponse json = new JsonResponse();
         json.setStatus("SUCCESS");
         return Response.ok().entity(json).build();
@@ -242,13 +247,13 @@ public class UserManagementService {
             return Response.ok().entity(json).build();
         }
 
-	MapsData mapsData = new MapsData();
-	mapsData = this.mapsDataBean.find("24");
-	mapsData.setStyle("#measureStyle"); //update style for maps visualization
+        MapsData mapsData = new MapsData();
+        mapsData = this.mapsDataBean.find("24");
+        mapsData.setStyle("#measureStyle"); //update style for maps visualization
         this.mapsDataBean.update(mapsData); //update the DB
 
-	mapsData = this.mapsDataBean.find("41");
-	mapsData.setStyle("#measureStyle"); //update style for maps visualization
+        mapsData = this.mapsDataBean.find("41");
+        mapsData.setStyle("#measureStyle"); //update style for maps visualization
         this.mapsDataBean.update(mapsData); //update the DB
 
         //Activate the strict mesh
